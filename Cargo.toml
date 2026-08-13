@@ -1,0 +1,63 @@
+[package]
+name = "dynamic-snarks-system"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+description = "Section 4 dynamic SNARK compiler instantiated with Plonky3, Poseidon2, and WHIR"
+
+[features]
+default = []
+parallel = [
+    "p3-maybe-rayon/parallel",
+    "p3-multilinear-util/parallel",
+    "p3-whir/parallel",
+]
+
+[dependencies]
+num-bigint = "0.4"
+p3-bn254 = "=0.6.2"
+p3-challenger = "=0.6.2"
+p3-commit = "=0.6.2"
+p3-dft = "=0.6.2"
+p3-field = "=0.6.2"
+p3-matrix = "=0.6.2"
+p3-maybe-rayon = "=0.6.2"
+p3-merkle-tree = "=0.6.2"
+p3-multilinear-util = "=0.6.2"
+p3-poseidon2 = "=0.6.2"
+p3-sumcheck = "=0.6.2"
+p3-symmetric = "=0.6.2"
+p3-whir = "=0.6.2"
+rand = "0.10.0"
+serde = { version = "1.0", features = ["derive"] }
+sha3 = "0.10"
+blake3 = "1.8"
+thiserror = "2.0"
+
+[patch.crates-io]
+# Plonky3 0.6.2 calls `MaybeUninit::assume_init_ref` on a slice, an API that
+# remains unstable on Rust 1.92. The vendored crate changes only that call to
+# the equivalent stable `from_raw_parts` operation.
+p3-util = { path = "vendor/p3-util" }
+
+[lints.rust]
+missing_docs = "warn"
+unsafe_code = "forbid"
+
+[lints.clippy]
+all = "warn"
+
+[profile.test]
+# Prime-field FFTs and Poseidon2 are prohibitively slow with debug arithmetic.
+# Tests still retain debug assertions while compiling arithmetic hot paths.
+opt-level = 3
+debug = 1
+codegen-units = 16
+
+[[bench]]
+name = "dynamic_snark"
+harness = false
+
+[[bench]]
+name = "hash_microbench"
+harness = false
