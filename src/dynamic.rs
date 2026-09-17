@@ -5,18 +5,32 @@ use p3_field::PrimeCharacteristicRing;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::mem::size_of;
+use std::time::Instant;
 use thiserror::Error;
 
+#[cfg(feature = "poseidon-gkr")]
+use crate::cair::round_reduction::{self as cair, Proof as CairProof};
+#[cfg(not(feature = "poseidon-gkr"))]
 use crate::cair::{self, Proof as CairProof};
 use crate::circuit::{Circuit, CircuitError};
 use crate::merkle::{Commitment, MerkleError, MerkleTree, MultiProof, verify as verify_merkle};
 use crate::static_snark::{
     ConstraintProgram, ExtraMainOpenings, ProgramBuilder, Proof as StaticProof,
     ProvingKey as StaticProvingKey, VerifyingKey as StaticVerifyingKey, commitment_seed,
-    main_column_point, prove_with_main_openings, setup as static_setup, verify_with_main_openings,
+    main_table_point, prove_with_main_openings, setup as static_setup, verify_with_main_openings,
 };
+#[cfg(feature = "compact-merkle")]
+use crate::transition_cair::packed::{self as transition_cair, Proof as TransitionProof};
+#[cfg(all(feature = "poseidon-gkr", not(feature = "compact-merkle")))]
+use crate::transition_cair::round_reduction::{self as transition_cair, Proof as TransitionProof};
+#[cfg(not(feature = "poseidon-gkr"))]
 use crate::transition_cair::{self, Proof as TransitionProof};
+#[cfg(all(feature = "poseidon-gkr", not(feature = "compact-merkle")))]
+use crate::transition_relation::estimate_endpoint_shape as estimate_transition_shape;
+#[cfg(not(feature = "poseidon-gkr"))]
 use crate::transition_relation::estimate_shape as estimate_transition_shape;
+#[cfg(feature = "compact-merkle")]
+use crate::transition_relation::packed::estimate_shape as estimate_transition_shape;
 use crate::wiring::{ProverWiringIndex, VerifierWiringIndex, preprocess as preprocess_wiring};
 
 pub(crate) mod gadgets;
@@ -47,7 +61,8 @@ pub struct Proof {
 /// Prover auxiliary state, including hierarchical update witness tables.
 #[derive(Clone)]
 pub struct State {
-    base_assignment: Vec<Bn254>,
+    base_tree: MerkleTree,
+    hierarchy_trees: Vec<MerkleTree>,
     current_assignment: Vec<Bn254>,
     tables: Vec<Option<UpdateTable>>,
     proof: Proof,
@@ -62,12 +77,33 @@ pub struct State {
 /// benchmark harness: it is not a replacement for [`State`] in a sound protocol.
 #[derive(Clone)]
 pub struct TransitionBenchmarkState {
-    base_assignment: Vec<Bn254>,
+    base_tree: MerkleTree,
+    hierarchy_trees: Vec<MerkleTree>,
     current_assignment: Vec<Bn254>,
     tables: Vec<Option<UpdateTable>>,
     commitments: Vec<Commitment>,
     transition_proofs: Vec<Option<TransitionProof>>,
     public_input_opening: Option<MultiProof>,
+}
+
+/// Serializable transition-only benchmark proof; its first commitment is trusted.
+#[derive(Clone, Serialize, Deserialize)]
+pub struct TransitionBenchmarkProof {
+    commitments: Vec<Commitment>,
+    transition_proofs: Vec<Option<TransitionProof>>,
+    public_input_opening: Option<MultiProof>,
+}
+
+impl TransitionBenchmarkState {
+    /// Copy transmitted components, excluding the trusted initial proof,
+    /// assignments, prover trees, and indexing keys. For benchmark accounting only.
+    pub fn proof_payload(&self) -> TransitionBenchmarkProof {
+        TransitionBenchmarkProof {
+            commitments: self.commitments.clone(),
+            transition_proofs: self.transition_proofs.clone(),
+            public_input_opening: self.public_input_opening.clone(),
+        }
+    }
 }
 
 #[derive(Clone)]
@@ -94,7 +130,7 @@ pub enum Error {
     /// A static WHIR-backed proof failed.
     #[error("static SNARK: {0}")]
     Static(String),
-    /// The commit-all-intermediate-rounds initial proof failed.
+    /// The selected initial Merkle PIOP failed.
     #[error("initial Merkle CAIR: {0}")]
     Cair(String),
     /// A sparse transition CAIR proof or its WHIR openings failed.
@@ -149,6 +185,12 @@ impl ProvingKey {
     pub const fn initial_trace_len(&self) -> usize {
         self.initial.trace_len()
     }
+
+    /// Number of permutation columns committed by initial preprocessing.
+    #[must_use]
+    pub fn initial_preprocessed_width(&self) -> usize {
+        self.initial.preprocessed_width()
+    }
 }
 
 impl VerifyingKey {
@@ -157,13 +199,19 @@ impl VerifyingKey {
     pub const fn initial_trace_len(&self) -> usize {
         self.initial.trace_len()
     }
+
+    /// Number of permutation columns committed by initial preprocessing.
+    #[must_use]
+    pub fn initial_preprocessed_width(&self) -> usize {
+        self.initial.preprocessed_width()
+    }
 }
 
 /// Compute the initial relation's padded HyperPlonk trace length without
 /// materializing its constraint program.
 #[must_use]
 pub fn initial_trace_len(circuit: &Circuit) -> usize {
-    initial_program_operation_count(circuit.n, circuit.assignment_len())
+    initial_program_row_count(circuit.n, circuit.assignment_len())
         .max(2)
         .next_power_of_two()
 }
@@ -184,7 +232,7 @@ pub fn initial_trace_len_for_shape(
         });
     }
     let assignment_len = 6 * gate_pairs + num_public_inputs;
-    Ok(initial_program_operation_count(gate_pairs, assignment_len)
+    Ok(initial_program_row_count(gate_pairs, assignment_len)
         .max(2)
         .next_power_of_two())
 }
@@ -244,13 +292,25 @@ pub fn transition_gkr_hash_count(circuit: &Circuit, indices: &[usize]) -> Result
 pub struct TransitionResourceEstimate {
     /// Exact number of non-boundary old/new Poseidon checks.
     pub poseidon_hashes: usize,
-    /// Padded number of universal sparse-DAG rows.
+    /// Padded sparse node rows (combined node/update rows in older variants).
     pub row_count: usize,
-    /// Columns in the packed main CAIR table (over `2 * row_count` rows).
+    /// Main-table columns: `R` rows with endpoint GKR, `2R` for scalar traces.
     pub row_width: usize,
-    /// Field elements in the committed main CAIR polynomial.
+    /// Field elements in the main oracle, excluding auxiliary/product oracles.
     pub master_fields: usize,
-    /// Conservative peak bytes for current CAIR and WHIR allocations.
+    /// Padded update/gate rows; zero when these records share the main table.
+    pub auxiliary_rows: usize,
+    /// Padded update/gate columns; zero when there is no separate oracle.
+    pub auxiliary_width: usize,
+    /// Field elements in the separate update/gate oracle.
+    pub auxiliary_fields: usize,
+    /// Padded columns in the shared routing product table.
+    pub product_width: usize,
+    /// Field elements in the shared routing product oracle.
+    pub product_fields: usize,
+    /// Sum of main, auxiliary, and product committed field elements.
+    pub total_committed_fields: usize,
+    /// Conservative allocation estimate for CAIR and WHIR, not measured RSS.
     pub conservative_peak_bytes: u128,
 }
 
@@ -262,27 +322,72 @@ pub fn transition_resource_estimate(
 ) -> Result<TransitionResourceEstimate, Error> {
     let (row_count, row_width, poseidon_hashes) =
         estimate_transition_shape(circuit, indices).map_err(transition_error)?;
+    let main_row_factor = if cfg!(feature = "poseidon-gkr") { 1 } else { 2 };
     let master_fields = row_count
-        .checked_mul(2)
+        .checked_mul(main_row_factor)
         .and_then(|rows| rows.checked_mul(row_width))
         .ok_or(Error::MalformedHierarchy)?;
-    // The main estimate already includes one packed 195-column Poseidon trace
-    // over `2 * rows`. The small adaptive product CAIR uses
-    // `14 + 2 log(rows)` columns. Twelve copies conservatively cover
-    // commitment LDEs, sumcheck folds, and opening buffers.
+    #[cfg(feature = "compact-merkle")]
+    let (auxiliary_rows, auxiliary_width) = {
+        let gates = indices
+            .iter()
+            .copied()
+            .filter(|&index| index < 6 * circuit.n)
+            .map(|index| index / 3)
+            .collect::<std::collections::BTreeSet<_>>()
+            .len();
+        let rows = indices
+            .len()
+            .checked_add(gates)
+            .and_then(|rows| rows.max(2).checked_next_power_of_two())
+            .ok_or(Error::MalformedHierarchy)?;
+        let width = crate::transition_relation::packed::auxiliary_column_count(
+            circuit.n,
+            circuit.num_public_inputs,
+        )
+        .next_power_of_two();
+        (rows, width)
+    };
+    #[cfg(not(feature = "compact-merkle"))]
+    let (auxiliary_rows, auxiliary_width): (usize, usize) = (0, 0);
+    let auxiliary_fields = auxiliary_rows
+        .checked_mul(auxiliary_width)
+        .ok_or(Error::MalformedHierarchy)?;
+    // The adaptive product CAIR uses `14 + 2 log(rows)` columns.
+    // Twelve copies conservatively cover commitment LDEs, sumcheck folds,
+    // and opening buffers; endpoint GKR's transient trace is added below.
     let product_width = (14 + 2 * row_count.trailing_zeros() as usize).next_power_of_two();
     let product_fields = row_count
         .checked_mul(product_width)
         .ok_or(Error::MalformedHierarchy)?;
-    let cair_fields = master_fields
-        .checked_add(product_fields)
+    let total_committed_fields = master_fields
+        .checked_add(auxiliary_fields)
+        .and_then(|fields| fields.checked_add(product_fields))
         .ok_or(Error::MalformedHierarchy)?;
-    let conservative_peak_bytes = cair_fields as u128 * 12 * size_of::<Bn254>() as u128;
+    // Endpoint GKR stores 65 transient width-three layers over 2R hashes.
+    let transient_fields = if cfg!(feature = "poseidon-gkr") {
+        390 * row_count as u128
+    } else {
+        0
+    };
+    // Routing folds zero-extend the small update oracle over the node domain.
+    // Its committed size stays small, but conservatively count three extended
+    // buffers (source and folded work) in the working-memory estimate.
+    let auxiliary_work = 3 * row_count as u128 * auxiliary_width as u128;
+    let conservative_peak_bytes =
+        (total_committed_fields as u128 * 12 + transient_fields + auxiliary_work)
+            * size_of::<Bn254>() as u128;
     Ok(TransitionResourceEstimate {
         poseidon_hashes,
         row_count,
         row_width,
         master_fields,
+        auxiliary_rows,
+        auxiliary_width,
+        auxiliary_fields,
+        product_width,
+        product_fields,
+        total_committed_fields,
         conservative_peak_bytes,
     })
 }
@@ -308,7 +413,9 @@ pub fn preprocess_all_levels(_key: &ProvingKey) -> Result<(), Error> {
 
 /// Prove a valid initial assignment and initialize empty update tables.
 pub fn initialize(key: &ProvingKey, assignment: Vec<Bn254>) -> Result<State, Error> {
+    let phase = Instant::now();
     key.circuit.check_assignment(&assignment)?;
+    profile_checkpoint("initial: native assignment validation", phase);
     initialize_unchecked(key, assignment)
 }
 
@@ -327,12 +434,14 @@ fn initialize_transition_benchmark_unchecked(
     key: &ProvingKey,
     assignment: Vec<Bn254>,
 ) -> Result<TransitionBenchmarkState, Error> {
-    let tree = MerkleTree::new(assignment.clone())?;
+    let encoded = key.circuit.encode_assignment(&assignment);
+    let tree = MerkleTree::new(encoded)?;
     let commitment = tree.commitment();
     let depth = key.circuit.hierarchy_depth();
     let public_input_opening = open_public_inputs(&key.circuit, &tree)?;
     Ok(TransitionBenchmarkState {
-        base_assignment: assignment.clone(),
+        base_tree: tree.clone(),
+        hierarchy_trees: vec![tree; depth + 1],
         current_assignment: assignment,
         tables: vec![None; depth],
         commitments: vec![commitment; depth + 1],
@@ -342,39 +451,58 @@ fn initialize_transition_benchmark_unchecked(
 }
 
 fn initialize_unchecked(key: &ProvingKey, assignment: Vec<Bn254>) -> Result<State, Error> {
-    let tree = MerkleTree::new(assignment.clone())?;
+    let phase = Instant::now();
+    let encoded = key.circuit.encode_assignment(&assignment);
+    let tree = MerkleTree::new(encoded.clone())?;
+    profile_checkpoint("initial: assignment Merkle tree", phase);
     let commitment = tree.commitment();
+    let phase = Instant::now();
     let program = initial_program(&key.circuit, &assignment);
+    profile_checkpoint("initial: relation arithmetization", phase);
     let trace_len = key.initial.trace_len();
+    let assignment_link_len = encoded.len();
     let mut initial_cair = None;
+    let phase = Instant::now();
     let initial_proof = prove_with_main_openings(
         &key.initial,
         &program,
         &[],
         |main_commitment, main_evaluations| {
             let seed = commitment_seed(main_commitment);
-            let committed_main_column = main_evaluations[0].clone();
+            debug_assert_eq!(main_evaluations.len(), 4);
+            let committed_assignment = crate::parallel::pack_columns(
+                trace_len,
+                4,
+                &main_evaluations
+                    .iter()
+                    .map(Vec::as_slice)
+                    .collect::<Vec<_>>(),
+            );
             let (proof, link) = cair::prove(
-                &assignment,
+                &encoded,
                 commitment.root,
                 &seed,
-                trace_len,
-                committed_main_column,
+                assignment_link_len,
+                committed_assignment,
             )
             .map_err(|error| error.to_string())?;
             initial_cair = Some(proof);
             Ok(ExtraMainOpenings {
-                points: vec![main_column_point(&link.point, trace_len)],
+                points: vec![main_table_point(&link.point)],
                 transcript_binding: link.transcript_binding,
             })
         },
     )
     .map_err(static_error)?;
+    profile_checkpoint("initial: composed static+CAIR proof", phase);
     let depth = key.circuit.hierarchy_depth();
     let commitments = vec![commitment; depth + 1];
+    let phase = Instant::now();
     let public_input_opening = open_public_inputs(&key.circuit, &tree)?;
+    profile_checkpoint("initial: public-input Merkle opening", phase);
     Ok(State {
-        base_assignment: assignment.clone(),
+        base_tree: tree.clone(),
+        hierarchy_trees: vec![tree; depth + 1],
         current_assignment: assignment,
         tables: vec![None; depth],
         proof: Proof {
@@ -393,28 +521,33 @@ pub fn update(
     state: &mut State,
     updates: &[(usize, Bn254)],
 ) -> Result<(), Error> {
-    let resulting_assignment = validate_update(key, &state.current_assignment, updates)?;
-
-    if state.tables.iter().all(Option::is_some) {
-        *state = initialize_unchecked(key, resulting_assignment)?;
-        return Ok(());
-    }
-    insert_update_table(
+    let phase = Instant::now();
+    validate_update(key, &state.current_assignment, updates)?;
+    profile_checkpoint("transition: update validation", phase);
+    let phase = Instant::now();
+    let target = insert_update_table(
         key.circuit.hierarchy_depth(),
         &state.current_assignment,
         &mut state.tables,
         updates,
     );
+    profile_checkpoint("transition: hierarchy table insertion/composition", phase);
+    let phase = Instant::now();
     rebuild_hierarchy_components(
         key,
-        &state.base_assignment,
+        &state.base_tree,
+        &mut state.hierarchy_trees,
         &state.tables,
-        &mut state.current_assignment,
+        target,
         &mut state.proof.commitments,
         &mut state.proof.transition_proofs,
         &mut state.proof.public_input_opening,
+        updates,
     )?;
-    debug_assert_eq!(state.current_assignment, resulting_assignment);
+    profile_checkpoint("transition: complete hierarchy rebuild", phase);
+    for &(index, value) in updates {
+        state.current_assignment[index] = value;
+    }
     Ok(())
 }
 
@@ -425,27 +558,33 @@ pub fn update_transition_benchmark(
     state: &mut TransitionBenchmarkState,
     updates: &[(usize, Bn254)],
 ) -> Result<(), Error> {
-    let resulting_assignment = validate_update(key, &state.current_assignment, updates)?;
-    if state.tables.iter().all(Option::is_some) {
-        *state = initialize_transition_benchmark_unchecked(key, resulting_assignment)?;
-        return Ok(());
-    }
-    insert_update_table(
+    let phase = Instant::now();
+    validate_update(key, &state.current_assignment, updates)?;
+    profile_checkpoint("transition: update validation", phase);
+    let phase = Instant::now();
+    let target = insert_update_table(
         key.circuit.hierarchy_depth(),
         &state.current_assignment,
         &mut state.tables,
         updates,
     );
+    profile_checkpoint("transition: hierarchy table insertion/composition", phase);
+    let phase = Instant::now();
     rebuild_hierarchy_components(
         key,
-        &state.base_assignment,
+        &state.base_tree,
+        &mut state.hierarchy_trees,
         &state.tables,
-        &mut state.current_assignment,
+        target,
         &mut state.commitments,
         &mut state.transition_proofs,
         &mut state.public_input_opening,
+        updates,
     )?;
-    debug_assert_eq!(state.current_assignment, resulting_assignment);
+    profile_checkpoint("transition: complete hierarchy rebuild", phase);
+    for &(index, value) in updates {
+        state.current_assignment[index] = value;
+    }
     Ok(())
 }
 
@@ -459,22 +598,23 @@ pub fn verify(key: &VerifyingKey, public_inputs: &[Bn254], proof: &Proof) -> Res
     if proof
         .commitments
         .iter()
-        .any(|commitment| commitment.len != shape.assignment_len)
+        .any(|commitment| commitment.len != shape.assignment_tree_len())
     {
         return Err(Error::MalformedHierarchy);
     }
     let seed = commitment_seed(proof.initial_proof.main_commitment());
+    let assignment_link_len = shape.assignment_tree_len();
     let link = cair::verify(
-        shape.assignment_len,
+        assignment_link_len,
         proof.commitments[0].root,
         &seed,
-        key.initial.trace_len(),
+        assignment_link_len,
         &proof.initial_cair,
         proof.initial_proof.extra_main_evaluations(),
     )
     .map_err(cair_error)?;
     let openings = ExtraMainOpenings {
-        points: vec![main_column_point(&link.point, key.initial.trace_len())],
+        points: vec![main_table_point(&link.point)],
         transcript_binding: link.transcript_binding,
     };
     verify_with_main_openings(&key.initial, &[], &proof.initial_proof, &openings)
@@ -505,6 +645,22 @@ pub fn verify_transition_benchmark(
     )
 }
 
+/// Verify a decoded transition-only benchmark payload, with its base commitment
+/// trusted exactly as in [`verify_transition_benchmark`].
+pub fn verify_transition_benchmark_proof(
+    key: &VerifyingKey,
+    public_inputs: &[Bn254],
+    proof: &TransitionBenchmarkProof,
+) -> Result<(), Error> {
+    verify_transition_hierarchy(
+        key,
+        public_inputs,
+        &proof.commitments,
+        &proof.transition_proofs,
+        proof.public_input_opening.as_ref(),
+    )
+}
+
 fn verify_transition_hierarchy(
     key: &VerifyingKey,
     public_inputs: &[Bn254],
@@ -519,7 +675,7 @@ fn verify_transition_hierarchy(
     }
     if commitments
         .iter()
-        .any(|commitment| commitment.len != shape.assignment_len)
+        .any(|commitment| commitment.len != shape.assignment_tree_len())
     {
         return Err(Error::MalformedHierarchy);
     }
@@ -590,7 +746,7 @@ fn validate_update(
     key: &ProvingKey,
     current_assignment: &[Bn254],
     updates: &[(usize, Bn254)],
-) -> Result<Vec<Bn254>, Error> {
+) -> Result<(), Error> {
     if updates.is_empty() {
         return Err(Error::EmptyUpdate);
     }
@@ -599,19 +755,39 @@ fn validate_update(
         return Err(Error::NonCanonicalUpdate);
     }
     key.circuit.check_update_indices(&indices)?;
-    let mut resulting_assignment = current_assignment.to_vec();
-    for &(index, value) in updates {
-        if index >= resulting_assignment.len() {
-            return Err(CircuitError::AssignmentLength {
-                expected: resulting_assignment.len(),
-                actual: index + 1,
-            }
-            .into());
+    let value_after_update = |index: usize| {
+        updates
+            .binary_search_by_key(&index, |&(position, _)| position)
+            .map_or(current_assignment[index], |position| updates[position].1)
+    };
+
+    let gate_starts = indices
+        .iter()
+        .copied()
+        .filter(|&index| index < 6 * key.circuit.n)
+        .map(|index| index - index % 3)
+        .collect::<std::collections::BTreeSet<_>>();
+    for start in gate_starts {
+        let pair = start / 6;
+        let left = value_after_update(start);
+        let right = value_after_update(start + 1);
+        let output = value_after_update(start + 2);
+        let valid = if start % 6 == 0 {
+            left + right == output
+        } else {
+            left * right == output
+        };
+        if !valid {
+            return Err(CircuitError::GateConstraint { pair }.into());
         }
-        resulting_assignment[index] = value;
     }
-    key.circuit.check_assignment(&resulting_assignment)?;
-    Ok(resulting_assignment)
+    for &index in &indices {
+        let neighbor = key.circuit.permutation[index];
+        if value_after_update(index) != value_after_update(neighbor) {
+            return Err(CircuitError::WiringConstraint { position: index }.into());
+        }
+    }
+    Ok(())
 }
 
 fn insert_update_table(
@@ -619,7 +795,7 @@ fn insert_update_table(
     current_assignment: &[Bn254],
     tables: &mut [Option<UpdateTable>],
     updates: &[(usize, Bn254)],
-) {
+) -> usize {
     let mut incoming = UpdateTable {
         entries: updates
             .iter()
@@ -648,71 +824,109 @@ fn insert_update_table(
         incoming = compose_tables(sequence);
     }
     tables[target - 1] = Some(incoming);
+    target
 }
 
 #[allow(clippy::too_many_arguments)]
 fn rebuild_hierarchy_components(
     key: &ProvingKey,
-    base_assignment: &[Bn254],
+    base_tree: &MerkleTree,
+    hierarchy_trees: &mut [MerkleTree],
     tables: &[Option<UpdateTable>],
-    current_assignment: &mut Vec<Bn254>,
+    target: usize,
     commitments_out: &mut Vec<Commitment>,
     transition_proofs_out: &mut Vec<Option<TransitionProof>>,
     public_input_opening_out: &mut Option<MultiProof>,
+    immediate_updates: &[(usize, Bn254)],
 ) -> Result<(), Error> {
     let depth = key.circuit.hierarchy_depth();
-    let mut tree = MerkleTree::new(base_assignment.to_vec())?;
-    let mut commitments = vec![tree.commitment()];
-    let mut transition_proofs = Vec::with_capacity(depth);
-
-    for level in 1..=depth {
-        if let Some(table) = &tables[level - 1] {
-            let lower = 1usize << (depth - level);
-            let capacity = ((lower << 1) - 1).min(key.circuit.assignment_len());
-            let old = tree.commitment();
-            let mut new_tree = tree.clone();
-            let replacements = table
-                .entries
-                .iter()
-                .map(|entry| {
-                    if tree.values()[entry.index] != entry.old {
-                        return Err(Error::OldValueMismatch(entry.index));
-                    }
-                    Ok((entry.index, entry.new))
-                })
-                .collect::<Result<Vec<_>, _>>()?;
-            new_tree.update(&replacements)?;
-            let new = new_tree.commitment();
-            let updates = table
-                .entries
-                .iter()
-                .map(|entry| (entry.index, entry.old, entry.new))
-                .collect::<Vec<_>>();
-            let transition = transition_cair::prove(
-                &key.circuit,
-                key.wiring.permutation_tree(),
-                &tree,
-                level,
-                lower,
-                capacity,
-                &updates,
-                old,
-                new,
-            )
-            .map_err(transition_error)?;
-            tree = new_tree;
-            commitments.push(new);
-            transition_proofs.push(Some(transition));
-        } else {
-            commitments.push(tree.commitment());
-            transition_proofs.push(None);
-        }
+    if hierarchy_trees.len() != depth + 1
+        || commitments_out.len() != depth + 1
+        || transition_proofs_out.len() != depth
+        || hierarchy_trees[0].commitment() != base_tree.commitment()
+        || tables[target..].iter().any(Option::is_some)
+    {
+        return Err(Error::MalformedHierarchy);
     }
-    *current_assignment = tree.values().to_vec();
-    *commitments_out = commitments;
-    *transition_proofs_out = transition_proofs;
-    *public_input_opening_out = open_public_inputs(&key.circuit, &tree)?;
+    let table = tables[target - 1]
+        .as_ref()
+        .ok_or(Error::MalformedHierarchy)?;
+    let old_tree = &hierarchy_trees[target - 1];
+    if old_tree.commitment() != commitments_out[target - 1] {
+        return Err(Error::MalformedHierarchy);
+    }
+    let lower = 1usize << (depth - target);
+    let capacity = ((lower << 1) - 1).min(key.circuit.assignment_len());
+    let phase = Instant::now();
+    let mut replacements = table
+        .entries
+        .iter()
+        .map(|entry| {
+            if old_tree.value(key.circuit.assignment_leaf_index(entry.index)) != Some(entry.old) {
+                return Err(Error::OldValueMismatch(entry.index));
+            }
+            Ok((key.circuit.assignment_leaf_index(entry.index), entry.new))
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    replacements.sort_unstable_by_key(|&(index, _)| index);
+    let new_tree = old_tree.updated(&replacements)?;
+    profile_checkpoint("transition: update sparse Merkle paths", phase);
+    let old = old_tree.commitment();
+    let new = new_tree.commitment();
+    let transition_updates = table
+        .entries
+        .iter()
+        .map(|entry| (entry.index, entry.old, entry.new))
+        .collect::<Vec<_>>();
+    let phase = Instant::now();
+    let transition = transition_cair::prove(
+        &key.circuit,
+        key.wiring.permutation_tree(),
+        old_tree,
+        &new_tree,
+        target,
+        lower,
+        capacity,
+        &transition_updates,
+        old,
+        new,
+    )
+    .map_err(transition_error)?;
+    profile_checkpoint("transition: CAIR proof total", phase);
+
+    commitments_out[target..].fill(new);
+    transition_proofs_out[target - 1] = Some(transition);
+    transition_proofs_out[target..].fill(None);
+    hierarchy_trees[target..].fill(new_tree.clone());
+    let phase = Instant::now();
+    if key.circuit.num_public_inputs == 0 {
+        if public_input_opening_out.is_some() {
+            return Err(Error::MalformedHierarchy);
+        }
+    } else {
+        let mut changed_indices = immediate_updates
+            .iter()
+            .map(|&(index, _)| key.circuit.assignment_leaf_index(index))
+            .collect::<Vec<_>>();
+        changed_indices.sort_unstable();
+        new_tree.refresh_opening(
+            public_input_opening_out
+                .as_mut()
+                .ok_or(Error::MalformedHierarchy)?,
+            &changed_indices,
+        )?;
+    }
+    profile_checkpoint("transition: refresh cached public-input opening", phase);
     Ok(())
+}
+
+fn profile_checkpoint(label: &str, started: Instant) {
+    if std::env::var_os("DYNAMIC_SNARK_PROFILE").is_some() {
+        eprintln!(
+            "profile checkpoint: {label} complete in {:.3}s",
+            started.elapsed().as_secs_f64()
+        );
+    }
 }
 
 fn compose_tables(sequence: Vec<UpdateTable>) -> UpdateTable {
@@ -743,7 +957,11 @@ fn open_public_inputs(
     circuit: &Circuit,
     tree: &MerkleTree,
 ) -> Result<Option<MultiProof>, MerkleError> {
-    let positions = circuit.public_positions();
+    let positions = circuit
+        .public_positions()
+        .into_iter()
+        .map(|index| circuit.assignment_leaf_index(index))
+        .collect::<Vec<_>>();
     if positions.is_empty() {
         Ok(None)
     } else {
@@ -765,40 +983,43 @@ fn arithmetic_program(
     } else {
         0
     });
-    let public_start = 6 * circuit.n;
-    let values = assignment
-        .iter()
-        .copied()
-        .enumerate()
-        .map(|(position, value)| {
-            if expose_public_inputs && position >= public_start {
-                builder.public(position - public_start, value)
-            } else {
-                builder.variable(value)
+    // Allocate one program variable per wiring-permutation cycle.  Its
+    // occurrences in the gate rows and public column are tied by PermCheck.
+    let mut values = vec![None; assignment.len()];
+    for start in 0..assignment.len() {
+        if values[start].is_some() {
+            continue;
+        }
+        let variable = builder.variable(assignment[start]);
+        let mut position = start;
+        loop {
+            debug_assert!(values[position].is_none());
+            values[position] = Some(variable);
+            position = circuit.permutation[position];
+            if position == start {
+                break;
             }
-        })
+        }
+    }
+    let values = values
+        .into_iter()
+        .map(|variable| variable.expect("a permutation partitions every position"))
         .collect::<Vec<_>>();
 
-    // Put the wiring equalities first. Their left operands make main column
-    // zero begin with the unpadded assignment. CAIR's range-selector routing supplies
-    // the canonical zeros from `m` to `m.next_power_of_two()`, so the static
-    // relation itself is padded only once, after all real operations exist.
-    for (position, &permuted) in circuit.permutation.iter().enumerate() {
-        builder.assert_equal(values[position], values[permuted]);
-    }
     for gate in 0..circuit.n {
-        let sum = builder.add(values[6 * gate], values[6 * gate + 1]);
-        builder.assert_equal(sum, values[6 * gate + 2]);
-        let product = builder.mul(values[6 * gate + 3], values[6 * gate + 4]);
-        builder.assert_equal(product, values[6 * gate + 5]);
+        builder.assert_add(values[6 * gate], values[6 * gate + 1], values[6 * gate + 2]);
+        builder.assert_mul(
+            values[6 * gate + 3],
+            values[6 * gate + 4],
+            values[6 * gate + 5],
+        );
     }
+    builder.align_arithmetic(&values[6 * circuit.n..], circuit.encoded_permutation());
     builder.finish()
 }
 
-fn initial_program_operation_count(gate_pairs: usize, assignment_len: usize) -> usize {
-    // Copy constraints double as the assignment-prefix binding, followed by
-    // two compute-and-compare rows for each addition and multiplication gate.
-    assignment_len + 4 * gate_pairs
+fn initial_program_row_count(gate_pairs: usize, _assignment_len: usize) -> usize {
+    2 * gate_pairs
 }
 
 fn static_error(error: impl std::fmt::Display) -> Error {
@@ -817,6 +1038,63 @@ fn transition_error(error: impl std::fmt::Display) -> Error {
 mod tests {
     use super::*;
 
+    #[cfg(feature = "compact-merkle")]
+    #[test]
+    fn compact_resource_estimate_matches_materialized_oracles() {
+        for (pairs, public) in [(1, 1), (3, 3), (16, 16)] {
+            let circuit = Circuit::new(pairs, public, (0..6 * pairs + public).collect()).unwrap();
+            let assignment =
+                MerkleTree::new(vec![Bn254::ZERO; circuit.assignment_tree_len()]).unwrap();
+            let permutation = MerkleTree::new(
+                circuit
+                    .encoded_permutation()
+                    .into_iter()
+                    .map(Bn254::from_usize)
+                    .collect(),
+            )
+            .unwrap();
+            for indices in [vec![0, 1, 2], vec![6 * pairs], vec![0, 1, 2, 6 * pairs]] {
+                let updates = indices
+                    .iter()
+                    .map(|&index| (index, Bn254::ZERO, Bn254::ZERO))
+                    .collect::<Vec<_>>();
+                let table = crate::transition_relation::TransitionTable::build(
+                    &circuit,
+                    &permutation,
+                    &assignment,
+                    &assignment,
+                    &updates,
+                )
+                .unwrap();
+                let witness = table.packed_witness();
+                let estimate = transition_resource_estimate(&circuit, &indices).unwrap();
+                assert_eq!(estimate.row_count, witness.nodes[0].len());
+                assert_eq!(estimate.row_width, witness.nodes.len().next_power_of_two());
+                assert_eq!(estimate.auxiliary_rows, witness.updates[0].len());
+                assert_eq!(
+                    estimate.auxiliary_width,
+                    witness.updates.len().next_power_of_two()
+                );
+                assert_eq!(
+                    estimate.master_fields,
+                    estimate.row_count * estimate.row_width
+                );
+                assert_eq!(
+                    estimate.auxiliary_fields,
+                    estimate.auxiliary_rows * estimate.auxiliary_width
+                );
+                assert_eq!(
+                    estimate.product_fields,
+                    estimate.row_count * estimate.product_width
+                );
+                assert_eq!(
+                    estimate.total_committed_fields,
+                    estimate.master_fields + estimate.auxiliary_fields + estimate.product_fields
+                );
+            }
+        }
+    }
+
     #[test]
     fn initial_trace_estimate_matches_materialized_program() {
         for n in [1, 2, 5, 16] {
@@ -825,6 +1103,19 @@ mod tests {
             let program = initial_program(&circuit, &assignment);
             assert_eq!(initial_trace_len(&circuit), program.trace_len());
         }
+    }
+
+    #[test]
+    fn paper_style_gate_rows_do_not_compile_copy_constraints_into_rows() {
+        let public_inputs = 4;
+        let circuit = Circuit::new(16, public_inputs, (0..100).collect()).unwrap();
+        let assignment = vec![Bn254::ZERO; circuit.assignment_len()];
+        let dynamic = initial_program(&circuit, &assignment);
+        let base = regular_hyperplonk_program(&circuit, &assignment).unwrap();
+        assert_eq!(dynamic.operations.len(), 2 * circuit.n);
+        assert_eq!(base.operations.len(), 2 * circuit.n);
+        assert_eq!(dynamic.trace_len(), 32);
+        assert_eq!(base.trace_len(), 32);
     }
 
     #[test]
@@ -919,8 +1210,72 @@ mod tests {
             (1, Bn254::from_u64(2)),
             (2, Bn254::from_u64(4)),
         ];
+        crate::merkle::reset_dense_construction_count();
+        crate::circuit::reset_dense_work_counts();
         update_transition_benchmark(&pk, &mut state, &update).unwrap();
+        assert_eq!(crate::merkle::dense_construction_count(), 0);
+        assert_eq!(crate::circuit::dense_work_counts(), (0, 0));
         verify_transition_benchmark(&vk, &[Bn254::from_u64(9)], &state).unwrap();
         assert!(verify_transition_benchmark(&vk, &[Bn254::from_u64(10)], &state).is_err());
+    }
+
+    #[test]
+    fn production_update_performs_no_dense_merkle_assignment_or_public_input_work() {
+        let circuit = Circuit::new(1, 1, (0..7).collect()).unwrap();
+        let assignment = [1, 2, 3, 3, 4, 12, 9].map(Bn254::from_u64).to_vec();
+        let (pk, vk) = index(circuit).unwrap();
+        let mut state = initialize(&pk, assignment).unwrap();
+        let update_values = [
+            (0, Bn254::from_u64(2)),
+            (1, Bn254::from_u64(2)),
+            (2, Bn254::from_u64(4)),
+        ];
+
+        crate::merkle::reset_dense_construction_count();
+        crate::circuit::reset_dense_work_counts();
+        update(&pk, &mut state, &update_values).unwrap();
+        assert_eq!(crate::merkle::dense_construction_count(), 0);
+        assert_eq!(crate::circuit::dense_work_counts(), (0, 0));
+        verify(&vk, &[Bn254::from_u64(9)], state.proof()).unwrap();
+    }
+
+    #[test]
+    fn sparse_validation_rejects_gate_and_wiring_violations_without_dense_scan() {
+        let circuit = Circuit::new(1, 0, vec![0, 1, 3, 2, 4, 5]).unwrap();
+        let assignment = [1, 2, 3, 3, 4, 12].map(Bn254::from_u64).to_vec();
+        let (pk, _) = index(circuit).unwrap();
+
+        crate::circuit::reset_dense_work_counts();
+        let wiring_error = validate_update(
+            &pk,
+            &assignment,
+            &[
+                (0, Bn254::from_u64(2)),
+                (1, Bn254::from_u64(2)),
+                (2, Bn254::from_u64(4)),
+            ],
+        )
+        .unwrap_err();
+        assert!(matches!(
+            wiring_error,
+            Error::Circuit(CircuitError::WiringConstraint { position: 2 })
+        ));
+        assert_eq!(crate::circuit::dense_work_counts(), (0, 0));
+
+        let gate_error = validate_update(
+            &pk,
+            &assignment,
+            &[
+                (3, Bn254::from_u64(2)),
+                (4, Bn254::from_u64(2)),
+                (5, Bn254::from_u64(5)),
+            ],
+        )
+        .unwrap_err();
+        assert!(matches!(
+            gate_error,
+            Error::Circuit(CircuitError::GateConstraint { pair: 0 })
+        ));
+        assert_eq!(crate::circuit::dense_work_counts(), (0, 0));
     }
 }

@@ -2,6 +2,7 @@
 
 use p3_bn254::Bn254;
 use p3_field::PrimeCharacteristicRing;
+use p3_maybe_rayon::prelude::*;
 use thiserror::Error;
 
 use crate::sparse_dag::{RouteTuple, RoutingTable};
@@ -69,11 +70,11 @@ impl ProductFactors {
         assert_eq!(producers.len(), references.len());
         Self {
             producers: producers
-                .iter()
+                .par_iter()
                 .map(|fields| challenges.gamma + compress_fields(*fields, challenges.theta))
                 .collect(),
             references: references
-                .iter()
+                .par_iter()
                 .map(|fields| challenges.gamma + compress_fields(*fields, challenges.theta))
                 .collect(),
         }
@@ -81,8 +82,8 @@ impl ProductFactors {
 
     pub(crate) fn claims(&self) -> ProductClaims {
         ProductClaims {
-            producer: self.producers.iter().copied().product(),
-            reference: self.references.iter().copied().product(),
+            producer: self.producers.par_iter().copied().product(),
+            reference: self.references.par_iter().copied().product(),
         }
     }
 

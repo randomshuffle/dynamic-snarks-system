@@ -1,0 +1,25 @@
+{
+  "complete": false,
+  "expected_samples": 3,
+  "ignored_incomplete_tail": false,
+  "missing_samples": [
+    [
+      "baseline",
+      1,
+      1
+    ],
+    [
+      "initial",
+      0,
+      0
+    ],
+    [
+      "update",
+      1,
+      1
+    ]
+  ],
+  "proof_checkpoints": 0,
+  "proof_size_samples": 0,
+  "verified_samples": 0
+}

@@ -1,0 +1,27 @@
+{
+  "command": [
+    "scripts/run_experiment.py",
+    "--trace-log",
+    "20",
+    "--threads",
+    "8",
+    "--initial-interleaving",
+    "16",
+    "--update-logs",
+    "0,1,2,3,4,5,6,7,8,9,10",
+    "--sequence-len",
+    "12",
+    "--seed",
+    "20260909",
+    "--baseline-mode",
+    "shared",
+    "--preflight-only",
+    "--offline",
+    "--output",
+    "benchmark-results/endpoint-preflight-n20-i16-20260910"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-09-10T19:55:26.348886+00:00",
+  "started_utc": "2026-09-10T19:55:16.458686+00:00",
+  "state": "preflight_complete"
+}

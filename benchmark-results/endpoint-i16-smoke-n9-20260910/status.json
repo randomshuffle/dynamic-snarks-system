@@ -1,0 +1,25 @@
+{
+  "command": [
+    "scripts/run_experiment.py",
+    "--trace-log",
+    "9",
+    "--threads",
+    "8",
+    "--initial-interleaving",
+    "16",
+    "--update-logs",
+    "0,1",
+    "--sequence-len",
+    "12",
+    "--baseline-mode",
+    "shared",
+    "--offline",
+    "--output",
+    "benchmark-results/endpoint-i16-smoke-n9-20260910"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-09-10T19:56:39.024712+00:00",
+  "started_utc": "2026-09-10T19:56:33.687371+00:00",
+  "state": "complete",
+  "verified_samples": 37
+}

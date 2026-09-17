@@ -1,5 +1,6 @@
 //! End-to-end dynamic-update versus prove-from-scratch benchmark.
 
+use std::collections::BTreeSet;
 use std::error::Error;
 use std::hint::black_box;
 use std::mem::size_of;
@@ -13,16 +14,28 @@ use dynamic_snarks_system::dynamic::{
     update_transition_benchmark, verify as verify_dynamic, verify_transition_benchmark,
 };
 use dynamic_snarks_system::static_snark::{
-    PREPROCESSING_WIDTH, prove as prove_hyperplonk, setup as setup_hyperplonk,
-    verify as verify_hyperplonk,
+    prove as prove_hyperplonk, setup as setup_hyperplonk, verify as verify_hyperplonk,
 };
 use p3_field::PrimeCharacteristicRing;
+
+#[path = "support/update_workload.rs"]
+mod update_workload;
+use update_workload::Pattern;
 
 const DEFAULT_TRACE_LOG: usize = 14;
 const DEFAULT_UPDATE_LOGS: &[usize] = &[4];
 const DEFAULT_SEQUENCE_LEN: usize = 10;
 const PUBLIC_INPUTS: usize = 1 << 8;
 const PUBLIC_VALUE: u64 = 9;
+const DEFAULT_SEED: u64 = 20_260_909;
+
+struct Case {
+    changed_gates: usize,
+    revisions: Vec<Vec<(usize, Field)>>,
+    first_transition_hashes: usize,
+    time_full_initial: bool,
+    include_baseline: bool,
+}
 
 fn main() -> Result<(), Box<dyn Error>> {
     let trace_log = env_usize("DYNAMIC_SNARK_TRACE_LOG", DEFAULT_TRACE_LOG)?;
@@ -33,7 +46,13 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     let force = env_bool("DYNAMIC_SNARK_FORCE");
     let preflight_only = env_bool("DYNAMIC_SNARK_PREFLIGHT_ONLY");
-    let time_full_initial = env_bool("DYNAMIC_SNARK_TIME_FULL_INITIAL");
+    let include_baseline = !env_bool("DYNAMIC_SNARK_UPDATE_ONLY");
+    let time_full_initial = include_baseline && env_bool("DYNAMIC_SNARK_TIME_FULL_INITIAL");
+    let pattern = Pattern::parse(
+        &std::env::var("DYNAMIC_SNARK_UPDATE_PATTERN").unwrap_or_else(|_| "random".to_owned()),
+    )?;
+    let seed = std::env::var("DYNAMIC_SNARK_SEED")
+        .map_or(Ok(DEFAULT_SEED), |value| value.parse::<u64>())?;
     let source_trace_len = 1usize
         .checked_shl(trace_log as u32)
         .ok_or("DYNAMIC_SNARK_TRACE_LOG does not fit usize")?;
@@ -49,6 +68,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("  original HyperPlonk trace: 2^{trace_log} = {source_trace_len} gate rows");
     println!("  source arithmetic gates: {gate_count}");
     println!("  assignment positions: {}", circuit.assignment_len());
+    println!(
+        "  assignment Merkle leaves: {} (aligned four-column layout)",
+        4 * initial_relation_trace
+    );
+    println!("  WHIR: fixed rate 1/2, folding factor 4, 127-bit target, zero PoW");
     println!("  public inputs: {}", circuit.num_public_inputs);
     println!("  composed initial-relation trace: {initial_relation_trace} rows");
     println!("  sequential updates per average: {sequence_len}");
@@ -60,14 +84,17 @@ fn main() -> Result<(), Box<dyn Error>> {
             "  initial relation proof: excluded and not materialized (trusted base commitment harness)"
         );
     }
-    println!("  update pattern: the same gate set is changed on every revision");
+    println!("  wiring: identity");
+    println!("  update pattern: {}", pattern.label());
+    println!("  workload seed: {seed} (StdRng; use the checked-in Cargo.lock)");
+    println!("  baseline proving enabled: {include_baseline}");
     if let Some(bytes) = physical_memory {
         println!("  physical memory: {}", gib(bytes));
     }
     println!();
 
     println!(
-        "update_gates,update_positions,transition_poseidon_hashes,first_dynamic_ms,\
+        "update_gates,update_positions,first_transition_poseidon_hashes,first_dynamic_ms,\
          first_scratch_ms,first_speedup,sequence_dynamic_total_ms,\
          sequence_dynamic_avg_ms,sequence_scratch_total_ms,sequence_scratch_avg_ms,\
          sequence_speedup"
@@ -83,19 +110,42 @@ fn main() -> Result<(), Box<dyn Error>> {
             );
             continue;
         }
-        let update_indices = gate_updates(changed_gates, 1)
+        let revisions =
+            update_workload::revisions(gate_count, changed_gates, sequence_len, seed, pattern);
+        println!(
+            "workload_fingerprint,{changed_gates},{}",
+            update_workload::fingerprint(&revisions)
+        );
+        let update_indices = revisions[0]
+            .iter()
+            .map(|&(index, _)| index)
+            .collect::<Vec<_>>();
+        let all_indices = revisions
+            .iter()
+            .flatten()
+            .map(|&(index, _)| index)
+            .collect::<BTreeSet<_>>()
             .into_iter()
-            .map(|(index, _)| index)
             .collect::<Vec<_>>();
         let transition_resources =
             dynamic::transition_resource_estimate(&circuit, &update_indices)?;
+        // Every historical transition support is contained in one of the
+        // final composed tables. Bound those separately: the entire sequence
+        // union can cross a padding threshold that no actual proof reaches.
+        let mut sequence_resources = transition_resources;
+        let mut max_composed_positions = update_indices.len();
+        for support in update_workload::maximal_composed_supports(&revisions) {
+            let estimate = dynamic::transition_resource_estimate(&circuit, &support)?;
+            max_composed_positions = max_composed_positions.max(support.len());
+            if estimate.conservative_peak_bytes > sequence_resources.conservative_peak_bytes {
+                sequence_resources = estimate;
+            }
+        }
         let transition_hashes = transition_resources.poseidon_hashes;
-        let initialization_peak = initialization_memory_peak(
-            initial_relation_trace,
-            circuit.assignment_len().next_power_of_two(),
-        );
+        let initialization_peak =
+            initialization_memory_peak(initial_relation_trace, 4 * initial_relation_trace);
         let transition_floor = dense_initial_key_floor(initial_relation_trace)
-            + transition_resources.conservative_peak_bytes;
+            + sequence_resources.conservative_peak_bytes;
         let initial_note = if time_full_initial {
             "materialized in this run"
         } else {
@@ -109,6 +159,14 @@ fn main() -> Result<(), Box<dyn Error>> {
             mib(transition_resources.master_fields as u128 * size_of::<Field>() as u128),
             gib(transition_floor),
             gib(initialization_peak),
+        );
+        eprintln!(
+            "sequence preflight: unique positions={}, max composed positions={max_composed_positions}, max composed rows={}, row width={}, master={}, transition+key peak <= {}",
+            all_indices.len(),
+            sequence_resources.row_count,
+            sequence_resources.row_width,
+            mib(sequence_resources.master_fields as u128 * size_of::<Field>() as u128),
+            gib(transition_floor),
         );
         let unsafe_memory = physical_memory.is_some_and(|memory| {
             transition_floor > memory.saturating_mul(7) / 10
@@ -126,36 +184,48 @@ fn main() -> Result<(), Box<dyn Error>> {
         run_case(
             circuit.clone(),
             initial_relation_trace,
-            changed_gates,
-            sequence_len,
-            transition_hashes,
-            time_full_initial,
+            Case {
+                changed_gates,
+                revisions,
+                first_transition_hashes: transition_hashes,
+                time_full_initial,
+                include_baseline,
+            },
         )?;
     }
     Ok(())
 }
 
-fn run_case(
-    circuit: Circuit,
-    trace_len: usize,
-    changed_gates: usize,
-    sequence_len: usize,
-    transition_hashes: usize,
-    time_full_initial: bool,
-) -> Result<(), Box<dyn Error>> {
+fn run_case(circuit: Circuit, trace_len: usize, case: Case) -> Result<(), Box<dyn Error>> {
+    let Case {
+        changed_gates,
+        revisions,
+        first_transition_hashes: transition_hashes,
+        time_full_initial,
+        include_baseline,
+    } = case;
+    let sequence_len = revisions.len();
     let changed_positions = 3 * changed_gates;
     let assignment = assignment(&circuit, 0);
-    let revisions = (1..=sequence_len)
-        .map(|revision| gate_updates(changed_gates, revision))
-        .collect::<Vec<_>>();
     let public_inputs = vec![Field::from_u64(PUBLIC_VALUE); circuit.num_public_inputs];
 
     let setup_started = Instant::now();
-    let baseline_template = regular_hyperplonk_program(&circuit, &assignment)?;
-    let (baseline_pk, baseline_vk) = setup_hyperplonk(&baseline_template)?;
+    let baseline = if include_baseline {
+        let template = regular_hyperplonk_program(&circuit, &assignment)?;
+        let (pk, vk) = setup_hyperplonk(&template)?;
+        assert_eq!(pk.preprocessed_width(), 4);
+        assert_eq!(pk.trace_len(), trace_len);
+        Some((pk, vk))
+    } else {
+        None
+    };
     let (pk, vk) = index(circuit.clone())?;
     assert_eq!(pk.initial_trace_len(), trace_len);
-    assert_eq!(baseline_template.trace_len(), trace_len);
+    assert_eq!(pk.initial_preprocessed_width(), 4);
+    eprintln!(
+        "preprocessing: dynamic initial {} columns; trace rows={trace_len}",
+        pk.initial_preprocessed_width()
+    );
     let setup_elapsed = setup_started.elapsed();
     eprintln!(
         "indexed source circuit for the {}-updated-gate case in {} (excluded; transitions need no preprocessing)",
@@ -197,22 +267,28 @@ fn run_case(
     );
     black_box(&first_dynamic_state);
 
-    let first_assignment = apply_updates(assignment.clone(), &revisions[0]);
-    eprintln!("starting first regular HyperPlonk from-scratch proof");
-    let started = Instant::now();
-    let first_scratch_program = regular_hyperplonk_program(&circuit, &first_assignment)?;
-    let first_scratch_proof =
-        prove_hyperplonk(&baseline_pk, &first_scratch_program, &public_inputs)?;
-    let first_scratch = started.elapsed();
-    verify_hyperplonk(&baseline_vk, &public_inputs, &first_scratch_proof)?;
-    eprintln!(
-        "first regular HyperPlonk proof complete in {} (verification excluded)",
-        human_duration(first_scratch)
-    );
-    black_box(&first_scratch_proof);
+    let first_scratch = if let Some((baseline_pk, baseline_vk)) = &baseline {
+        let first_assignment = apply_updates(assignment.clone(), &revisions[0]);
+        eprintln!("starting first regular HyperPlonk from-scratch proof");
+        let started = Instant::now();
+        let program = regular_hyperplonk_program(&circuit, &first_assignment)?;
+        let proof = prove_hyperplonk(baseline_pk, &program, &public_inputs)?;
+        let elapsed = started.elapsed();
+        verify_hyperplonk(baseline_vk, &public_inputs, &proof)?;
+        eprintln!(
+            "first regular HyperPlonk proof complete in {} (verification excluded)",
+            human_duration(elapsed)
+        );
+        black_box(proof);
+        Some(elapsed)
+    } else {
+        None
+    };
+    drop(first_dynamic_state);
 
     let mut sequential_dynamic_state = initial_state;
     let mut dynamic_total = Duration::ZERO;
+    let mut seen_positions = BTreeSet::new();
     for (revision_index, revision) in revisions.iter().enumerate() {
         eprintln!(
             "starting sequential dynamic update {}/{}",
@@ -221,48 +297,63 @@ fn run_case(
         );
         let started = Instant::now();
         sequential_dynamic_state.apply_update(&pk, revision)?;
-        dynamic_total += started.elapsed();
-        eprintln!(
-            "sequential dynamic update {}/{} complete",
+        let elapsed = started.elapsed();
+        dynamic_total += elapsed;
+        sequential_dynamic_state.verify(&vk, &public_inputs)?;
+        seen_positions.extend(revision.iter().map(|&(index, _)| index));
+        println!(
+            "update_sample,{},{:.3},{}",
             revision_index + 1,
-            sequence_len
+            milliseconds(elapsed),
+            seen_positions.len()
+        );
+        eprintln!(
+            "sequential dynamic update {}/{} complete and verified in {} (verification excluded)",
+            revision_index + 1,
+            sequence_len,
+            human_duration(elapsed),
         );
     }
-    sequential_dynamic_state.verify(&vk, &public_inputs)?;
     black_box(&sequential_dynamic_state);
 
-    let mut scratch_assignment = assignment;
-    let mut scratch_total = Duration::ZERO;
-    for (revision_index, revision) in revisions.iter().enumerate() {
-        scratch_assignment = apply_updates(scratch_assignment, revision);
-        eprintln!(
-            "starting sequential regular HyperPlonk proof {}/{}",
-            revision_index + 1,
-            sequence_len
-        );
-        let started = Instant::now();
-        let scratch_program = regular_hyperplonk_program(&circuit, &scratch_assignment)?;
-        let scratch_proof = prove_hyperplonk(&baseline_pk, &scratch_program, &public_inputs)?;
-        scratch_total += started.elapsed();
-        eprintln!(
-            "sequential regular HyperPlonk proof {}/{} complete",
-            revision_index + 1,
-            sequence_len
-        );
-        black_box(scratch_proof);
-    }
+    let scratch_total = if let Some((baseline_pk, baseline_vk)) = &baseline {
+        let mut scratch_assignment = assignment;
+        let mut total = Duration::ZERO;
+        for (revision_index, revision) in revisions.iter().enumerate() {
+            scratch_assignment = apply_updates(scratch_assignment, revision);
+            eprintln!(
+                "starting sequential regular HyperPlonk proof {}/{}",
+                revision_index + 1,
+                sequence_len
+            );
+            let started = Instant::now();
+            let program = regular_hyperplonk_program(&circuit, &scratch_assignment)?;
+            let proof = prove_hyperplonk(baseline_pk, &program, &public_inputs)?;
+            total += started.elapsed();
+            verify_hyperplonk(baseline_vk, &public_inputs, &proof)?;
+            eprintln!(
+                "sequential regular HyperPlonk proof {}/{} complete",
+                revision_index + 1,
+                sequence_len
+            );
+            black_box(proof);
+        }
+        Some(total)
+    } else {
+        None
+    };
 
     let count = sequence_len as f64;
     println!(
-        "{changed_gates},{changed_positions},{transition_hashes},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3}",
+        "{changed_gates},{changed_positions},{transition_hashes},{:.3},{},{},{:.3},{:.3},{},{},{}",
         milliseconds(first_dynamic),
-        milliseconds(first_scratch),
-        ratio(first_scratch, first_dynamic),
+        optional_number(first_scratch.map(milliseconds)),
+        optional_number(first_scratch.map(|elapsed| ratio(elapsed, first_dynamic))),
         milliseconds(dynamic_total),
         milliseconds(dynamic_total) / count,
-        milliseconds(scratch_total),
-        milliseconds(scratch_total) / count,
-        ratio(scratch_total, dynamic_total),
+        optional_number(scratch_total.map(milliseconds)),
+        optional_number(scratch_total.map(|elapsed| milliseconds(elapsed) / count)),
+        optional_number(scratch_total.map(|elapsed| ratio(elapsed, dynamic_total))),
     );
     Ok(())
 }
@@ -324,24 +415,6 @@ fn assignment(circuit: &Circuit, revision: usize) -> Vec<Field> {
     values
 }
 
-fn gate_updates(changed_gates: usize, revision: usize) -> Vec<(usize, Field)> {
-    let mut updates = Vec::with_capacity(3 * changed_gates);
-    for gate in 0..changed_gates {
-        let pair = gate / 2;
-        let is_multiplication = gate % 2 == 1;
-        let start = 6 * pair + usize::from(is_multiplication) * 3;
-        let left = Field::from_usize(pair + revision + 1 + usize::from(is_multiplication));
-        let right = Field::from_u64(2);
-        let output = if is_multiplication {
-            left * right
-        } else {
-            left + right
-        };
-        updates.extend([(start, left), (start + 1, right), (start + 2, output)]);
-    }
-    updates
-}
-
 fn apply_updates(mut assignment: Vec<Field>, updates: &[(usize, Field)]) -> Vec<Field> {
     for &(position, value) in updates {
         assignment[position] = value;
@@ -350,16 +423,19 @@ fn apply_updates(mut assignment: Vec<Field>, updates: &[(usize, Field)]) -> Vec<
 }
 
 fn dense_initial_key_floor(initial_trace: usize) -> u128 {
-    initial_trace as u128 * (2 * PREPROCESSING_WIDTH) as u128 * size_of::<Field>() as u128
+    // The initial key retains only its four permutation columns. Allow a
+    // second copy for packing; selectors and identity labels are derived.
+    initial_trace as u128 * (2 * 4) as u128 * size_of::<Field>() as u128
 }
 
 fn initialization_memory_peak(initial_trace: usize, padded_assignment: usize) -> u128 {
     let rows = initial_trace.max(2 * padded_assignment);
-    let table_width = 195usize.next_power_of_two();
-    // Retained round states plus a conservative two-table envelope for the
-    // packed CAIR table and WHIR's committed data. The old transform bridge no
-    // longer contributes trace-width or per-stage folded operands.
-    let cair_fields = rows as u128 * (2 * table_width + 195) as u128;
+    let table_width = 64usize;
+    // Four table-sized buffers cover the packed table and WHIR work. The
+    // transient scalar trace retains 64 committed columns, 30 full-cap layer
+    // columns, and the derived third input; the partial sumcheck owns one
+    // additional 64-column fold table.
+    let cair_fields = rows as u128 * (4 * table_width + 95 + table_width) as u128;
     // Static multilinear/WHIR tables remain live while its callback constructs
     // CAIR. Keep the existing conservative allowance until it is profiled.
     let static_envelope_fields = initial_trace as u128 * 200;
@@ -419,6 +495,10 @@ fn env_bool(name: &str) -> bool {
 
 fn milliseconds(duration: Duration) -> f64 {
     duration.as_secs_f64() * 1_000.0
+}
+
+fn optional_number(value: Option<f64>) -> String {
+    value.map(|value| format!("{value:.3}")).unwrap_or_default()
 }
 
 fn ratio(numerator: Duration, denominator: Duration) -> f64 {

@@ -1,0 +1,25 @@
+{
+  "command": [
+    "scripts/run_experiment.py",
+    "--trace-log",
+    "15",
+    "--update-logs",
+    "0,1,2,3,4,5,6,7",
+    "--sequence-len",
+    "12",
+    "--seed",
+    "20260909",
+    "--threads",
+    "8",
+    "--baseline-mode",
+    "paired",
+    "--offline",
+    "--output",
+    "benchmark-results/ec2-rehearsal-n15-optimized-20260909"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-09-09T19:42:11.556684+00:00",
+  "started_utc": "2026-09-09T19:39:39.982808+00:00",
+  "state": "complete",
+  "verified_samples": 193
+}

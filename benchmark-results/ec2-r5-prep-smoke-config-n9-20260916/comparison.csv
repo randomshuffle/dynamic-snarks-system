@@ -1,0 +1,2 @@
+update_gates,revisions,baseline_mean_seconds,update_mean_seconds,baseline_over_update,first_update_seconds,baseline_max_seconds,update_max_seconds,initial_prove_seconds,initial_verify_seconds,baseline_mean_verify_seconds,baseline_max_verify_seconds,update_mean_verify_seconds,update_max_verify_seconds
+1,40,0.010394995875,0.0746407573,0.13926702047274112,0.045330541,0.012509917,0.350037416,0.278228458,0.024594000,0.00257334685,0.003288,0.052273175025,0.077590959

@@ -1,0 +1,33 @@
+initial A/B: digest-gkr, full proof begin
+profile checkpoint: initial: native assignment validation complete in 0.000s
+profile checkpoint: initial: assignment Merkle tree complete in 1.181s
+profile checkpoint: initial: relation arithmetization complete in 0.006s
+profile checkpoint: static: preprocessed commitment complete in 0.030s
+profile checkpoint: static: main trace construction complete in 0.002s
+profile checkpoint: static: main commitment complete in 0.028s
+profile checkpoint: initial endpoint: digest heap and derived input tables complete in 0.788s
+profile checkpoint: initial endpoint: digest commitment complete in 0.071s
+profile checkpoint: initial endpoint: all-round hash reduction complete in 17.869s
+initial endpoint checkpoint: WHIR OOD polynomial evaluation 1/1 complete (0.007s opening elapsed)
+initial endpoint checkpoint: 5 opening polynomial evaluations complete (0.017s opening elapsed)
+profile checkpoint: WHIR initial claim weights (variables=19, claims=6) complete in 0.017703s
+profile checkpoint: WHIR initial folding sumcheck (variables=19) complete in 0.015367s
+initial endpoint checkpoint: WHIR opening proof complete (0.091s opening elapsed: 0.015s evaluations, 0.073s proof)
+profile checkpoint: initial endpoint: digest opening complete in 0.091s
+profile checkpoint: static: composed CAIR callback complete in 18.820s
+profile checkpoint: static: HyperPlonk product oracle complete in 0.013s
+profile checkpoint: static: product commitment complete in 0.016s
+profile checkpoint: static: local sumcheck complete in 0.213s
+profile checkpoint: static: product sumcheck complete in 0.289s
+profile checkpoint: WHIR initial claim weights (variables=18, claims=5) complete in 0.007519s
+profile checkpoint: WHIR initial claim weights (variables=17, claims=6) complete in 0.011248s
+profile checkpoint: WHIR initial claim weights (variables=18, claims=10) complete in 0.015030s
+profile checkpoint: WHIR initial folding sumcheck (variables=18) complete in 0.027496s
+profile checkpoint: WHIR initial folding sumcheck (variables=17) complete in 0.019481s
+profile checkpoint: WHIR initial folding sumcheck (variables=18) complete in 0.011236s
+profile checkpoint: static: preprocessed WHIR opening complete in 0.089s
+profile checkpoint: static: product WHIR opening complete in 0.091s
+profile checkpoint: static: main WHIR opening complete in 0.093s
+profile checkpoint: initial: composed static+CAIR proof complete in 19.507s
+profile checkpoint: initial: public-input Merkle opening complete in 0.000s
+initial A/B: digest-gkr, full proof complete

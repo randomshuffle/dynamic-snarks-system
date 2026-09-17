@@ -1,29 +1,33 @@
 //! Commit-all-intermediate-rounds proof for the initial Merkle computation.
 //!
-//! CAIR commits every width-three Poseidon2 round state. A single degree-six
-//! sumcheck checks all 64 nonlinear transitions, and a degree-three sumcheck
-//! checks the heap routing, leaf inputs, domains, and indices. The assignment
-//! is linked directly to the static SNARK's Boolean-hypercube main-column MLE,
-//! so no inverse-Mobius/FFT bridge is needed.
+//! CAIR commits a 64-column scalar Poseidon2 trace.  One degree-six sumcheck
+//! checks the exact recurrence for all 56 partial rounds, four batched
+//! GKR-style sumchecks reduce the two four-full-round caps, and a degree-three
+//! sumcheck checks heap routing, leaf inputs, domains, and indices. The
+//! assignment is linked directly to the static SNARK's Boolean-hypercube
+//! main-column MLE, so no inverse-Mobius/FFT bridge is needed.
 
 use p3_bn254::Bn254;
 use p3_field::{Field, PrimeCharacteristicRing, batch_multiplicative_inverse_general};
+use p3_maybe_rayon::prelude::*;
 use serde::{Deserialize, Serialize};
 use std::time::Instant;
 use thiserror::Error;
 
-use crate::hash::poseidon2_constants;
+use crate::poseidon_scalar::{
+    self, DIGEST_COLUMN, FullRoundClaims, FullRoundProof, INPUT_0_COLUMN, INPUT_1_COLUMN,
+    PARTIAL_CONSTRAINTS, SCALAR_COLUMNS, SUMCHECK_DEGREE, Trace, TraceBuilder,
+};
 use crate::poseidon_sumcheck;
 use crate::static_snark::{MleOpeningProof, commit_mle, commitment_seed, verify_mle_opening};
 use crate::transcript::RawTranscript;
 
-const STATE_WIDTH: usize = 3;
-const POSEIDON_TRANSITIONS: usize = 64;
-const POSEIDON_STATES: usize = POSEIDON_TRANSITIONS + 1;
-const POSEIDON_COLUMNS: usize = POSEIDON_STATES * STATE_WIDTH;
-const POSEIDON_DEGREE: usize = 6;
+#[cfg(feature = "poseidon-gkr")]
+pub(crate) mod round_reduction;
+
 const COMPOSED_DEGREE: usize = 3;
 const TRANSCRIPT_DOMAIN: u64 = 0x4341_4952_4d4c_4532;
+const COLUMN_BATCH_DOMAIN: u64 = 0x4341_4952_434f_4c42;
 const ROUTING_ROUND_TAG: u64 = 0x4341_4952_5254_4e44;
 const POSEIDON_ROUND_TAG: u64 = 0x4341_4952_5053_4e44;
 
@@ -34,6 +38,8 @@ pub(crate) struct Proof {
     table_width: usize,
     routing: SumcheckProof,
     poseidon: SumcheckProof,
+    full_rounds: FullRoundProof,
+    poseidon_values: Vec<Bn254>,
     table_opening: MleOpeningProof,
 }
 
@@ -46,23 +52,6 @@ pub(crate) struct StaticLink {
 #[derive(Clone, Serialize, Deserialize)]
 struct SumcheckProof {
     rounds: Vec<Vec<Bn254>>,
-}
-
-struct PoseidonParameters {
-    initial: Vec<[Bn254; 3]>,
-    internal: Vec<Bn254>,
-    terminal: Vec<[Bn254; 3]>,
-}
-
-impl PoseidonParameters {
-    fn new() -> Self {
-        let (external, internal) = poseidon2_constants();
-        Self {
-            initial: external.get_initial_constants().clone(),
-            internal,
-            terminal: external.get_terminal_constants().clone(),
-        }
-    }
 }
 
 #[derive(Debug, Error)]
@@ -110,17 +99,24 @@ pub(crate) fn prove(
     let padded_len = assignment.len().next_power_of_two();
     let heap_rows = padded_len << 1;
     let table_rows = trace_len.max(heap_rows);
-    let (hash_columns, computed_root) = poseidon_trace(assignment, table_rows);
+    let phase = Instant::now();
+    let (scalar_trace, computed_root) = poseidon_trace(assignment, table_rows)?;
+    profile_checkpoint("initial CAIR: Poseidon/Merkle trace construction", phase);
     if computed_root != root {
         return Err(Error::RootMismatch);
     }
-    let table_width = POSEIDON_COLUMNS.next_power_of_two();
-    let mut table = vec![Bn254::ZERO; table_rows * table_width];
-    for (column, values) in hash_columns.iter().enumerate() {
-        for (row, &value) in values.iter().enumerate() {
-            table[row * table_width + column] = value;
-        }
-    }
+    let table_width = SCALAR_COLUMNS;
+    let phase = Instant::now();
+    let table = crate::parallel::pack_columns(
+        table_rows,
+        table_width,
+        &scalar_trace
+            .columns
+            .iter()
+            .map(Vec::as_slice)
+            .collect::<Vec<_>>(),
+    );
+    profile_checkpoint("initial CAIR: packed commitment table", phase);
     let commitment_started = Instant::now();
     let committed = commit_mle(table).map_err(|error| Error::Whir(error.to_string()))?;
     eprintln!(
@@ -140,13 +136,15 @@ pub(crate) fn prove(
 
     let routing_weights = challenges(&transcript, 0x2000, 6);
     let routing_target = challenges(&transcript, 0x2100, table_rows.trailing_zeros() as usize);
+    let phase = Instant::now();
     let routing_work = routing_work(
-        &hash_columns,
+        &scalar_trace,
         &committed_main_column,
         assignment.len(),
         padded_len,
         table_rows,
     );
+    profile_checkpoint("initial CAIR: routing work table", phase);
     let (routing, routing_point) = prove_routing_sumcheck(
         routing_work,
         &routing_weights,
@@ -155,25 +153,21 @@ pub(crate) fn prove(
         &mut transcript,
     )?;
 
-    let poseidon_weights = challenges(&transcript, 0x3000, POSEIDON_TRANSITIONS * STATE_WIDTH);
+    let poseidon_weights = challenges(&transcript, 0x3000, PARTIAL_CONSTRAINTS);
     let poseidon_target = challenges(&transcript, 0x3100, table_rows.trailing_zeros() as usize);
-    let (poseidon, poseidon_point) = prove_poseidon_sumcheck(
-        hash_columns,
+    let (poseidon, poseidon_point, poseidon_values) = prove_poseidon_sumcheck(
+        crate::parallel::clone_columns(&scalar_trace.columns),
         &poseidon_weights,
         &poseidon_target,
         &mut transcript,
     )?;
+    let (full_rounds, full_round_claims) = scalar_trace
+        .prove_full_rounds(&mut transcript, "CAIR checkpoint")
+        .map_err(|_| Error::Sumcheck)?;
 
     let mut link_point = routing_point[..padded_len.trailing_zeros() as usize].to_vec();
     link_point.resize(trace_len.trailing_zeros() as usize, Bn254::ZERO);
-    let opening_points = opening_points(
-        table_rows,
-        table_width,
-        padded_len,
-        &poseidon_point,
-        &routing_point,
-    );
-    let opening_seed = raw_opening_seed(
+    let base_opening_seed = raw_opening_seed(
         assignment.len(),
         trace_len,
         root,
@@ -183,6 +177,18 @@ pub(crate) fn prove(
         table_width,
         &routing,
         &poseidon,
+        &full_rounds,
+    );
+    let opening_seed = column_batch_seed(&base_opening_seed, &poseidon_values);
+    let column_point = column_batch_point(&opening_seed, table_width.trailing_zeros() as usize);
+    let opening_points = opening_points(
+        table_rows,
+        table_width,
+        padded_len,
+        &column_point,
+        &poseidon_point,
+        &routing_point,
+        &full_round_claims,
     );
     let point_refs = opening_points.iter().map(Vec::as_slice).collect::<Vec<_>>();
     let table_opening =
@@ -194,6 +200,8 @@ pub(crate) fn prove(
             table_width,
             routing,
             poseidon,
+            full_rounds,
+            poseidon_values,
             table_opening,
         },
         StaticLink {
@@ -201,6 +209,15 @@ pub(crate) fn prove(
             transcript_binding: opening_seed,
         },
     ))
+}
+
+fn profile_checkpoint(label: &str, started: Instant) {
+    if std::env::var_os("DYNAMIC_SNARK_PROFILE").is_some() {
+        eprintln!(
+            "profile checkpoint: {label} complete in {:.3}s",
+            started.elapsed().as_secs_f64()
+        );
+    }
 }
 
 /// Verify CAIR and its equality to one static main-column MLE evaluation.
@@ -218,7 +235,7 @@ pub(crate) fn verify(
     let padded_len = assignment_len.next_power_of_two();
     let heap_rows = padded_len << 1;
     let table_rows = trace_len.max(heap_rows);
-    let table_width = POSEIDON_COLUMNS.next_power_of_two();
+    let table_width = SCALAR_COLUMNS;
     if proof.table_rows != table_rows || proof.table_width != table_width {
         return Err(Error::TableShape);
     }
@@ -245,28 +262,30 @@ pub(crate) fn verify(
         &mut transcript,
     )?;
 
-    let poseidon_weights = challenges(&transcript, 0x3000, POSEIDON_TRANSITIONS * STATE_WIDTH);
+    let poseidon_weights = challenges(&transcript, 0x3000, PARTIAL_CONSTRAINTS);
     let poseidon_target = challenges(&transcript, 0x3100, table_rows.trailing_zeros() as usize);
     let (poseidon_claim, poseidon_point) = verify_sumcheck(
         &proof.poseidon,
-        POSEIDON_DEGREE,
+        SUMCHECK_DEGREE,
         poseidon_sumcheck::interpolate,
         table_rows.trailing_zeros() as usize,
         POSEIDON_ROUND_TAG,
         0x3200,
         &mut transcript,
     )?;
+    let full_round_claims = poseidon_scalar::verify_full_rounds(
+        &proof.full_rounds,
+        table_rows.trailing_zeros() as usize,
+        &mut transcript,
+    )
+    .map_err(|_| Error::Sumcheck)?;
     let mut link_point = routing_point[..padded_len.trailing_zeros() as usize].to_vec();
     link_point.resize(trace_len.trailing_zeros() as usize, Bn254::ZERO);
 
-    let points = opening_points(
-        table_rows,
-        table_width,
-        padded_len,
-        &poseidon_point,
-        &routing_point,
-    );
-    let opening_seed = raw_opening_seed(
+    if proof.poseidon_values.len() != SCALAR_COLUMNS {
+        return Err(Error::TableShape);
+    }
+    let base_opening_seed = raw_opening_seed(
         assignment_len,
         trace_len,
         root,
@@ -276,6 +295,18 @@ pub(crate) fn verify(
         table_width,
         &proof.routing,
         &proof.poseidon,
+        &proof.full_rounds,
+    );
+    let opening_seed = column_batch_seed(&base_opening_seed, &proof.poseidon_values);
+    let column_point = column_batch_point(&opening_seed, table_width.trailing_zeros() as usize);
+    let points = opening_points(
+        table_rows,
+        table_width,
+        padded_len,
+        &column_point,
+        &poseidon_point,
+        &routing_point,
+        &full_round_claims,
     );
     let point_refs = points.iter().map(Vec::as_slice).collect::<Vec<_>>();
     verify_mle_opening(
@@ -286,25 +317,27 @@ pub(crate) fn verify(
     )
     .map_err(|error| Error::Whir(error.to_string()))?;
     let values = &proof.table_opening.opening.evaluations;
-    let expected_values = POSEIDON_COLUMNS + 6;
+    let expected_values = 15;
     if values.len() != expected_values {
         return Err(Error::TableShape);
     }
-    let mut cursor = 0;
-    let poseidon_values = &values[cursor..cursor + POSEIDON_COLUMNS];
-    cursor += POSEIDON_COLUMNS;
+    let column_weights = eq_evaluations(&column_point);
+    let column_batch = proof
+        .poseidon_values
+        .iter()
+        .zip(&column_weights)
+        .fold(Bn254::ZERO, |sum, (&value, &weight)| sum + value * weight);
+    if values[0] != column_batch {
+        return Err(Error::Terminal);
+    }
     let poseidon_terminal = eq_eval(&poseidon_target, &poseidon_point)
-        * combined_poseidon_residual(
-            poseidon_values,
-            &poseidon_weights,
-            &PoseidonParameters::new(),
-        );
+        * combined_poseidon_residual(&proof.poseidon_values, &poseidon_weights);
     if poseidon_terminal != poseidon_claim {
         return Err(Error::Terminal);
     }
 
-    let route_values = &values[cursor..cursor + 6];
-    if route_values[5] != root {
+    let route_values = &values[1..6];
+    if route_values[4] != root {
         return Err(Error::RootMismatch);
     }
     if static_evaluations.len() != 1 {
@@ -322,6 +355,13 @@ pub(crate) fn verify(
     if eq_eval(&routing_target, &routing_point) * routing_terminal != routing_claim {
         return Err(Error::Terminal);
     }
+    verify_full_round_openings(
+        &values[6..],
+        &full_round_claims,
+        &routing_point,
+        padded_len,
+        table_rows,
+    )?;
     Ok(StaticLink {
         point: link_point,
         transcript_binding: opening_seed,
@@ -370,6 +410,7 @@ fn raw_opening_seed(
     width: usize,
     routing: &SumcheckProof,
     poseidon: &SumcheckProof,
+    full_rounds: &FullRoundProof,
 ) -> Vec<Bn254> {
     let mut seed = vec![
         Bn254::from_u64(TRANSCRIPT_DOMAIN),
@@ -390,98 +431,64 @@ fn raw_opening_seed(
             seed.extend_from_slice(round);
         }
     }
+    full_rounds.append_transcript(&mut seed);
     seed
 }
 
-fn poseidon_trace(assignment: &[Bn254], rows: usize) -> (Vec<Vec<Bn254>>, Bn254) {
+fn column_batch_seed(base: &[Bn254], values: &[Bn254]) -> Vec<Bn254> {
+    let mut seed = Vec::with_capacity(base.len() + values.len() + 2);
+    seed.extend_from_slice(base);
+    seed.push(Bn254::from_u64(COLUMN_BATCH_DOMAIN));
+    seed.push(Bn254::from_usize(values.len()));
+    seed.extend_from_slice(values);
+    seed
+}
+
+fn column_batch_point(seed: &[Bn254], variables: usize) -> Vec<Bn254> {
+    let mut transcript = RawTranscript::new(COLUMN_BATCH_DOMAIN);
+    transcript.absorb_message(1, seed);
+    challenges(&transcript, 0x434f_4c00, variables)
+}
+
+fn poseidon_trace(assignment: &[Bn254], rows: usize) -> Result<(Trace, Bn254), Error> {
     let padded = assignment.len().next_power_of_two();
     let heap_rows = padded << 1;
-    let mut columns = vec![vec![Bn254::ZERO; rows]; POSEIDON_COLUMNS];
+    let mut trace = TraceBuilder::new(rows).map_err(|_| Error::TableShape)?;
     let mut digests = vec![Bn254::ZERO; heap_rows];
-    let parameters = PoseidonParameters::new();
-    for index in 0..padded {
-        let value = assignment.get(index).copied().unwrap_or(Bn254::ZERO);
-        let state = [value, Bn254::from_usize(index), Bn254::ONE];
-        let digest = fill_poseidon_row(&mut columns, padded + index, state, &parameters);
-        digests[padded + index] = digest;
+    trace
+        .fill_rows(padded..heap_rows, |row| {
+            let index = row - padded;
+            [
+                assignment.get(index).copied().unwrap_or(Bn254::ZERO),
+                Bn254::from_usize(index),
+                Bn254::ONE,
+            ]
+        })
+        .map_err(|_| Error::TableShape)?;
+    digests[padded..].copy_from_slice(trace.digests(padded..heap_rows));
+    let mut start = padded / 2;
+    let mut level = 0;
+    while start > 0 {
+        trace
+            .fill_rows(start..2 * start, |node| {
+                [
+                    digests[node << 1],
+                    digests[(node << 1) | 1],
+                    Bn254::from_usize(2 + level),
+                ]
+            })
+            .map_err(|_| Error::TableShape)?;
+        digests[start..2 * start].copy_from_slice(trace.digests(start..2 * start));
+        start /= 2;
+        level += 1;
     }
-    let height = padded.trailing_zeros() as usize;
-    for node in (1..padded).rev() {
-        let depth = (usize::BITS - 1 - node.leading_zeros()) as usize;
-        let level = height - 1 - depth;
-        let state = [
-            digests[node << 1],
-            digests[(node << 1) | 1],
-            Bn254::from_usize(2 + level),
-        ];
-        digests[node] = fill_poseidon_row(&mut columns, node, state, &parameters);
-    }
-    // Dummy and any table padding still carry valid Poseidon traces.
-    digests[0] = fill_poseidon_row(&mut columns, 0, [Bn254::ZERO; 3], &parameters);
-    for row in heap_rows..rows {
-        let _ = fill_poseidon_row(&mut columns, row, [Bn254::ZERO; 3], &parameters);
-    }
-    (columns, digests[1])
-}
-
-fn fill_poseidon_row(
-    columns: &mut [Vec<Bn254>],
-    row: usize,
-    input: [Bn254; 3],
-    parameters: &PoseidonParameters,
-) -> Bn254 {
-    for word in 0..3 {
-        columns[word][row] = input[word];
-    }
-    let mut state = input;
-    for round in 0..POSEIDON_TRANSITIONS {
-        state = poseidon_round(round, state, parameters);
-        for word in 0..3 {
-            columns[3 * (round + 1) + word][row] = state[word];
-        }
-    }
-    state[0]
-}
-
-fn poseidon_round(
-    round: usize,
-    mut state: [Bn254; 3],
-    parameters: &PoseidonParameters,
-) -> [Bn254; 3] {
-    if round == 0 {
-        state = external_linear(state);
-    }
-    if round < 4 {
-        full_round(state, parameters.initial[round])
-    } else if round < 60 {
-        partial_round(state, parameters.internal[round - 4])
-    } else {
-        full_round(state, parameters.terminal[round - 60])
-    }
-}
-
-fn external_linear(state: [Bn254; 3]) -> [Bn254; 3] {
-    let sum = state[0] + state[1] + state[2];
-    [sum + state[0], sum + state[1], sum + state[2]]
-}
-
-fn full_round(state: [Bn254; 3], constants: [Bn254; 3]) -> [Bn254; 3] {
-    let powered = core::array::from_fn(|i| fifth(state[i] + constants[i]));
-    external_linear(powered)
-}
-
-fn partial_round(state: [Bn254; 3], constant: Bn254) -> [Bn254; 3] {
-    let first = fifth(state[0] + constant);
-    [
-        first.double() + state[1] + state[2],
-        first + state[1].double() + state[2],
-        first + state[1] + Bn254::from_u64(3) * state[2],
-    ]
-}
-
-fn fifth(value: Bn254) -> Bn254 {
-    let square = value * value;
-    square * square * value
+    let _ = trace
+        .fill_row(0, [Bn254::ZERO; 3])
+        .map_err(|_| Error::TableShape)?;
+    trace
+        .fill_rows(heap_rows..rows, |_| [Bn254::ZERO; 3])
+        .map_err(|_| Error::TableShape)?;
+    Ok((trace.finish(), digests[1]))
 }
 
 struct RoutingWork {
@@ -498,7 +505,7 @@ struct RoutingWork {
 }
 
 fn routing_work(
-    hash: &[Vec<Bn254>],
+    trace: &Trace,
     assignment: &[Bn254],
     assignment_len: usize,
     padded: usize,
@@ -513,27 +520,42 @@ fn routing_work(
     let mut index = vec![Bn254::ZERO; rows];
     let mut internal = vec![Bn254::ZERO; rows];
     let mut leaf = vec![Bn254::ZERO; rows];
-    let digest = &hash[3 * POSEIDON_TRANSITIONS];
-    for row in 0..rows {
-        let parent = row & (padded - 1);
-        left[row] = digest[parent << 1];
-        right[row] = digest[(parent << 1) | 1];
-        assignment_table[row] = assignment[parent];
-        active[row] = Bn254::from_bool(parent < assignment_len);
-    }
-    for node in 1..padded {
-        internal[node] = Bn254::ONE;
-        let depth = (usize::BITS - 1 - node.leading_zeros()) as usize;
-        domain[node] = Bn254::from_usize(2 + height - 1 - depth);
-    }
-    for offset in 0..padded {
-        let node = padded + offset;
-        leaf[node] = Bn254::ONE;
-        domain[node] = Bn254::ONE;
-        index[node] = Bn254::from_usize(offset);
-    }
+    let digest = &trace.columns[DIGEST_COLUMN];
+    let mut outputs = [
+        left.as_mut_slice(),
+        right.as_mut_slice(),
+        assignment_table.as_mut_slice(),
+        active.as_mut_slice(),
+        domain.as_mut_slice(),
+        index.as_mut_slice(),
+        internal.as_mut_slice(),
+        leaf.as_mut_slice(),
+    ];
+    crate::parallel::rows_mut(&mut outputs, 0..rows, 64, |start, output| {
+        for offset in 0..output[0].len() {
+            let row = start + offset;
+            let parent = row & (padded - 1);
+            output[0][offset] = digest[parent << 1];
+            output[1][offset] = digest[(parent << 1) | 1];
+            output[2][offset] = assignment[parent];
+            output[3][offset] = Bn254::from_bool(parent < assignment_len);
+            if row > 0 && row < padded {
+                output[6][offset] = Bn254::ONE;
+                let depth = (usize::BITS - 1 - row.leading_zeros()) as usize;
+                output[4][offset] = Bn254::from_usize(2 + height - 1 - depth);
+            } else if row >= padded && row < 2 * padded {
+                output[7][offset] = Bn254::ONE;
+                output[4][offset] = Bn254::ONE;
+                output[5][offset] = Bn254::from_usize(row - padded);
+            }
+        }
+    });
     RoutingWork {
-        input: [hash[0].clone(), hash[1].clone(), hash[2].clone()],
+        input: [
+            trace.columns[INPUT_0_COLUMN].clone(),
+            trace.columns[INPUT_1_COLUMN].clone(),
+            trace.input_2.clone(),
+        ],
         left,
         right,
         assignment: assignment_table,
@@ -560,10 +582,14 @@ fn prove_routing_sumcheck(
     let mut rounds = Vec::with_capacity(variables);
     let mut claim = Bn254::ZERO;
     for round in 0..variables {
-        let mut evaluations = vec![Bn254::ZERO; COMPOSED_DEGREE + 1];
-        for (evaluation_index, evaluation) in evaluations.iter_mut().enumerate() {
-            let t = Bn254::from_usize(evaluation_index);
-            for pair in 0..work.eq.len() / 2 {
+        let evaluations = crate::parallel::sumcheck(
+            work.eq.len() / 2,
+            COMPOSED_DEGREE + 1,
+            (COMPOSED_DEGREE + 1) * 12,
+            || (),
+            |scratch, pair, t| {
+                let _ = scratch;
+
                 let get = |values: &[Bn254]| lerp(values[2 * pair], values[2 * pair + 1], t);
                 let input: [Bn254; 3] = core::array::from_fn(|word| get(&work.input[word]));
                 let internal = get(&work.internal);
@@ -575,10 +601,9 @@ fn prove_routing_sumcheck(
                     * (input[0] - get(&work.active) * get(&work.assignment))
                     + weights[4] * (input[1] - get(&work.index))
                     + weights[5] * (input[2] - get(&work.domain));
-                *evaluation +=
-                    get(&work.eq) * (internal * internal_residual + leaf * leaf_residual);
-            }
-        }
+                get(&work.eq) * (internal * internal_residual + leaf * leaf_residual)
+            },
+        );
         if evaluations[0] + evaluations[1] != claim {
             return Err(Error::Sumcheck);
         }
@@ -586,19 +611,23 @@ fn prove_routing_sumcheck(
         let challenge = transcript.challenge(0x2200 + round as u64);
         claim = interpolate(&evaluations, challenge);
         point.push(challenge);
-        for values in work.input.iter_mut().chain([
-            &mut work.left,
-            &mut work.right,
-            &mut work.assignment,
-            &mut work.active,
-            &mut work.domain,
-            &mut work.index,
-            &mut work.internal,
-            &mut work.leaf,
-            &mut work.eq,
-        ]) {
-            fold(values, challenge);
-        }
+        work.input
+            .par_iter_mut()
+            .chain(
+                [
+                    &mut work.left,
+                    &mut work.right,
+                    &mut work.assignment,
+                    &mut work.active,
+                    &mut work.domain,
+                    &mut work.index,
+                    &mut work.internal,
+                    &mut work.leaf,
+                    &mut work.eq,
+                ]
+                .into_par_iter(),
+            )
+            .for_each(|values| fold(values, challenge));
         rounds.push(evaluations);
         eprintln!(
             "CAIR checkpoint: routing sumcheck round {}/{} complete ({:.3}s phase elapsed)",
@@ -615,18 +644,17 @@ fn prove_poseidon_sumcheck(
     weights: &[Bn254],
     target: &[Bn254],
     transcript: &mut RawTranscript,
-) -> Result<(SumcheckProof, Vec<Bn254>), Error> {
+) -> Result<(SumcheckProof, Vec<Bn254>, Vec<Bn254>), Error> {
     let phase_started = Instant::now();
     let mut eq = eq_evaluations(target);
     let variables = target.len();
     let mut point = Vec::with_capacity(variables);
     let mut rounds = Vec::with_capacity(variables);
     let mut claim = Bn254::ZERO;
-    let parameters = PoseidonParameters::new();
-    let partial_weights = poseidon_sumcheck::partial_round_weights(weights);
+    let weights = poseidon_scalar::PartialWeights::new(weights);
     for round in 0..variables {
         let evaluations = poseidon_sumcheck::sum_pairs(eq.len() / 2, |pair| {
-            poseidon_pair_evaluations(&columns, &eq, pair, weights, &partial_weights, &parameters)
+            poseidon_scalar::partial_pair_evaluations(&columns, &eq, pair, &weights)
         });
         if evaluations[0] + evaluations[1] != claim {
             return Err(Error::Sumcheck);
@@ -636,9 +664,7 @@ fn prove_poseidon_sumcheck(
         claim = poseidon_sumcheck::interpolate(&evaluations, challenge);
         point.push(challenge);
         fold(&mut eq, challenge);
-        for column in &mut columns {
-            fold(column, challenge);
-        }
+        crate::parallel::fold_columns(&mut columns, challenge);
         rounds.push(evaluations.to_vec());
         eprintln!(
             "CAIR checkpoint: Poseidon sumcheck round {}/{} complete ({:.3}s phase elapsed)",
@@ -647,106 +673,12 @@ fn prove_poseidon_sumcheck(
             phase_started.elapsed().as_secs_f64(),
         );
     }
-    Ok((SumcheckProof { rounds }, point))
+    let terminal_values = columns.iter().map(|column| column[0]).collect();
+    Ok((SumcheckProof { rounds }, point, terminal_values))
 }
 
-fn poseidon_pair_evaluations(
-    columns: &[Vec<Bn254>],
-    eq: &[Bn254],
-    pair: usize,
-    weights: &[Bn254],
-    partial_weights: &[[Bn254; STATE_WIDTH]; poseidon_sumcheck::PARTIAL_ROUNDS],
-    parameters: &PoseidonParameters,
-) -> [Bn254; poseidon_sumcheck::EVALUATIONS] {
-    let left = pair << 1;
-    let right = left | 1;
-    let eq_values = poseidon_sumcheck::line_evaluations(eq[left], eq[right]);
-    let mut residuals = [Bn254::ZERO; poseidon_sumcheck::EVALUATIONS];
-    let mut current_zero = core::array::from_fn(|word| columns[word][left]);
-    let mut current_one = core::array::from_fn(|word| columns[word][right]);
-    for round in 0..POSEIDON_TRANSITIONS {
-        let next_column = STATE_WIDTH * (round + 1);
-        let next_zero = core::array::from_fn(|word| columns[next_column + word][left]);
-        let next_one = core::array::from_fn(|word| columns[next_column + word][right]);
-        if (4..60).contains(&round) {
-            let round_residuals = poseidon_sumcheck::partial_round_residual_evaluations(
-                current_zero,
-                current_one,
-                next_zero,
-                next_one,
-                parameters.internal[round - 4],
-                weights[STATE_WIDTH * round..STATE_WIDTH * (round + 1)]
-                    .try_into()
-                    .expect("a Poseidon round has three constraints"),
-                partial_weights[round - 4],
-            );
-            for evaluation in 0..poseidon_sumcheck::EVALUATIONS {
-                residuals[evaluation] += round_residuals[evaluation];
-            }
-        } else {
-            let expected =
-                poseidon_full_round_line_evaluations(round, current_zero, current_one, parameters);
-            let next = core::array::from_fn::<_, STATE_WIDTH, _>(|word| {
-                poseidon_sumcheck::line_evaluations(next_zero[word], next_one[word])
-            });
-            for evaluation in 0..poseidon_sumcheck::EVALUATIONS {
-                for word in 0..STATE_WIDTH {
-                    residuals[evaluation] += weights[STATE_WIDTH * round + word]
-                        * (next[word][evaluation] - expected[evaluation][word]);
-                }
-            }
-        }
-        current_zero = next_zero;
-        current_one = next_one;
-    }
-    core::array::from_fn(|evaluation| eq_values[evaluation] * residuals[evaluation])
-}
-
-fn poseidon_full_round_line_evaluations(
-    round: usize,
-    mut zero: [Bn254; STATE_WIDTH],
-    mut one: [Bn254; STATE_WIDTH],
-    parameters: &PoseidonParameters,
-) -> [[Bn254; STATE_WIDTH]; poseidon_sumcheck::EVALUATIONS] {
-    debug_assert!(!(4..60).contains(&round));
-    if round == 0 {
-        zero = external_linear(zero);
-        one = external_linear(one);
-    }
-    let constants = if round < 4 {
-        parameters.initial[round]
-    } else {
-        parameters.terminal[round - 60]
-    };
-    let powered = core::array::from_fn::<_, STATE_WIDTH, _>(|word| {
-        poseidon_sumcheck::fifth_line_evaluations(
-            zero[word] + constants[word],
-            one[word] + constants[word],
-        )
-    });
-    core::array::from_fn(|evaluation| {
-        external_linear(core::array::from_fn(|word| powered[word][evaluation]))
-    })
-}
-
-fn combined_poseidon_residual(
-    values: &[Bn254],
-    weights: &[Bn254],
-    parameters: &PoseidonParameters,
-) -> Bn254 {
-    let mut result = Bn254::ZERO;
-    for round in 0..POSEIDON_TRANSITIONS {
-        let input = [
-            values[3 * round],
-            values[3 * round + 1],
-            values[3 * round + 2],
-        ];
-        let expected = poseidon_round(round, input, parameters);
-        for word in 0..3 {
-            result += weights[3 * round + word] * (values[3 * (round + 1) + word] - expected[word]);
-        }
-    }
-    result
+fn combined_poseidon_residual(values: &[Bn254], weights: &[Bn254]) -> Bn254 {
+    poseidon_scalar::combined_partial_residual(values, weights)
 }
 
 fn verify_sumcheck(
@@ -779,14 +711,17 @@ fn opening_points(
     rows: usize,
     width: usize,
     padded: usize,
+    column_point: &[Bn254],
     poseidon_point: &[Bn254],
     routing_point: &[Bn254],
+    full_rounds: &FullRoundClaims,
 ) -> Vec<Vec<Bn254>> {
-    let mut points = Vec::new();
-    for column in 0..POSEIDON_COLUMNS {
-        points.push(table_point(column, poseidon_point, width));
-    }
-    for column in 0..3 {
+    debug_assert_eq!(column_point.len(), width.trailing_zeros() as usize);
+    let mut points = Vec::with_capacity(15);
+    let mut poseidon_batch = column_point.to_vec();
+    poseidon_batch.extend_from_slice(poseidon_point);
+    points.push(poseidon_batch);
+    for column in [INPUT_0_COLUMN, INPUT_1_COLUMN] {
         points.push(table_point(column, routing_point, width));
     }
     let height = padded.trailing_zeros() as usize;
@@ -794,12 +729,42 @@ fn opening_points(
         let mut child = vec![child_bit];
         child.extend_from_slice(&routing_point[..height]);
         child.resize(rows.trailing_zeros() as usize, Bn254::ZERO);
-        points.push(table_point(3 * POSEIDON_TRANSITIONS, &child, width));
+        points.push(table_point(DIGEST_COLUMN, &child, width));
     }
     let mut root = vec![Bn254::ZERO; rows.trailing_zeros() as usize];
     root[0] = Bn254::ONE;
-    points.push(table_point(3 * POSEIDON_TRANSITIONS, &root, width));
+    points.push(table_point(DIGEST_COLUMN, &root, width));
+    append_full_round_opening_points(&mut points, width, full_rounds);
     points
+}
+
+fn append_full_round_opening_points(
+    points: &mut Vec<Vec<Bn254>>,
+    width: usize,
+    claims: &FullRoundClaims,
+) {
+    for column in [
+        0,
+        poseidon_scalar::START_B_COLUMN,
+        poseidon_scalar::START_C_COLUMN,
+    ] {
+        points.push(table_point(column, &claims.initial_output_point, width));
+    }
+    points.push(table_point(
+        DIGEST_COLUMN,
+        &claims.terminal_output_point,
+        width,
+    ));
+    for column in [INPUT_0_COLUMN, INPUT_1_COLUMN] {
+        points.push(table_point(column, &claims.input_point, width));
+    }
+    for column in [
+        poseidon_scalar::PARTIAL_STATES - 1,
+        poseidon_scalar::END_B_COLUMN,
+        poseidon_scalar::END_C_COLUMN,
+    ] {
+        points.push(table_point(column, &claims.input_point, width));
+    }
 }
 
 fn table_point(column: usize, row_point: &[Bn254], width: usize) -> Vec<Bn254> {
@@ -819,12 +784,12 @@ fn routing_terminal(
     values: &[Bn254],
     assignment: Bn254,
 ) -> Bn254 {
-    let input = [values[0], values[1], values[2]];
-    let left = values[3];
-    let right = values[4];
-    let _root = values[5];
     let height = padded.trailing_zeros() as usize;
     let row_variables = rows.trailing_zeros() as usize;
+    let input = [values[0], values[1], domain_mle(point, height)];
+    let left = values[2];
+    let right = values[3];
+    let _root = values[4];
     let high_zero = (height..row_variables).fold(Bn254::ONE, |product, bit| {
         product * (Bn254::ONE - point[bit])
     });
@@ -853,6 +818,33 @@ fn routing_terminal(
         + weights[5] * (input[2] - domain);
     // The root is opened directly at heap row one.
     internal * internal_residual + leaf * leaf_residual
+}
+
+fn verify_full_round_openings(
+    values: &[Bn254],
+    claims: &FullRoundClaims,
+    _routing_point: &[Bn254],
+    padded: usize,
+    rows: usize,
+) -> Result<(), Error> {
+    if values.len() != 9 {
+        return Err(Error::TableShape);
+    }
+    if values[..3] != claims.initial_output
+        || values[3] != claims.terminal_digest
+        || values[4] != claims.initial_input[0]
+        || values[5] != claims.initial_input[1]
+        || values[6..9] != claims.terminal_input
+    {
+        return Err(Error::Terminal);
+    }
+    let expected_domain = domain_mle(&claims.input_point, padded.trailing_zeros() as usize);
+    if claims.initial_input[2] != expected_domain
+        || claims.input_point.len() != rows.trailing_zeros() as usize
+    {
+        return Err(Error::Terminal);
+    }
+    Ok(())
 }
 
 fn domain_mle(point: &[Bn254], height: usize) -> Bn254 {
@@ -887,17 +879,7 @@ fn prefix_selector_mle(point: &[Bn254], end: usize) -> Bn254 {
 }
 
 fn eq_evaluations(point: &[Bn254]) -> Vec<Bn254> {
-    let mut result = vec![Bn254::ONE];
-    for &coordinate in point {
-        let old = result.len();
-        result.resize(old << 1, Bn254::ZERO);
-        for index in 0..old {
-            let value = result[index];
-            result[index] = value * (Bn254::ONE - coordinate);
-            result[index | old] = value * coordinate;
-        }
-    }
-    result
+    crate::parallel::eq_evaluations(point)
 }
 
 fn eq_eval(left: &[Bn254], right: &[Bn254]) -> Bn254 {
@@ -909,10 +891,7 @@ fn eq_eval(left: &[Bn254], right: &[Bn254]) -> Bn254 {
 }
 
 fn fold(values: &mut Vec<Bn254>, challenge: Bn254) {
-    for pair in 0..values.len() / 2 {
-        values[pair] = lerp(values[2 * pair], values[2 * pair + 1], challenge);
-    }
-    values.truncate(values.len() / 2);
+    crate::parallel::fold(values, challenge);
 }
 
 fn lerp(zero: Bn254, one: Bn254, point: Bn254) -> Bn254 {
@@ -965,7 +944,7 @@ mod tests {
     #[test]
     fn poseidon_trace_matches_merkle_hashes() {
         let assignment = [3, 5, 8].map(Bn254::from_u64);
-        let (columns, root) = poseidon_trace(&assignment, 8);
+        let (trace, root) = poseidon_trace(&assignment, 8).unwrap();
         let leaves = [
             hash_leaf(0, assignment[0]),
             hash_leaf(1, assignment[1]),
@@ -975,7 +954,7 @@ mod tests {
         let left = hash_node(0, leaves[0], leaves[1]);
         let right = hash_node(0, leaves[2], leaves[3]);
         assert_eq!(root, hash_node(1, left, right));
-        assert_eq!(columns[3 * POSEIDON_TRANSITIONS][1], root);
+        assert_eq!(trace.columns[DIGEST_COLUMN][1], root);
     }
 
     #[test]
@@ -998,6 +977,7 @@ mod tests {
             committed_main.clone(),
         )
         .unwrap();
+        assert_eq!(proof.table_width, SCALAR_COLUMNS);
         let static_evaluation = evaluate_mle(&committed_main, &link.point);
         verify(
             assignment.len(),
@@ -1018,6 +998,20 @@ mod tests {
                 &static_seed,
                 committed_main.len(),
                 &bad_sumcheck,
+                &[static_evaluation],
+            )
+            .is_err()
+        );
+
+        let mut bad_full_round = proof.clone();
+        bad_full_round.full_rounds.tamper_for_test();
+        assert!(
+            verify(
+                assignment.len(),
+                root,
+                &static_seed,
+                committed_main.len(),
+                &bad_full_round,
                 &[static_evaluation],
             )
             .is_err()
@@ -1046,6 +1040,20 @@ mod tests {
                 &static_seed,
                 committed_main.len(),
                 &bad_opening,
+                &[static_evaluation],
+            )
+            .is_err()
+        );
+
+        let mut bad_column_value = proof.clone();
+        bad_column_value.poseidon_values[0] += Bn254::ONE;
+        assert!(
+            verify(
+                assignment.len(),
+                root,
+                &static_seed,
+                committed_main.len(),
+                &bad_column_value,
                 &[static_evaluation],
             )
             .is_err()

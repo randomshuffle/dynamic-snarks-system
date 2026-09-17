@@ -1,0 +1,21 @@
+{
+  "command": [
+    "scripts/run_experiment.py",
+    "--trace-log",
+    "9",
+    "--threads",
+    "8",
+    "--update-logs",
+    "0",
+    "--sequence-len",
+    "1",
+    "--offline",
+    "--output",
+    "benchmark-results/endpoint-i64-smoke-n9-20260910"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-09-10T19:57:27.684159+00:00",
+  "started_utc": "2026-09-10T19:57:23.975638+00:00",
+  "state": "complete",
+  "verified_samples": 3
+}

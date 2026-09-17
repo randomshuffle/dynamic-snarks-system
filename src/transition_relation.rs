@@ -1,5 +1,9 @@
 //! Local row relation for sparse-DAG transitions.
 
+#[cfg(feature = "compact-merkle")]
+pub(crate) mod packed;
+
+use p3_maybe_rayon::prelude::*;
 use std::collections::{BTreeMap, BTreeSet};
 
 use p3_bn254::Bn254;
@@ -120,8 +124,6 @@ pub(crate) enum Error {
     Indices,
     #[error("transition update value does not match an assignment tree at index {0}")]
     Value(usize),
-    #[error("indexed permutation tree does not match the circuit permutation")]
-    Permutation,
 }
 
 impl Default for Row {
@@ -207,40 +209,49 @@ impl TransitionTable {
             return Err(Error::Indices);
         }
         circuit.check_update_indices(&indices)?;
-        if old_tree.commitment().len != circuit.assignment_len()
-            || new_tree.commitment().len != circuit.assignment_len()
+        let mut physical_indices = indices
+            .iter()
+            .map(|&index| circuit.assignment_leaf_index(index))
+            .collect::<Vec<_>>();
+        physical_indices.sort_unstable();
+        if old_tree.commitment().len != circuit.assignment_tree_len()
+            || new_tree.commitment().len != circuit.assignment_tree_len()
         {
             return Err(Error::Indices);
         }
         for &(index, old, new) in updates {
-            if old_tree.values()[index] != old || new_tree.values()[index] != new {
+            if old_tree.value(circuit.assignment_leaf_index(index)) != Some(old)
+                || new_tree.value(circuit.assignment_leaf_index(index)) != Some(new)
+            {
                 return Err(Error::Value(index));
             }
         }
-        if permutation_tree.values()
-            != circuit
-                .permutation
-                .iter()
-                .copied()
-                .map(Bn254::from_usize)
-                .collect::<Vec<_>>()
-        {
-            return Err(Error::Permutation);
-        }
 
-        let assignment = SparseMerkleDag::paired(TreeId::Assignment, old_tree, new_tree, &indices)?;
-        let permutation = SparseMerkleDag::single(TreeId::Permutation, permutation_tree, &indices)?;
         let mut neighbor_indices = indices
             .iter()
-            .map(|&index| circuit.permutation[index])
+            .map(|&index| circuit.assignment_leaf_index(circuit.permutation[index]))
             .collect::<Vec<_>>();
         neighbor_indices.sort_unstable();
-        let neighbor = SparseMerkleDag::single(TreeId::Neighbor, new_tree, &neighbor_indices)?;
+        let (assignment, (permutation, neighbor)) = join(
+            || SparseMerkleDag::paired(TreeId::Assignment, old_tree, new_tree, &physical_indices),
+            || {
+                join(
+                    || {
+                        SparseMerkleDag::single(
+                            TreeId::Permutation,
+                            permutation_tree,
+                            &physical_indices,
+                        )
+                    },
+                    || SparseMerkleDag::single(TreeId::Neighbor, new_tree, &neighbor_indices),
+                )
+            },
+        );
+        let assignment = assignment?;
+        let permutation = permutation?;
+        let neighbor = neighbor?;
 
-        let height = circuit
-            .assignment_len()
-            .next_power_of_two()
-            .trailing_zeros() as usize;
+        let height = circuit.assignment_tree_len().trailing_zeros() as usize;
         let statement = Statement {
             gate_pairs: circuit.n,
             public_inputs: circuit.num_public_inputs,
@@ -254,9 +265,10 @@ impl TransitionTable {
         for dag in [&assignment, &permutation, &neighbor] {
             rows.extend(
                 dag.rows()
-                    .iter()
+                    .par_iter()
                     .enumerate()
-                    .map(|(index, row)| node_row(row, index == 0)),
+                    .map(|(index, row)| node_row(row, index == 0))
+                    .collect::<Vec<_>>(),
             );
         }
 
@@ -269,9 +281,9 @@ impl TransitionTable {
                 index,
                 old,
                 new,
-                assignment_leaves[&index],
-                permutation_leaves[&index],
-                neighbor_leaves[&circuit.permutation[index]],
+                assignment_leaves[&circuit.assignment_leaf_index(index)],
+                permutation_leaves[&circuit.assignment_leaf_index(index)],
+                neighbor_leaves[&circuit.assignment_leaf_index(circuit.permutation[index])],
             ));
         }
         let gate_starts = indices
@@ -340,18 +352,35 @@ impl TransitionTable {
         let rows = self.rows.len();
         let mut columns = vec![vec![Bn254::ZERO; rows]; width];
         let mut hash_inputs = std::array::from_fn(|_| vec![Bn254::ZERO; 2 * rows]);
-        for (row_index, row) in self.rows.iter().enumerate() {
-            let encoded = compact_row(row, self.statement);
-            debug_assert_eq!(encoded.len(), width);
-            for (column, value) in encoded.into_iter().enumerate() {
-                columns[column][row_index] = value;
-            }
-            for side in 0..2 {
-                for field in 0..4 {
-                    hash_inputs[field][2 * row_index + side] = row.hashes[side][field];
+        crate::parallel::rows_mut(
+            &mut columns
+                .iter_mut()
+                .map(Vec::as_mut_slice)
+                .collect::<Vec<_>>(),
+            0..rows,
+            16,
+            |start, columns| {
+                for offset in 0..columns[0].len() {
+                    let encoded = compact_row(&self.rows[start + offset], self.statement);
+                    debug_assert_eq!(encoded.len(), width);
+                    for (column, value) in columns.iter_mut().zip(encoded) {
+                        column[offset] = value;
+                    }
                 }
-            }
-        }
+            },
+        );
+        hash_inputs
+            .par_iter_mut()
+            .enumerate()
+            .for_each(|(field, column)| {
+                column
+                    .par_chunks_mut(2)
+                    .enumerate()
+                    .for_each(|(row, output)| {
+                        output[0] = self.rows[row].hashes[0][field];
+                        output[1] = self.rows[row].hashes[1][field];
+                    });
+            });
         CompactWitness {
             columns,
             hash_inputs,
@@ -368,13 +397,13 @@ impl TransitionTable {
     pub(crate) fn product_factors(&self, challenges: RoutingChallenges) -> ProductFactors {
         let producers = self
             .rows
-            .iter()
-            .flat_map(|row| row.producers)
+            .par_iter()
+            .flat_map_iter(|row| row.producers)
             .collect::<Vec<_>>();
         let references = self
             .rows
-            .iter()
-            .flat_map(|row| row.references)
+            .par_iter()
+            .flat_map_iter(|row| row.references)
             .collect::<Vec<_>>();
         ProductFactors::from_field_rows(&producers, &references, challenges)
     }
@@ -397,6 +426,24 @@ pub(crate) fn estimate_shape(
     circuit: &Circuit,
     indices: &[usize],
 ) -> Result<(usize, usize, usize), Error> {
+    estimate_shape_with_width(circuit, indices, compact_main_width)
+}
+
+#[cfg(feature = "poseidon-gkr")]
+pub(crate) fn estimate_endpoint_shape(
+    circuit: &Circuit,
+    indices: &[usize],
+) -> Result<(usize, usize, usize), Error> {
+    estimate_shape_with_width(circuit, indices, |statement| {
+        (compact_column_count(statement) + 8).next_power_of_two()
+    })
+}
+
+fn estimate_shape_with_width(
+    circuit: &Circuit,
+    indices: &[usize],
+    width: impl FnOnce(Statement) -> usize,
+) -> Result<(usize, usize, usize), Error> {
     if indices.is_empty()
         || indices.windows(2).any(|pair| pair[0] >= pair[1])
         || indices
@@ -406,23 +453,20 @@ pub(crate) fn estimate_shape(
         return Err(Error::Indices);
     }
     circuit.check_update_indices(indices)?;
-    let permutation_tree = MerkleTree::new(
-        circuit
-            .permutation
-            .iter()
-            .copied()
-            .map(Bn254::from_usize)
-            .collect(),
-    )?;
-    let zero_tree = MerkleTree::new(vec![Bn254::ZERO; circuit.assignment_len()])?;
-    let assignment = SparseMerkleDag::paired(TreeId::Assignment, &zero_tree, &zero_tree, indices)?;
-    let permutation = SparseMerkleDag::single(TreeId::Permutation, &permutation_tree, indices)?;
+    let mut physical_indices = indices
+        .iter()
+        .map(|&index| circuit.assignment_leaf_index(index))
+        .collect::<Vec<_>>();
+    physical_indices.sort_unstable();
+    let tree_len = circuit.assignment_tree_len();
+    let (assignment_rows, assignment_hashes) = SparseMerkleDag::shape(tree_len, &physical_indices)?;
+    // Assignment and permutation authenticate exactly the same coordinates.
     let mut neighbors = indices
         .iter()
-        .map(|&index| circuit.permutation[index])
+        .map(|&index| circuit.assignment_leaf_index(circuit.permutation[index]))
         .collect::<Vec<_>>();
     neighbors.sort_unstable();
-    let neighbor = SparseMerkleDag::single(TreeId::Neighbor, &zero_tree, &neighbors)?;
+    let (neighbor_rows, neighbor_hashes) = SparseMerkleDag::shape(tree_len, &neighbors)?;
     let gate_rows = indices
         .iter()
         .copied()
@@ -430,31 +474,25 @@ pub(crate) fn estimate_shape(
         .map(|index| index - index % 3)
         .collect::<BTreeSet<_>>()
         .len();
-    let row_count = (assignment.rows().len()
-        + permutation.rows().len()
-        + neighbor.rows().len()
-        + indices.len()
-        + gate_rows)
+    let row_count = (2 * assignment_rows + neighbor_rows + indices.len() + gate_rows)
         .max(2)
         .next_power_of_two();
-    let poseidon_hashes = 2 * [&assignment, &permutation, &neighbor]
-        .into_iter()
-        .flat_map(|dag| dag.rows())
-        .filter(|row| row.kind != NodeKind::Boundary)
-        .count();
+    let poseidon_hashes = 2 * (2 * assignment_hashes + neighbor_hashes);
+    // Width depends only on public dimensions, never on commitment digests.
+    let shape_commitment = Commitment {
+        root: Bn254::ZERO,
+        len: tree_len,
+    };
     let statement = Statement {
         gate_pairs: circuit.n,
         public_inputs: circuit.num_public_inputs,
         assignment_len: circuit.assignment_len(),
-        height: circuit
-            .assignment_len()
-            .next_power_of_two()
-            .trailing_zeros() as usize,
-        permutation: permutation_tree.commitment(),
-        old_assignment: zero_tree.commitment(),
-        new_assignment: zero_tree.commitment(),
+        height: circuit.assignment_tree_len().trailing_zeros() as usize,
+        permutation: shape_commitment,
+        old_assignment: shape_commitment,
+        new_assignment: shape_commitment,
     };
-    let main_width = compact_main_width(statement);
+    let main_width = width(statement);
     Ok((row_count, main_width, poseidon_hashes))
 }
 
@@ -476,15 +514,16 @@ pub(crate) fn compact_column_count(statement: Statement) -> usize {
 }
 
 pub(crate) fn compact_main_width(statement: Statement) -> usize {
-    // One packed Poseidon trace covers the old and new hashes on a domain
-    // twice as large as the sparse-row domain.  The extra column binds the
-    // terminal state to the expected digest.
-    (compact_column_count(statement) + POSEIDON_COLUMNS_PER_HASH + 1)
+    // One 64-column scalar Poseidon trace covers the old and new hashes on a
+    // domain twice as large as the sparse-row domain.  One auxiliary column
+    // commits the third input lane, which the sparse row determines but which
+    // is not globally public as it is in the initial full-tree proof.
+    (compact_column_count(statement) + SCALAR_POSEIDON_COLUMNS + 1)
         .max(2)
         .next_power_of_two()
 }
 
-const POSEIDON_COLUMNS_PER_HASH: usize = 65 * 3;
+const SCALAR_POSEIDON_COLUMNS: usize = 64;
 
 fn public_bit_count(statement: Statement) -> usize {
     bit_count(statement.public_inputs)
@@ -595,14 +634,22 @@ fn compact_row(row: &Row, statement: Statement) -> Vec<Bn254> {
 }
 
 pub(crate) fn compact_constraint_degree(statement: Statement) -> usize {
-    // Range/equality selectors have degree equal to their bit width. Account
-    // for their row selectors and the equality polynomial used by sumcheck.
-    6.max(
-        pair_bit_count(statement)
-            .max(public_bit_count(statement))
-            .max(level_bit_count(statement))
-            + 3,
-    )
+    // A full (or empty) range selector is constant as a polynomial, including
+    // away from Boolean points. Other prefix selectors have degree <= width.
+    let range_degree = |width, bound| {
+        if bound == 0 || bound == 1usize << width {
+            0
+        } else {
+            width
+        }
+    };
+    // The largest range/equality terms have two row/role selectors, plus the
+    // sumcheck equality factor. Level equality selectors still use every bit.
+    // All remaining residuals have degree <= 4 before that equality factor;
+    // retain the existing conservative floor of six.
+    6.max(level_bit_count(statement) + 3)
+        .max(range_degree(pair_bit_count(statement), statement.gate_pairs) + 3)
+        .max(range_degree(public_bit_count(statement), statement.public_inputs) + 3)
 }
 
 pub(crate) fn compact_residuals(
@@ -610,6 +657,17 @@ pub(crate) fn compact_residuals(
     hashes: &[Bn254],
     statement: Statement,
 ) -> Vec<Bn254> {
+    let mut residuals = Vec::new();
+    compact_residuals_into(values, hashes, statement, &mut residuals);
+    residuals
+}
+
+pub(crate) fn compact_residuals_into(
+    values: &[Bn254],
+    hashes: &[Bn254],
+    statement: Statement,
+    residuals: &mut Vec<Bn254>,
+) {
     debug_assert_eq!(values.len(), compact_column_count(statement));
     debug_assert_eq!(hashes.len(), 8);
     let node_active = values[0];
@@ -623,7 +681,7 @@ pub(crate) fn compact_residuals(
     let public_bit_count = public_bit_count(statement);
     let public_bits = &public_bits[..public_bit_count];
     let level_bits = &values[COMPACT_PAYLOAD_OFFSET + 19 + pair_bit_count + public_bit_count..];
-    let mut residuals = Vec::new();
+    residuals.clear();
     let boolean = |value: Bn254| value * (value - Bn254::ONE);
     residuals.extend([node_active, link_active, gate_active].map(boolean));
     residuals.push(node_active * link_active);
@@ -720,7 +778,7 @@ pub(crate) fn compact_residuals(
     residuals.push(
         link_active
             * is_gate
-            * (link_index - (Bn254::from_u64(6) * pair + Bn254::from_u64(3) * is_mul + offset)),
+            * (link_index - (Bn254::from_u64(8) * pair + Bn254::from_u64(4) * is_mul + offset)),
     );
     for &bit in public_bits {
         residuals.push(link_active * boolean(bit));
@@ -734,7 +792,7 @@ pub(crate) fn compact_residuals(
     residuals.push(
         link_active
             * is_public
-            * (link_index - Bn254::from_usize(6 * statement.gate_pairs) - public_offset),
+            * (link_index - Bn254::from_u64(4) * public_offset - Bn254::from_u64(3)),
     );
 
     for flag in [gate_is_add, gate_is_mul] {
@@ -744,12 +802,10 @@ pub(crate) fn compact_residuals(
     residuals.push(gate_active * (gate_pair - pair));
     residuals.push(gate_active * (prefix_selector(pair_bits, statement.gate_pairs) - Bn254::ONE));
     residuals.push(
-        gate_active * (gate_start - Bn254::from_u64(6) * pair - Bn254::from_u64(3) * gate_is_mul),
+        gate_active * (gate_start - Bn254::from_u64(8) * pair - Bn254::from_u64(4) * gate_is_mul),
     );
     residuals.push(gate_active * gate_is_add * (gate_values[0] + gate_values[1] - gate_values[2]));
     residuals.push(gate_active * gate_is_mul * (gate_values[0] * gate_values[1] - gate_values[2]));
-
-    residuals
 }
 
 /// Producer and reference tuples as algebraic functions of one compact row.
@@ -1034,7 +1090,8 @@ fn link_row(
     permutation: &NodeRow,
     neighbor: &NodeRow,
 ) -> Row {
-    let sigma = circuit.permutation[index];
+    let sigma = circuit.assignment_leaf_index(circuit.permutation[index]);
+    let physical_index = circuit.assignment_leaf_index(index);
     let is_gate = index < 6 * circuit.n;
     let is_mul = is_gate && index % 6 >= 3;
     let offset = if is_gate { index % 3 } else { 0 };
@@ -1042,7 +1099,7 @@ fn link_row(
         active: true,
         link: LinkSection {
             active: true,
-            index,
+            index: physical_index,
             old,
             new,
             sigma,
@@ -1065,7 +1122,7 @@ fn link_row(
     };
     row.references[0] = [
         Bn254::from_u64(ASSIGNMENT_LEAF_TAG),
-        Bn254::from_usize(index),
+        Bn254::from_usize(physical_index),
         old,
         new,
         assignment.digest.old,
@@ -1074,7 +1131,7 @@ fn link_row(
     let sigma_value = Bn254::from_usize(sigma);
     row.references[1] = [
         Bn254::from_u64(PERMUTATION_LEAF_TAG),
-        Bn254::from_usize(index),
+        Bn254::from_usize(physical_index),
         sigma_value,
         sigma_value,
         permutation.digest.old,
@@ -1091,7 +1148,7 @@ fn link_row(
     if is_gate {
         row.producers[2] = [
             Bn254::from_u64(GATE_TAG),
-            Bn254::from_usize(index),
+            Bn254::from_usize(physical_index),
             new,
             Bn254::ZERO,
             Bn254::ZERO,
@@ -1103,14 +1160,20 @@ fn link_row(
 
 fn gate_row(circuit: &Circuit, new_tree: &MerkleTree, start: usize) -> Row {
     let is_mul = start % 6 == 3;
-    let values = std::array::from_fn(|offset| new_tree.values()[start + offset]);
+    let pair = start / 6;
+    let start = circuit.assignment_leaf_index(start);
+    let values = std::array::from_fn(|offset| {
+        new_tree
+            .value(start + offset)
+            .expect("a gate row is within the assignment tree")
+    });
     let mut row = Row {
         active: true,
         gate: GateSection {
             active: true,
             is_add: !is_mul,
             is_mul,
-            pair: start / 6,
+            pair,
             start,
             values,
         },
@@ -1126,7 +1189,6 @@ fn gate_row(circuit: &Circuit, new_tree: &MerkleTree, start: usize) -> Row {
             Bn254::ZERO,
         ];
     }
-    let _ = circuit;
     row
 }
 
@@ -1429,8 +1491,8 @@ fn constrain_link(
     let gate_index = linear(
         builder,
         [
-            (pair, Bn254::from_u64(6)),
-            (row.is_mul, Bn254::from_u64(3)),
+            (pair, Bn254::from_u64(8)),
+            (row.is_mul, Bn254::from_u64(4)),
             (offset, Bn254::ONE),
         ],
         Bn254::ZERO,
@@ -1457,11 +1519,11 @@ fn constrain_link(
     let public_index = linear(
         builder,
         [
-            (public_offset, Bn254::ONE),
+            (public_offset, Bn254::from_u64(4)),
             (zero, Bn254::ZERO),
             (zero, Bn254::ZERO),
         ],
-        Bn254::from_usize(6 * statement.gate_pairs),
+        Bn254::from_u64(3),
     );
     conditional_equal(builder, row.is_public, row.link_index, public_index, zero);
 }
@@ -1482,8 +1544,8 @@ fn constrain_gate(
     let expected_start = linear(
         builder,
         [
-            (pair, Bn254::from_u64(6)),
-            (row.gate_is_mul, Bn254::from_u64(3)),
+            (pair, Bn254::from_u64(8)),
+            (row.gate_is_mul, Bn254::from_u64(4)),
             (zero, Bn254::ZERO),
         ],
         Bn254::ZERO,
@@ -1787,7 +1849,14 @@ mod tests {
         let n0 = 2;
         let m = 6 * n + n0;
         let circuit = Circuit::new(n, n0, (0..m).collect()).unwrap();
-        let permutation = MerkleTree::new((0..m).map(Bn254::from_usize).collect()).unwrap();
+        let permutation = MerkleTree::new(
+            circuit
+                .encoded_permutation()
+                .into_iter()
+                .map(Bn254::from_usize)
+                .collect(),
+        )
+        .unwrap();
         let mut old_values = vec![Bn254::ZERO; m];
         for pair in 0..n {
             old_values[6 * pair] = Bn254::from_usize(pair + 2);
@@ -1797,15 +1866,21 @@ mod tests {
             old_values[6 * pair + 4] = Bn254::from_usize(pair + 5);
             old_values[6 * pair + 5] = old_values[6 * pair + 3] * old_values[6 * pair + 4];
         }
-        let old = MerkleTree::new(old_values.clone()).unwrap();
+        let old = MerkleTree::new(circuit.encode_assignment(&old_values)).unwrap();
         let mut new_values = old_values;
         new_values[0] = Bn254::from_u64(9);
         new_values[1] = Bn254::from_u64(10);
         new_values[2] = Bn254::from_u64(19);
         new_values[18] = Bn254::from_u64(77);
-        let new = MerkleTree::new(new_values.clone()).unwrap();
+        let new = MerkleTree::new(circuit.encode_assignment(&new_values)).unwrap();
         let updates = [0usize, 1, 2, 18]
-            .map(|index| (index, old.values()[index], new_values[index]))
+            .map(|index| {
+                (
+                    index,
+                    old.value(circuit.assignment_leaf_index(index)).unwrap(),
+                    new_values[index],
+                )
+            })
             .to_vec();
         (circuit, permutation, old, new, updates)
     }
@@ -1894,19 +1969,20 @@ mod tests {
     }
 
     #[test]
-    fn default_transition_shape_rounds_to_256_columns() {
+    fn default_transition_shape_rounds_to_128_columns() {
         let gate_pairs = 1usize << 15;
         let public_inputs = 1usize << 8;
         let assignment_len = 6 * gate_pairs + public_inputs;
+        let physical_len = 4 * (2 * gate_pairs).next_power_of_two();
         let commitment = Commitment {
             root: Bn254::ZERO,
-            len: assignment_len,
+            len: physical_len,
         };
         let statement = Statement {
             gate_pairs,
             public_inputs,
             assignment_len,
-            height: assignment_len.next_power_of_two().trailing_zeros() as usize,
+            height: physical_len.trailing_zeros() as usize,
             permutation: commitment,
             old_assignment: commitment,
             new_assignment: commitment,
@@ -1917,15 +1993,106 @@ mod tests {
         assert_eq!(level_bit_count(statement), 5);
         assert_eq!(compact_column_count(statement), 50);
         assert_eq!(
-            compact_column_count(statement) + POSEIDON_COLUMNS_PER_HASH + 1,
-            246
+            compact_column_count(statement) + SCALAR_POSEIDON_COLUMNS + 1,
+            115
         );
-        assert_eq!(compact_main_width(statement), 256);
-        assert_eq!(compact_constraint_degree(statement), 18);
+        assert_eq!(compact_main_width(statement), 128);
+        assert_eq!(compact_constraint_degree(statement), 8);
     }
 
     #[test]
-    fn compact_shape_for_2_10_gates_and_2_4_updates_is_2_18() {
+    fn compact_degree_bounds_every_residual_on_non_boolean_lines() {
+        // Finite differences of every residual times a linear equality factor
+        // vanish above the claimed degree. Exercise full/partial/empty ranges,
+        // bit-width transitions, and the large benchmark shape.
+        for gate_pairs in [1usize, 2, 3, 7, 8, 32768, 32769] {
+            for public_inputs in [0, 1, 3, 256, 257] {
+                let physical_len = 4 * (2 * gate_pairs + public_inputs).next_power_of_two();
+                let commitment = Commitment {
+                    root: Bn254::from_u64(31),
+                    len: physical_len,
+                };
+                let statement = Statement {
+                    gate_pairs,
+                    public_inputs,
+                    assignment_len: 6 * gate_pairs + public_inputs,
+                    height: physical_len.trailing_zeros() as usize,
+                    permutation: commitment,
+                    old_assignment: commitment,
+                    new_assignment: commitment,
+                };
+                let degree = compact_constraint_degree(statement);
+                let loose_degree = 3 + pair_bit_count(statement)
+                    .max(public_bit_count(statement))
+                    .max(level_bit_count(statement))
+                    .max(3);
+                for seed in [3, 17] {
+                    let mut differences = (0..=loose_degree + 1)
+                        .map(|t| {
+                            let t = Bn254::from_usize(t);
+                            let values = (0..compact_column_count(statement))
+                                .map(|column| {
+                                    Bn254::from_usize(seed + column * column)
+                                        + t * Bn254::from_usize(2 * seed + column + 1)
+                                })
+                                .collect::<Vec<_>>();
+                            let hashes = (0..8)
+                                .map(|column| {
+                                    Bn254::from_usize(5 * seed + column)
+                                        + t * Bn254::from_usize(seed + column * column)
+                                })
+                                .collect::<Vec<_>>();
+                            compact_residuals(&values, &hashes, statement)
+                                .into_iter()
+                                .map(|value| value * (t + Bn254::from_u64(7)))
+                                .collect::<Vec<_>>()
+                        })
+                        .collect::<Vec<_>>();
+                    for _ in 0..=degree {
+                        differences = differences
+                            .windows(2)
+                            .map(|pair| {
+                                pair[1]
+                                    .iter()
+                                    .zip(&pair[0])
+                                    .map(|(&right, &left)| right - left)
+                                    .collect()
+                            })
+                            .collect();
+                    }
+                    assert!(
+                        differences
+                            .iter()
+                            .flatten()
+                            .all(|&value| value == Bn254::ZERO),
+                        "degree {degree}, pairs {gate_pairs}, public inputs {public_inputs}"
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn coordinate_estimate_matches_materialized_transition() {
+        let (circuit, permutation, old, new, updates) = fixture();
+        let indices = updates
+            .iter()
+            .map(|&(index, _, _)| index)
+            .collect::<Vec<_>>();
+        let (rows, width, hashes) = estimate_shape(&circuit, &indices).unwrap();
+        let table = TransitionTable::build(&circuit, &permutation, &old, &new, &updates).unwrap();
+        assert_eq!(rows, table.row_count());
+        assert_eq!(width, compact_main_width(table.statement()));
+        let actual_hashes = table
+            .rows
+            .iter()
+            .filter(|row| row.node.active && (row.node.kind[0] || row.node.kind[2]))
+            .count();
+        assert_eq!(hashes, 2 * actual_hashes);
+    }
+
+    #[test]
+    fn compact_shape_for_2_10_gates_and_2_4_updates_is_2_17() {
         let gate_rows = 1usize << 10;
         let gate_pairs = gate_rows / 2;
         let public_inputs = 1usize << 8;
@@ -1935,8 +2102,8 @@ mod tests {
         let indices = (0..3 * (1usize << 4)).collect::<Vec<_>>();
         let (rows, main_width, _) = estimate_shape(&circuit, &indices).unwrap();
         assert_eq!(rows, 1 << 9);
-        assert_eq!(main_width, 1 << 8);
-        assert_eq!(2 * rows * main_width, 1 << 18);
+        assert_eq!(main_width, 1 << 7);
+        assert_eq!(2 * rows * main_width, 1 << 17);
     }
 
     #[test]
@@ -1966,5 +2133,49 @@ mod tests {
             TransitionTable::build(&circuit, &permutation, &old, &new, &incomplete),
             Err(Error::Circuit(CircuitError::InvalidUpdateSet { .. }))
         ));
+    }
+
+    #[test]
+    fn aligned_link_constraints_reject_padding_and_gate_public_aliases() {
+        let (circuit, permutation, old, new, updates) = fixture();
+        for forge_public in [false, true] {
+            let mut table =
+                TransitionTable::build(&circuit, &permutation, &old, &new, &updates).unwrap();
+            let row_index = table
+                .rows
+                .iter()
+                .position(|row| row.link.active && row.link.is_public == forge_public)
+                .unwrap();
+            let row = &mut table.rows[row_index];
+            if forge_public {
+                // Column three after the public range is padding, not another public input.
+                row.link.public_offset = circuit.num_public_inputs;
+                row.link.index = 4 * circuit.num_public_inputs + 3;
+            } else {
+                // A gate wire cannot claim the fourth (public/padding) column.
+                row.link.index = 3;
+            }
+            let witness = table.compact_witness();
+            let values = witness
+                .columns
+                .iter()
+                .map(|column| column[row_index])
+                .collect::<Vec<_>>();
+            let hashes = (0..2)
+                .flat_map(|side| {
+                    (0..4).map({
+                        let inputs = &witness.hash_inputs;
+                        move |field| inputs[field][2 * row_index + side]
+                    })
+                })
+                .collect::<Vec<_>>();
+            assert!(
+                compact_residuals(&values, &hashes, table.statement())
+                    .iter()
+                    .any(|value| *value != Bn254::ZERO)
+            );
+            table.rebuild_programs();
+            assert!(prove_local(&table).is_err());
+        }
     }
 }

@@ -1,0 +1,19 @@
+{
+  "command": [
+    "scripts/run_experiment.py",
+    "--trace-log",
+    "14",
+    "--threads",
+    "8",
+    "--initial-interleaving",
+    "16",
+    "--preflight-only",
+    "--offline",
+    "--output",
+    "benchmark-results/endpoint-preflight-n14-i16-20260910"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-09-10T20:05:27.770676+00:00",
+  "started_utc": "2026-09-10T20:05:27.067866+00:00",
+  "state": "preflight_complete"
+}

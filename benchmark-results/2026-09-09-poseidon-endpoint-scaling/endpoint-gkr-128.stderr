@@ -1,0 +1,60 @@
+profile checkpoint: transition: update validation complete in 0.000s
+profile checkpoint: transition: hierarchy table insertion/composition complete in 0.000s
+profile checkpoint: transition: update sparse Merkle paths complete in 0.010s
+profile checkpoint: transition CAIR: statement/tree authentication complete in 0.000s
+profile checkpoint: transition CAIR: sparse DAG/table construction complete in 0.144s
+transition CAIR shape: updated_positions=384, level=10, rows=16384, main_width=64, product_width=64
+profile checkpoint: transition CAIR: compact witness columns complete in 0.006s
+profile checkpoint: transition CAIR: packed main table complete in 0.005s
+transition CAIR checkpoint: main commitment complete in 0.177s
+profile checkpoint: transition CAIR: routing product factors complete in 0.014s
+profile checkpoint: transition CAIR: product-tree trace complete in 0.004s
+profile checkpoint: transition CAIR: packed product table complete in 0.005s
+transition CAIR checkpoint: product commitment complete in 0.131s
+profile checkpoint: transition CAIR: local sumcheck preparation complete in 0.004s
+transition CAIR checkpoint: local sumcheck round 1/14 complete (0.165s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 2/14 complete (0.240s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 3/14 complete (0.277s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 4/14 complete (0.295s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 5/14 complete (0.304s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 6/14 complete (0.309s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 7/14 complete (0.312s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 8/14 complete (0.313s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 9/14 complete (0.314s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 10/14 complete (0.314s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 11/14 complete (0.315s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 12/14 complete (0.315s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 13/14 complete (0.315s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 14/14 complete (0.315s phase elapsed)
+profile checkpoint: transition CAIR: local sumcheck total complete in 0.316s
+profile checkpoint: transition CAIR: all-round endpoint reduction complete in 1.172s
+profile checkpoint: transition CAIR: product sumcheck preparation complete in 0.003s
+transition CAIR checkpoint: product sumcheck round 1/14 complete (0.132s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 2/14 complete (0.198s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 3/14 complete (0.232s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 4/14 complete (0.245s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 5/14 complete (0.251s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 6/14 complete (0.255s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 7/14 complete (0.256s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 8/14 complete (0.257s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 9/14 complete (0.258s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 10/14 complete (0.258s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 11/14 complete (0.259s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 12/14 complete (0.259s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 13/14 complete (0.259s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 14/14 complete (0.259s phase elapsed)
+profile checkpoint: transition CAIR: product sumcheck total complete in 0.261s
+profile checkpoint: transition CAIR: opening preparation complete in 0.000s
+transition CAIR product checkpoint: WHIR OOD polynomial evaluation 1/1 complete (0.014s opening elapsed)
+transition CAIR main checkpoint: WHIR OOD polynomial evaluation 1/1 complete (0.014s opening elapsed)
+transition CAIR main checkpoint: 112 opening polynomial evaluations complete (0.040s opening elapsed)
+transition CAIR product checkpoint: 100 opening polynomial evaluations complete (0.042s opening elapsed)
+profile checkpoint: WHIR initial claim weights (variables=20, claims=113) complete in 0.042852s
+profile checkpoint: WHIR initial claim weights (variables=20, claims=101) complete in 0.058022s
+profile checkpoint: WHIR initial folding sumcheck (variables=20) complete in 0.055059s
+profile checkpoint: WHIR initial folding sumcheck (variables=20) complete in 0.048113s
+transition CAIR main checkpoint: WHIR opening proof complete (0.290s opening elapsed: 0.038s evaluations, 0.250s proof)
+transition CAIR product checkpoint: WHIR opening proof complete (0.300s opening elapsed: 0.041s evaluations, 0.257s proof)
+profile checkpoint: transition: CAIR proof total complete in 2.546s
+profile checkpoint: transition: refresh cached public-input opening complete in 0.000s
+profile checkpoint: transition: complete hierarchy rebuild complete in 2.556s

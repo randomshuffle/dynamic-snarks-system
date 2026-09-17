@@ -1,35 +1,62 @@
 //! Transparent preprocessed multilinear SNARK backed by Plonky3's WHIR IOPP.
 //!
 //! Trace columns are committed directly as Boolean-hypercube evaluations. A
-//! degree-eight sumcheck checks the local relation, while a second sumcheck
-//! checks a compact heap product proving the fixed wiring permutation. WHIR's
-//! Reed--Solomon encoding remains an internal commitment detail; no univariate
-//! trace interpolation or quotient polynomial is needed.
+//! degree-eight ZeroCheck checks the local relation.  Wiring uses HyperPlonk's
+//! PermCheck -> ProductCheck -> ZeroCheck reduction with one multilinear
+//! product oracle. WHIR's Reed--Solomon encoding remains an internal
+//! commitment detail; no univariate trace interpolation or quotient
+//! polynomial is needed.
 
 mod air;
 mod pcs;
 pub(crate) mod program;
 
 use air::{
-    ID0, LOCAL_CONSTRAINT_COUNT, MAIN_WIDTH, MainTrace, PRE_WIDTH, RelationShape, SIGMA0,
-    evaluate_local_constraints,
+    GATE_WIDTH, LOCAL_CONSTRAINT_COUNT, LOCAL_PRE_WIDTH, MainTrace, PRE_WIDTH, PreprocessingLayout,
+    RelationShape, evaluate_local_constraints,
 };
 use p3_bn254::Bn254;
 use p3_field::{Field, PrimeCharacteristicRing, batch_multiplicative_inverse_general};
+use p3_maybe_rayon::prelude::*;
 use p3_multilinear_util::point::Point;
 use serde::{Deserialize, Serialize};
+use std::time::Instant;
 use thiserror::Error;
 
-use crate::hash::hash_node;
+use crate::transcript::RawTranscript;
 use pcs::{Commitment, ExplicitWhir, OpeningProof};
 
+pub use pcs::{WHIR_INITIAL_FOLDING_FACTOR, WHIR_SUBSEQUENT_FOLDING_FACTOR};
 pub use program::{ConstraintProgram, ProgramBuilder, Variable};
 
-const STATIC_VERSION: u64 = 2;
+/// Small description of the production WHIR configuration, without proof tables.
+#[derive(Clone, Debug)]
+pub struct WhirConfiguration {
+    /// Concrete first and subsequent folds, measured in variables.
+    pub folding_schedule: Vec<usize>,
+    /// Heights of the interleaved Reed--Solomon matrices, including the final round.
+    pub fft_domain_sizes: Vec<usize>,
+}
+
+/// Check the field-domain limit without constructing a polynomial or proof.
+pub fn whir_configuration(num_variables: usize) -> Result<WhirConfiguration, Error> {
+    let summary = ExplicitWhir::new(num_variables)
+        .map_err(Error::Whir)?
+        .parameter_summary();
+    let fft_domain_sizes = summary
+        .codeword_domain_sizes
+        .iter()
+        .zip(&summary.folding_schedule)
+        .map(|(&domain, &fold)| domain >> fold)
+        .collect();
+    Ok(WhirConfiguration {
+        folding_schedule: summary.folding_schedule,
+        fft_domain_sizes,
+    })
+}
+
+const STATIC_VERSION: u64 = 5;
 const LOCAL_DEGREE: usize = 8;
-const PRODUCT_DEGREE: usize = 5;
-const PRODUCT_WIDTH: usize = 2;
-const STANDARD_MAIN_OPENINGS: usize = 2 * MAIN_WIDTH;
 const LOCAL_ROUND_TAG: u64 = 0x5354_4154_4c4f_434c;
 const PRODUCT_ROUND_TAG: u64 = 0x5354_4154_5052_4f44;
 
@@ -133,7 +160,9 @@ pub(crate) struct ExtraMainOpenings {
     pub(crate) transcript_binding: Vec<Bn254>,
 }
 
-/// Number of fixed preprocessing columns in every static relation trace.
+/// Maximum packed preprocessing width for general gate programs. Arithmetic
+/// initializations and ordinary arithmetic baselines both use four columns;
+/// use [`ProvingKey::preprocessed_width`] for the actual width.
 pub const PREPROCESSING_WIDTH: usize = PRE_WIDTH;
 
 /// Prover key for one fixed low-degree relation.
@@ -147,8 +176,10 @@ pub struct ProvingKey {
 #[derive(Clone)]
 pub struct VerifyingKey {
     domain_size: usize,
+    main_width: usize,
     num_public_values: usize,
     public_rows: Vec<(usize, usize)>,
+    preprocessing: PreprocessingLayout,
     preprocessed_commitment: Commitment,
 }
 
@@ -158,6 +189,12 @@ impl ProvingKey {
     pub const fn trace_len(&self) -> usize {
         self.shape.domain_size
     }
+
+    /// Number of columns in the committed preprocessing table, including padding.
+    #[must_use]
+    pub fn preprocessed_width(&self) -> usize {
+        self.shape.preprocessing.width(self.shape.main_width)
+    }
 }
 
 impl VerifyingKey {
@@ -165,6 +202,12 @@ impl VerifyingKey {
     #[must_use]
     pub const fn trace_len(&self) -> usize {
         self.domain_size
+    }
+
+    /// Number of columns in the committed preprocessing table, including padding.
+    #[must_use]
+    pub fn preprocessed_width(&self) -> usize {
+        self.preprocessing.width(self.main_width)
     }
 }
 
@@ -177,6 +220,7 @@ struct SumcheckProof {
 /// A native multilinear static proof with three batched WHIR openings.
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Proof {
+    main_width: usize,
     main_commitment: Commitment,
     auxiliary_commitment: Commitment,
     local: SumcheckProof,
@@ -194,7 +238,7 @@ impl Proof {
 
     /// Evaluations appended after the static relation's standard openings.
     pub(crate) fn extra_main_evaluations(&self) -> &[Bn254] {
-        &self.main_opening.evaluations[STANDARD_MAIN_OPENINGS..]
+        &self.main_opening.evaluations[GATE_WIDTH + self.main_width..]
     }
 }
 
@@ -221,6 +265,11 @@ pub enum Error {
     /// A multilinear relation, product, or terminal identity is false.
     #[error("multilinear relation identity failed")]
     QuotientIdentity,
+    /// A Fiat--Shamir permutation denominator vanished.  This event has
+    /// negligible probability and the proof may be retried with fresh
+    /// transcript randomness.
+    #[error("HyperPlonk ProductCheck denominator is zero")]
+    ProductDenominator,
     /// A sumcheck transcript has the wrong shape or consistency relation.
     #[error("sumcheck transcript is malformed")]
     Sumcheck,
@@ -232,11 +281,16 @@ pub enum Error {
 /// Preprocess a fixed constraint program into reusable proving/verifying keys.
 pub fn setup(program: &ConstraintProgram) -> Result<(ProvingKey, VerifyingKey), Error> {
     let shape = RelationShape::from_program(program);
-    let committed = commit_columns(&shape.preprocessed_evaluations, PRE_WIDTH)?;
+    let committed = commit_columns(
+        &shape.preprocessed_evaluations,
+        shape.preprocessing.width(shape.main_width),
+    )?;
     let verifying_key = VerifyingKey {
         domain_size: shape.domain_size,
+        main_width: shape.main_width,
         num_public_values: shape.num_public_values,
         public_rows: shape.public_rows.clone(),
+        preprocessing: shape.preprocessing,
         preprocessed_commitment: committed.commitment().clone(),
     };
     Ok((
@@ -276,19 +330,31 @@ pub(crate) fn prove_with_main_openings(
     }
     let n = key.shape.domain_size;
 
-    let preprocessed_committed = commit_columns(&key.shape.preprocessed_evaluations, PRE_WIDTH)?;
+    let phase = Instant::now();
+    let preprocessed_committed = commit_columns(
+        &key.shape.preprocessed_evaluations,
+        key.preprocessed_width(),
+    )?;
+    profile_checkpoint("static: preprocessed commitment", phase);
     if preprocessed_committed.commitment() != &key.verifying_key.preprocessed_commitment {
         return Err(Error::PreprocessedCommitment);
     }
+    let phase = Instant::now();
     let MainTrace {
         columns: main,
         public_column,
     } = key.shape.main_trace(program, public_values);
-    let main_committed = commit_columns(&main, MAIN_WIDTH)?;
+    profile_checkpoint("static: main trace construction", phase);
+    let phase = Instant::now();
+    let main_committed = commit_columns(&main, key.shape.main_width)?;
+    profile_checkpoint("static: main commitment", phase);
+    let phase = Instant::now();
     let extra =
         build_extra_openings(main_committed.commitment(), &main).map_err(Error::ComposedOpening)?;
+    profile_checkpoint("static: composed CAIR callback", phase);
 
     let mut transcript = Transcript::new(n, public_values);
+    transcript.observe_preprocessing(key.shape.preprocessing, key.preprocessed_width());
     transcript.observe_commitment(&key.verifying_key.preprocessed_commitment);
     transcript.observe_commitment(main_committed.commitment());
     if !extra.transcript_binding.is_empty() {
@@ -297,13 +363,25 @@ pub(crate) fn prove_with_main_openings(
     let beta = transcript.challenge();
     let gamma = transcript.challenge();
 
-    let product_columns = product_heap(&key.shape.preprocessed_evaluations, &main, beta, gamma);
-    let product_committed = commit_columns(&product_columns, PRODUCT_WIDTH)?;
+    let phase = Instant::now();
+    let product_oracle = product_oracle(
+        &key.shape.preprocessed_evaluations[key.shape.preprocessing.sigma_offset()..],
+        &main,
+        key.shape.main_width,
+        beta,
+        gamma,
+    )?;
+    profile_checkpoint("static: HyperPlonk product oracle", phase);
+    let phase = Instant::now();
+    let product_committed = commit_mle(product_oracle.clone())?;
+    profile_checkpoint("static: product commitment", phase);
     transcript.observe_commitment(product_committed.commitment());
 
     let local_weights = transcript.challenges(LOCAL_CONSTRAINT_COUNT);
     let local_target = transcript.challenges(n.trailing_zeros() as usize);
+    let phase = Instant::now();
     let local = prove_local_sumcheck(
+        key.shape.preprocessing,
         &key.shape.preprocessed_evaluations,
         &main,
         &public_column,
@@ -311,41 +389,80 @@ pub(crate) fn prove_with_main_openings(
         &local_target,
         &mut transcript,
     );
+    profile_checkpoint("static: local sumcheck", phase);
 
-    let product_weights = transcript.challenges(4);
-    let product_target = transcript.challenges(n.trailing_zeros() as usize);
+    let product_target = transcript.challenges(n.trailing_zeros() as usize + 1);
+    let phase = Instant::now();
     let product = prove_product_sumcheck(
-        &key.shape.preprocessed_evaluations,
+        &key.shape.preprocessed_evaluations[key.shape.preprocessing.sigma_offset()..],
         &main,
-        &product_columns,
+        product_oracle,
+        key.shape.main_width,
         beta,
         gamma,
-        &product_weights,
         &product_target,
         &mut transcript,
     );
+    profile_checkpoint("static: product sumcheck", phase);
 
-    let preprocessed_points = preprocessed_opening_points(&local.point, &product.point);
-    let mut main_points = main_opening_points(&local.point, &product.point);
+    let product_row_point = &product.point[1..];
+    let preprocessed_points = preprocessed_opening_points(
+        &local.point,
+        product_row_point,
+        key.shape.main_width,
+        key.shape.preprocessing,
+    );
+    let mut main_points =
+        main_opening_points(&local.point, product_row_point, key.shape.main_width);
     main_points.extend(extra.points);
-    let product_points = product_opening_points(&product.point, n);
+    let product_points = product_opening_points(&product.point);
     let opening_seed = transcript.opening_seed();
 
     let main_commitment = main_committed.commitment().clone();
     let auxiliary_commitment = product_committed.commitment().clone();
+    let (preprocessed_opening, (main_opening, auxiliary_opening)) = join(
+        || {
+            let phase = Instant::now();
+            let opening = open_points(preprocessed_committed, &preprocessed_points, &opening_seed);
+            profile_checkpoint("static: preprocessed WHIR opening", phase);
+            opening
+        },
+        || {
+            join(
+                || {
+                    let phase = Instant::now();
+                    let opening = open_points(main_committed, &main_points, &opening_seed);
+                    profile_checkpoint("static: main WHIR opening", phase);
+                    opening
+                },
+                || {
+                    let phase = Instant::now();
+                    let opening = open_points(product_committed, &product_points, &opening_seed);
+                    profile_checkpoint("static: product WHIR opening", phase);
+                    opening
+                },
+            )
+        },
+    );
     Ok(Proof {
+        main_width: key.shape.main_width,
         main_commitment,
         auxiliary_commitment,
         local: local.proof,
         product: product.proof,
-        preprocessed_opening: open_points(
-            preprocessed_committed,
-            &preprocessed_points,
-            &opening_seed,
-        ),
-        main_opening: open_points(main_committed, &main_points, &opening_seed),
-        auxiliary_opening: open_points(product_committed, &product_points, &opening_seed),
+        preprocessed_opening,
+        main_opening,
+        auxiliary_opening,
     })
+}
+
+fn profile_checkpoint(label: &str, started: Instant) {
+    if std::env::var_os("DYNAMIC_SNARK_PROFILE").is_some() {
+        eprintln!(
+            "profile checkpoint: {label} complete in {:.3}s",
+            started.elapsed().as_secs_f64()
+        );
+    }
 }
 
 /// Verify a static proof against its relation public inputs.
@@ -361,9 +478,13 @@ pub(crate) fn verify_with_main_openings(
     extra: &ExtraMainOpenings,
 ) -> Result<(), Error> {
     validate_public_values(key.num_public_values, public_values)?;
+    if proof.main_width != key.main_width {
+        return Err(Error::QuotientIdentity);
+    }
     let n = key.domain_size;
     let variables = n.trailing_zeros() as usize;
     let mut transcript = Transcript::new(n, public_values);
+    transcript.observe_preprocessing(key.preprocessing, key.preprocessed_width());
     transcript.observe_commitment(&key.preprocessed_commitment);
     transcript.observe_commitment(&proof.main_commitment);
     if !extra.transcript_binding.is_empty() {
@@ -382,38 +503,43 @@ pub(crate) fn verify_with_main_openings(
         LOCAL_ROUND_TAG,
         &mut transcript,
     )?;
-    let product_weights = transcript.challenges(4);
-    let product_target = transcript.challenges(variables);
+    let product_target = transcript.challenges(variables + 1);
     let (product_claim, product_point) = verify_sumcheck(
         &proof.product,
-        PRODUCT_DEGREE,
-        variables,
+        product_degree(key.main_width),
+        variables + 1,
         PRODUCT_ROUND_TAG,
         &mut transcript,
     )?;
 
-    let preprocessed_points = preprocessed_opening_points(&local_point, &product_point);
-    let mut main_points = main_opening_points(&local_point, &product_point);
+    let product_row_point = &product_point[1..];
+    let preprocessed_points = preprocessed_opening_points(
+        &local_point,
+        product_row_point,
+        key.main_width,
+        key.preprocessing,
+    );
+    let mut main_points = main_opening_points(&local_point, product_row_point, key.main_width);
     main_points.extend(extra.points.iter().cloned());
-    let product_points = product_opening_points(&product_point, n);
+    let product_points = product_opening_points(&product_point);
     let opening_seed = transcript.opening_seed();
 
     verify_points(
-        n * PRE_WIDTH,
+        n * key.preprocessed_width(),
         &key.preprocessed_commitment,
         &preprocessed_points,
         &proof.preprocessed_opening,
         &opening_seed,
     )?;
     verify_points(
-        n * MAIN_WIDTH,
+        n * key.main_width,
         &proof.main_commitment,
         &main_points,
         &proof.main_opening,
         &opening_seed,
     )?;
     verify_points(
-        2 * n * PRODUCT_WIDTH,
+        2 * n,
         &proof.auxiliary_commitment,
         &product_points,
         &proof.auxiliary_opening,
@@ -422,18 +548,21 @@ pub(crate) fn verify_with_main_openings(
 
     let pre_values = &proof.preprocessed_opening.evaluations;
     let main_values = &proof.main_opening.evaluations;
-    if pre_values.len() != PRE_WIDTH + 8
-        || main_values.len() != STANDARD_MAIN_OPENINGS + extra.points.len()
-        || proof.auxiliary_opening.evaluations.len() != 10
+    let local_opening_count = key.preprocessing.sigma_offset();
+    if pre_values.len() != local_opening_count + key.main_width
+        || main_values.len() != GATE_WIDTH + key.main_width + extra.points.len()
+        || proof.auxiliary_opening.evaluations.len() != 5
     {
         return Err(Error::QuotientIdentity);
     }
 
     let public_value = public_mle(&local_point, &key.public_rows, public_values);
+    let local_pre = key.preprocessing.local_values(&local_point, pre_values);
     let local_terminal = eq_eval(&local_target, &local_point)
         * combined_local_residual(
-            &pre_values[..PRE_WIDTH],
-            &main_values[..MAIN_WIDTH],
+            key.preprocessing,
+            &local_pre,
+            &main_values[..GATE_WIDTH],
             public_value,
             &local_weights,
         );
@@ -443,12 +572,12 @@ pub(crate) fn verify_with_main_openings(
 
     let product_terminal = product_terminal(
         &product_point,
-        &pre_values[PRE_WIDTH..],
-        &main_values[MAIN_WIDTH..STANDARD_MAIN_OPENINGS],
+        &pre_values[local_opening_count..],
+        &main_values[GATE_WIDTH..GATE_WIDTH + key.main_width],
         &proof.auxiliary_opening.evaluations,
+        key.main_width,
         beta,
         gamma,
-        &product_weights,
     )?;
     if eq_eval(&product_target, &product_point) * product_terminal != product_claim {
         return Err(Error::QuotientIdentity);
@@ -461,16 +590,19 @@ pub(crate) fn commitment_seed(commitment: &TraceCommitment) -> Vec<Bn254> {
     let mut seed = Vec::new();
     seed.push(Bn254::from_usize(commitment.num_roots()));
     for root in commitment.roots() {
-        seed.extend(root);
+        for chunk in root.chunks_exact(16) {
+            seed.push(
+                Bn254::from_biguint(num_bigint::BigUint::from_bytes_le(chunk))
+                    .expect("a 128-bit commitment limb fits BN254"),
+            );
+        }
     }
     seed
 }
 
-/// Select main column zero at a low-bit-first multilinear row point.
-pub(crate) fn main_column_point(low_bit_point: &[Bn254], trace_len: usize) -> Point<Bn254> {
-    debug_assert!(trace_len.is_power_of_two());
-    debug_assert_eq!(low_bit_point.len(), trace_len.trailing_zeros() as usize);
-    table_point(0, low_bit_point, MAIN_WIDTH)
+/// Interpret a full main-table MLE point in the protocol's low-bit order.
+pub(crate) fn main_table_point(low_bit_point: &[Bn254]) -> Point<Bn254> {
+    point_from_low(low_bit_point.to_vec())
 }
 
 struct ProvedSumcheck {
@@ -479,6 +611,7 @@ struct ProvedSumcheck {
 }
 
 fn prove_local_sumcheck(
+    layout: PreprocessingLayout,
     preprocessed: &[Vec<Bn254>],
     main: &[Vec<Bn254>],
     public_column: &[Bn254],
@@ -486,46 +619,55 @@ fn prove_local_sumcheck(
     target: &[Bn254],
     transcript: &mut Transcript,
 ) -> ProvedSumcheck {
-    let mut columns = preprocessed
+    let local_columns = layout.local_columns();
+    let local_width = local_columns.len();
+    let mut columns = local_columns
         .iter()
-        .cloned()
-        .chain(main.iter().cloned())
+        .map(|&column| layout.local_table(column, main[0].len(), preprocessed))
+        .chain(main[..GATE_WIDTH].iter().cloned())
         .chain([public_column.to_vec()])
         .collect::<Vec<_>>();
     let mut eq = eq_evaluations(target);
     let mut point = Vec::with_capacity(target.len());
     let mut rounds = Vec::with_capacity(target.len());
     for round in 0..target.len() {
-        let mut evaluations = vec![Bn254::ZERO; LOCAL_DEGREE + 1];
-        for (evaluation_index, evaluation) in evaluations.iter_mut().enumerate() {
-            let t = Bn254::from_usize(evaluation_index);
-            for pair in 0..eq.len() / 2 {
-                let pre = core::array::from_fn::<_, PRE_WIDTH, _>(|column| {
-                    lerp(columns[column][2 * pair], columns[column][2 * pair + 1], t)
-                });
-                let main = core::array::from_fn::<_, MAIN_WIDTH, _>(|column| {
+        let evaluations = crate::parallel::sumcheck(
+            eq.len() / 2,
+            LOCAL_DEGREE + 1,
+            (LOCAL_DEGREE + 1) * columns.len(),
+            || (),
+            |scratch, pair, t| {
+                let _ = scratch;
+
+                let mut pre = [Bn254::ZERO; LOCAL_PRE_WIDTH];
+                for (position, &column) in local_columns.iter().enumerate() {
+                    pre[column] = lerp(
+                        columns[position][2 * pair],
+                        columns[position][2 * pair + 1],
+                        t,
+                    );
+                }
+                let main = core::array::from_fn::<_, GATE_WIDTH, _>(|column| {
                     lerp(
-                        columns[PRE_WIDTH + column][2 * pair],
-                        columns[PRE_WIDTH + column][2 * pair + 1],
+                        columns[local_width + column][2 * pair],
+                        columns[local_width + column][2 * pair + 1],
                         t,
                     )
                 });
                 let public = lerp(
-                    columns[PRE_WIDTH + MAIN_WIDTH][2 * pair],
-                    columns[PRE_WIDTH + MAIN_WIDTH][2 * pair + 1],
+                    columns[local_width + GATE_WIDTH][2 * pair],
+                    columns[local_width + GATE_WIDTH][2 * pair + 1],
                     t,
                 );
-                *evaluation += lerp(eq[2 * pair], eq[2 * pair + 1], t)
-                    * combined_local_residual(&pre, &main, public, weights);
-            }
-        }
+                lerp(eq[2 * pair], eq[2 * pair + 1], t)
+                    * combined_local_residual(layout, &pre, &main, public, weights)
+            },
+        );
         transcript.observe_message(LOCAL_ROUND_TAG + round as u64, &evaluations);
         let challenge = transcript.challenge();
         point.push(challenge);
         fold(&mut eq, challenge);
-        for column in &mut columns {
-            fold(column, challenge);
-        }
+        crate::parallel::fold_columns(&mut columns, challenge);
         rounds.push(evaluations);
     }
     ProvedSumcheck {
@@ -536,52 +678,89 @@ fn prove_local_sumcheck(
 
 #[allow(clippy::too_many_arguments)]
 fn prove_product_sumcheck(
-    preprocessed: &[Vec<Bn254>],
+    permutation: &[Vec<Bn254>],
     main: &[Vec<Bn254>],
-    heap: &[Vec<Bn254>],
+    product: Vec<Bn254>,
+    main_width: usize,
     beta: Bn254,
     gamma: Bn254,
-    weights: &[Bn254],
     target: &[Bn254],
     transcript: &mut Transcript,
 ) -> ProvedSumcheck {
     let n = main[0].len();
-    let mut columns = Vec::with_capacity(8 + MAIN_WIDTH + 9);
-    columns.extend((ID0..ID0 + 4).map(|column| preprocessed[column].clone()));
-    columns.extend((SIGMA0..SIGMA0 + 4).map(|column| preprocessed[column].clone()));
-    columns.extend(main.iter().cloned());
-    for side in 0..2 {
-        columns.push(heap[side][..n].to_vec());
-        columns.push((0..n).map(|row| heap[side][2 * row]).collect());
-        columns.push((0..n).map(|row| heap[side][2 * row + 1]).collect());
-        columns.push(heap[side][n..].to_vec());
-    }
-    let mut internal = vec![Bn254::ONE; n];
-    internal[0] = Bn254::ZERO;
-    columns.push(internal);
+    debug_assert_eq!(product.len(), 2 * n);
+    debug_assert_eq!(target.len(), n.trailing_zeros() as usize + 1);
+    let lift = |values: &[Bn254]| {
+        values
+            .par_iter()
+            .flat_map_iter(|&value| [value, value])
+            .collect::<Vec<_>>()
+    };
+    let mut columns = Vec::with_capacity(2 * main_width + 6);
+    columns.extend(permutation.iter().map(|column| lift(column)));
+    columns.extend(main.iter().map(|column| lift(column)));
+    columns.push(
+        (0..2 * n)
+            .into_par_iter()
+            .map(|index| product[2 * (index >> 1)])
+            .collect(),
+    );
+    columns.push(
+        (0..2 * n)
+            .into_par_iter()
+            .map(|index| product[2 * (index >> 1) + 1])
+            .collect(),
+    );
+    columns.push(
+        (0..2 * n)
+            .into_par_iter()
+            .map(|index| product[index >> 1])
+            .collect(),
+    );
+    columns.push(
+        (0..2 * n)
+            .into_par_iter()
+            .map(|index| product[(index >> 1) | n])
+            .collect(),
+    );
+    columns.push(
+        (0..2 * n)
+            .into_par_iter()
+            .map(|index| Bn254::from_bool(index & 1 == 1))
+            .collect(),
+    );
+    // All identity labels are affine in one row-index MLE. No identity
+    // columns are committed or retained in the proving key.
+    columns.push(
+        (0..2 * n)
+            .into_par_iter()
+            .map(|index| Bn254::from_usize(index >> 1))
+            .collect(),
+    );
 
     let mut eq = eq_evaluations(target);
     let mut point = Vec::with_capacity(target.len());
     let mut rounds = Vec::with_capacity(target.len());
     for round in 0..target.len() {
-        let mut evaluations = vec![Bn254::ZERO; PRODUCT_DEGREE + 1];
-        for (evaluation_index, evaluation) in evaluations.iter_mut().enumerate() {
-            let t = Bn254::from_usize(evaluation_index);
-            for pair in 0..eq.len() / 2 {
-                let values = core::array::from_fn::<_, { 8 + MAIN_WIDTH + 9 }, _>(|column| {
-                    lerp(columns[column][2 * pair], columns[column][2 * pair + 1], t)
-                });
-                *evaluation += lerp(eq[2 * pair], eq[2 * pair + 1], t)
-                    * combined_product_residual(&values, beta, gamma, weights);
-            }
-        }
+        let evaluations = crate::parallel::sumcheck(
+            eq.len() / 2,
+            product_degree(main_width) + 1,
+            (product_degree(main_width) + 1) * columns.len(),
+            || vec![Bn254::ZERO; columns.len()],
+            |scratch, pair, t| {
+                for (value, column) in scratch.iter_mut().zip(&columns) {
+                    *value = lerp(column[2 * pair], column[2 * pair + 1], t);
+                }
+                let values = &*scratch;
+                lerp(eq[2 * pair], eq[2 * pair + 1], t)
+                    * combined_product_residual(&values, main_width, beta, gamma)
+            },
+        );
         transcript.observe_message(PRODUCT_ROUND_TAG + round as u64, &evaluations);
         let challenge = transcript.challenge();
         point.push(challenge);
         fold(&mut eq, challenge);
-        for column in &mut columns {
-            fold(column, challenge);
-        }
+        crate::parallel::fold_columns(&mut columns, challenge);
         rounds.push(evaluations);
     }
     ProvedSumcheck {
@@ -615,12 +794,13 @@ fn verify_sumcheck(
 }
 
 fn combined_local_residual(
+    layout: PreprocessingLayout,
     pre: &[Bn254],
     main: &[Bn254],
     public_value: Bn254,
     weights: &[Bn254],
 ) -> Bn254 {
-    evaluate_local_constraints(pre, main, public_value)
+    evaluate_local_constraints(layout, pre, main, public_value)
         .into_iter()
         .zip(weights)
         .fold(Bn254::ZERO, |sum, (residual, &weight)| {
@@ -630,24 +810,32 @@ fn combined_local_residual(
 
 fn combined_product_residual(
     values: &[Bn254],
+    main_width: usize,
     beta: Bn254,
     gamma: Bn254,
-    weights: &[Bn254],
 ) -> Bn254 {
-    let labels = &values[..8];
-    let main = &values[8..8 + MAIN_WIDTH];
-    let work = &values[8 + MAIN_WIDTH..];
-    let numerator = (0..4).fold(Bn254::ONE, |product, slot| {
+    let labels = &values[..main_width];
+    let main = &values[main_width..2 * main_width];
+    let work = &values[2 * main_width..];
+    debug_assert_eq!(work.len(), 6);
+    let row_base = Bn254::from_usize(main_width) * work[5];
+    let numerator = (0..main_width).fold(Bn254::ONE, |product, slot| {
+        product * (beta * (row_base + Bn254::from_usize(slot + 1)) + main[slot] + gamma)
+    });
+    let denominator = (0..main_width).fold(Bn254::ONE, |product, slot| {
         product * (beta * labels[slot] + main[slot] + gamma)
     });
-    let denominator = (0..4).fold(Bn254::ONE, |product, slot| {
-        product * (beta * labels[4 + slot] + main[slot] + gamma)
-    });
-    let internal = work[8];
-    weights[0] * internal * (work[0] - work[1] * work[2])
-        + weights[1] * internal * (work[4] - work[5] * work[6])
-        + weights[2] * (work[3] - numerator)
-        + weights[3] * (work[7] - denominator)
+    let leaf = work[0];
+    let internal = work[1];
+    let shifted_zero = work[2];
+    let shifted_one = work[3];
+    let branch = work[4];
+    (Bn254::ONE - branch) * (denominator * leaf - numerator)
+        + branch * (internal - shifted_zero * shifted_one)
+}
+
+const fn product_degree(main_width: usize) -> usize {
+    main_width + 2
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -655,98 +843,144 @@ fn product_terminal(
     point: &[Bn254],
     labels: &[Bn254],
     main: &[Bn254],
-    heap: &[Bn254],
+    product: &[Bn254],
+    main_width: usize,
     beta: Bn254,
     gamma: Bn254,
-    weights: &[Bn254],
 ) -> Result<Bn254, Error> {
-    if labels.len() != 8 || main.len() != MAIN_WIDTH || heap.len() != 10 {
+    if point.is_empty()
+        || labels.len() != main_width
+        || main.len() != main_width
+        || product.len() != 5
+    {
         return Err(Error::QuotientIdentity);
     }
-    let numerator = (0..4).fold(Bn254::ONE, |product, slot| {
-        product * (beta * labels[slot] + main[slot] + gamma)
-    });
-    let denominator = (0..4).fold(Bn254::ONE, |product, slot| {
-        product * (beta * labels[4 + slot] + main[slot] + gamma)
-    });
-    let internal = Bn254::ONE - eq_at_index_low(point, 0);
-    let mut residual = Bn254::ZERO;
-    for side in 0..2 {
-        let offset = 5 * side;
-        residual += weights[side] * internal * (heap[offset] - heap[offset + 1] * heap[offset + 2]);
-    }
-    residual += weights[2] * (heap[3] - numerator);
-    residual += weights[3] * (heap[8] - denominator);
-    if heap[4] != heap[9] {
+    let mut values = Vec::with_capacity(2 * main_width + 6);
+    values.extend_from_slice(labels);
+    values.extend_from_slice(main);
+    values.extend_from_slice(&product[..4]);
+    values.push(point[0]);
+    values.push(
+        point[1..]
+            .iter()
+            .enumerate()
+            .map(|(bit, &value)| Bn254::from_usize(1usize << bit) * value)
+            .sum(),
+    );
+    if product[4] != Bn254::ONE {
         return Err(Error::QuotientIdentity);
     }
-    Ok(residual)
+    Ok(combined_product_residual(&values, main_width, beta, gamma))
 }
 
-fn product_heap(
-    preprocessed: &[Vec<Bn254>],
+fn product_oracle(
+    permutation: &[Vec<Bn254>],
     main: &[Vec<Bn254>],
+    main_width: usize,
     beta: Bn254,
     gamma: Bn254,
-) -> Vec<Vec<Bn254>> {
+) -> Result<Vec<Bn254>, Error> {
     let n = main[0].len();
-    let mut heap = vec![vec![Bn254::ZERO; 2 * n]; 2];
-    for row in 0..n {
-        heap[0][n + row] = (0..4).fold(Bn254::ONE, |product, slot| {
-            product * (beta * preprocessed[ID0 + slot][row] + main[slot][row] + gamma)
+    let mut numerators = vec![Bn254::ONE; n];
+    let mut denominators = vec![Bn254::ONE; n];
+    numerators
+        .par_iter_mut()
+        .zip(denominators.par_iter_mut())
+        .enumerate()
+        .for_each(|(row, (numerator, denominator))| {
+            *numerator = (0..main_width).fold(Bn254::ONE, |product, slot| {
+                product
+                    * (beta * Bn254::from_usize(main_width * row + slot + 1)
+                        + main[slot][row]
+                        + gamma)
+            });
+            *denominator = (0..main_width).fold(Bn254::ONE, |product, slot| {
+                product * (beta * permutation[slot][row] + main[slot][row] + gamma)
+            });
         });
-        heap[1][n + row] = (0..4).fold(Bn254::ONE, |product, slot| {
-            product * (beta * preprocessed[SIGMA0 + slot][row] + main[slot][row] + gamma)
+    if denominators.par_iter().any(|value| value.is_zero()) {
+        return Err(Error::ProductDenominator);
+    }
+    let mut inverses = vec![Bn254::ZERO; n];
+    let chunk = crate::parallel::grain(n, 2048);
+    denominators
+        .par_chunks(chunk)
+        .zip(inverses.par_chunks_mut(chunk))
+        .for_each(|(values, inverses)| {
+            batch_multiplicative_inverse_general(values, inverses, |value| value.inverse());
         });
+    numerators
+        .par_iter_mut()
+        .zip(inverses.par_iter())
+        .for_each(|(value, inverse)| *value *= *inverse);
+    let mut values = vec![Bn254::ZERO; 2 * n];
+    values
+        .par_chunks_mut(2)
+        .zip(numerators.par_iter())
+        .for_each(|(row, &value)| row[0] = value);
+    // Level d occupies indices 2^(d+2)*k + 2^(d+1)-1. Its children
+    // pair the two halves of the preceding level, matching the original recurrence.
+    let mut level = numerators;
+    let mut stride = 4;
+    while level.len() > 1 {
+        let half = level.len() / 2;
+        let next = level[..half]
+            .par_iter()
+            .zip(level[half..].par_iter())
+            .map(|(&a, &b)| a * b)
+            .collect::<Vec<_>>();
+        values
+            .par_chunks_mut(stride)
+            .zip(next.par_iter())
+            .for_each(|(block, &value)| block[stride / 2 - 1] = value);
+        level = next;
+        stride *= 2;
     }
-    for node in (1..n).rev() {
-        heap[0][node] = heap[0][2 * node] * heap[0][2 * node + 1];
-        heap[1][node] = heap[1][2 * node] * heap[1][2 * node + 1];
-    }
-    heap
+    // The all-ones slot is the sentinel zero, as in the original oracle.
+    Ok(values)
 }
 
-fn preprocessed_opening_points(local: &[Bn254], product: &[Bn254]) -> Vec<Point<Bn254>> {
-    let mut points = (0..PRE_WIDTH)
-        .map(|column| table_point(column, local, PRE_WIDTH))
+fn preprocessed_opening_points(
+    local: &[Bn254],
+    product: &[Bn254],
+    main_width: usize,
+    layout: PreprocessingLayout,
+) -> Vec<Point<Bn254>> {
+    let offset = layout.sigma_offset();
+    let width = layout.width(main_width);
+    let mut points = (0..offset)
+        .map(|column| table_point(column, local, width))
         .collect::<Vec<_>>();
-    points.extend(
-        (ID0..ID0 + 4)
-            .chain(SIGMA0..SIGMA0 + 4)
-            .map(|column| table_point(column, product, PRE_WIDTH)),
-    );
+    points.extend((offset..offset + main_width).map(|column| table_point(column, product, width)));
     points
 }
 
-fn main_opening_points(local: &[Bn254], product: &[Bn254]) -> Vec<Point<Bn254>> {
-    (0..MAIN_WIDTH)
-        .map(|column| table_point(column, local, MAIN_WIDTH))
-        .chain((0..MAIN_WIDTH).map(|column| table_point(column, product, MAIN_WIDTH)))
+fn main_opening_points(local: &[Bn254], product: &[Bn254], main_width: usize) -> Vec<Point<Bn254>> {
+    (0..GATE_WIDTH)
+        .map(|column| table_point(column, local, main_width))
+        .chain((0..main_width).map(|column| table_point(column, product, main_width)))
         .collect()
 }
 
-fn product_opening_points(point: &[Bn254], n: usize) -> Vec<Point<Bn254>> {
-    let mut points = Vec::with_capacity(10);
-    let variables = n.trailing_zeros() as usize;
-    for side in 0..2 {
-        let mut parent = point.to_vec();
-        parent.push(Bn254::ZERO);
-        let mut left = Vec::with_capacity(variables + 1);
-        left.push(Bn254::ZERO);
-        left.extend_from_slice(point);
-        let mut right = Vec::with_capacity(variables + 1);
-        right.push(Bn254::ONE);
-        right.extend_from_slice(point);
-        let mut leaf = point.to_vec();
-        leaf.push(Bn254::ONE);
-        let root = (0..=variables)
-            .map(|bit| Bn254::from_bool(bit == 0))
-            .collect::<Vec<_>>();
-        for row_point in [&parent, &left, &right, &leaf, &root] {
-            points.push(table_point(side, row_point, PRODUCT_WIDTH));
-        }
-    }
-    points
+fn product_opening_points(point: &[Bn254]) -> Vec<Point<Bn254>> {
+    let mut leaf = point.to_vec();
+    leaf[0] = Bn254::ZERO;
+    let mut internal = point.to_vec();
+    internal[0] = Bn254::ONE;
+    let mut shifted_zero = point[1..].to_vec();
+    shifted_zero.push(Bn254::ZERO);
+    let mut shifted_one = point[1..].to_vec();
+    shifted_one.push(Bn254::ONE);
+    let mut root = vec![Bn254::ONE; point.len()];
+    *root.last_mut().expect("a product point is nonempty") = Bn254::ZERO;
+    [leaf, internal, shifted_zero, shifted_one, root]
+        .into_iter()
+        .map(point_from_low)
+        .collect()
+}
+
+fn point_from_low(low: Vec<Bn254>) -> Point<Bn254> {
+    Point::new(low.into_iter().rev().collect())
 }
 
 fn table_point(column: usize, row_point: &[Bn254], width: usize) -> Point<Bn254> {
@@ -769,12 +1003,11 @@ fn commit_columns(columns: &[Vec<Bn254>], width: usize) -> Result<MleCommitted, 
         return Err(Error::Whir("invalid direct MLE column layout".to_string()));
     }
     let rows = columns[0].len();
-    let mut table = vec![Bn254::ZERO; rows * width];
-    for (column, values) in columns.iter().enumerate() {
-        for (row, &value) in values.iter().enumerate() {
-            table[row * width + column] = value;
-        }
-    }
+    let table = crate::parallel::pack_columns(
+        rows,
+        width,
+        &columns.iter().map(Vec::as_slice).collect::<Vec<_>>(),
+    );
     commit_mle(table)
 }
 
@@ -803,17 +1036,7 @@ fn public_mle(point: &[Bn254], public_rows: &[(usize, usize)], public_values: &[
 }
 
 fn eq_evaluations(point: &[Bn254]) -> Vec<Bn254> {
-    let mut result = vec![Bn254::ONE];
-    for &coordinate in point {
-        let old = result.len();
-        result.resize(old << 1, Bn254::ZERO);
-        for index in 0..old {
-            let value = result[index];
-            result[index] = value * (Bn254::ONE - coordinate);
-            result[index | old] = value * coordinate;
-        }
-    }
-    result
+    crate::parallel::eq_evaluations(point)
 }
 
 fn eq_eval(left: &[Bn254], right: &[Bn254]) -> Bn254 {
@@ -839,10 +1062,7 @@ fn eq_at_index_low(point: &[Bn254], index: usize) -> Bn254 {
 }
 
 fn fold(values: &mut Vec<Bn254>, challenge: Bn254) {
-    for pair in 0..values.len() / 2 {
-        values[pair] = lerp(values[2 * pair], values[2 * pair + 1], challenge);
-    }
-    values.truncate(values.len() / 2);
+    crate::parallel::fold(values, challenge);
 }
 
 fn lerp(zero: Bn254, one: Bn254, point: Bn254) -> Bn254 {
@@ -892,21 +1112,25 @@ fn validate_public_values(expected: usize, actual: &[Bn254]) -> Result<(), Error
 }
 
 struct Transcript {
-    state: Bn254,
+    raw: RawTranscript,
     counter: u64,
 }
 
 impl Transcript {
+    fn observe_preprocessing(&mut self, layout: PreprocessingLayout, width: usize) {
+        self.observe(Bn254::from_usize(width));
+        for value in layout.statement_elements() {
+            self.observe(value);
+        }
+    }
+
     fn new(domain_size: usize, public_values: &[Bn254]) -> Self {
         let mut transcript = Self {
-            state: hash_node(
-                100,
-                Bn254::from_u64(0x5354_4154_4d4c_4553),
-                Bn254::from_usize(domain_size),
-            ),
+            raw: RawTranscript::new(0x5354_4154_4d4c_4553),
             counter: 0,
         };
         transcript.observe(Bn254::from_u64(STATIC_VERSION));
+        transcript.observe(Bn254::from_usize(domain_size));
         transcript.observe(Bn254::from_usize(public_values.len()));
         for &value in public_values {
             transcript.observe(value);
@@ -915,15 +1139,12 @@ impl Transcript {
     }
 
     fn observe(&mut self, value: Bn254) {
-        self.state = hash_node(101, self.state, value);
+        self.raw.absorb(value);
     }
 
     fn observe_commitment(&mut self, commitment: &Commitment) {
-        self.observe(Bn254::from_usize(commitment.num_roots()));
-        for root in commitment.roots() {
-            for &element in root {
-                self.observe(element);
-            }
+        for element in commitment_seed(commitment) {
+            self.observe(element);
         }
     }
 
@@ -943,13 +1164,8 @@ impl Transcript {
     }
 
     fn challenge(&mut self) -> Bn254 {
-        let result = hash_node(
-            102 + self.counter as usize,
-            self.state,
-            Bn254::from_u64(self.counter),
-        );
+        let result = self.raw.challenge(0x5354_4154_4348_0000 + self.counter);
         self.counter += 1;
-        self.observe(result);
         result
     }
 
@@ -958,7 +1174,10 @@ impl Transcript {
     }
 
     fn opening_seed(&self) -> [Bn254; 2] {
-        [self.state, Bn254::from_u64(self.counter)]
+        [
+            self.raw.challenge(0x5354_4154_4f50_0000 + self.counter),
+            self.raw.challenge(0x5354_4154_4f50_8000 + self.counter),
+        ]
     }
 }
 
@@ -1016,6 +1235,43 @@ mod tests {
     }
 
     #[test]
+    fn product_oracle_satisfies_hyperplonk_recurrence() {
+        let program = arithmetic_program(Bn254::ONE);
+        let shape = RelationShape::from_program(&program);
+        let main = shape.main_trace(&program, &[Bn254::ONE]).columns;
+        let beta = Bn254::from_u64(17);
+        let gamma = Bn254::from_u64(29);
+        let oracle = product_oracle(
+            &shape.preprocessed_evaluations[shape.preprocessing.sigma_offset()..],
+            &main,
+            shape.main_width,
+            beta,
+            gamma,
+        )
+        .unwrap();
+        let n = shape.domain_size;
+        for row in 0..n {
+            let numerator = (0..shape.main_width).fold(Bn254::ONE, |product, slot| {
+                product
+                    * (beta * Bn254::from_usize(shape.main_width * row + slot + 1)
+                        + main[slot][row]
+                        + gamma)
+            });
+            let denominator = (0..shape.main_width).fold(Bn254::ONE, |product, slot| {
+                product
+                    * (beta
+                        * shape.preprocessed_evaluations[shape.preprocessing.sigma_offset() + slot]
+                            [row]
+                        + main[slot][row]
+                        + gamma)
+            });
+            assert_eq!(denominator * oracle[2 * row], numerator);
+            assert_eq!(oracle[2 * row + 1], oracle[row] * oracle[row | n]);
+        }
+        assert_eq!(oracle[n - 1], Bn254::ONE);
+    }
+
+    #[test]
     fn verifier_rejects_tampering_at_every_static_proof_layer() {
         let public = Bn254::ONE;
         let program = arithmetic_program(public);
@@ -1025,7 +1281,7 @@ mod tests {
 
         let perturb_commitment = |commitment: &Commitment| -> Commitment {
             let mut roots = commitment.roots().to_vec();
-            roots[0][0] += Bn254::ONE;
+            roots[0][0] = roots[0][0].wrapping_add(1);
             MerkleCap::new(roots)
         };
 
@@ -1061,5 +1317,71 @@ mod tests {
             verify(&vk, &[], &proof),
             Err(Error::PublicInputCount { .. })
         ));
+    }
+
+    #[test]
+    fn aligned_tables_are_exactly_the_assignment_and_conjugated_sigma() {
+        // The original cycle order differs from sorted order: P must retain it exactly.
+        let mut sigma = (0..31).collect::<Vec<_>>();
+        sigma[2] = 30;
+        sigma[30] = 6;
+        sigma[6] = 2;
+        let circuit = crate::circuit::Circuit::new(5, 1, sigma.clone()).unwrap();
+        let mut z = vec![1, 2, 3, 4, 5, 20].repeat(5);
+        z[6] = 3;
+        z[8] = 5;
+        z.push(3);
+        let z = z.into_iter().map(Bn254::from_u64).collect::<Vec<_>>();
+        let program = crate::dynamic::regular_hyperplonk_program(&circuit, &z).unwrap();
+        let shape = RelationShape::from_program(&program);
+        let trace = shape.main_trace(&program, &[z[30]]);
+        assert_eq!(shape.main_width, 4);
+        assert_eq!(shape.domain_size, 16);
+        let address = |i: usize| if i < 30 { 4 * (i / 3) + i % 3 } else { 3 };
+        let mut expected_w = vec![Bn254::ZERO; 64];
+        let mut expected_p = (1..=64).map(Bn254::from_usize).collect::<Vec<_>>();
+        for i in 0..31 {
+            expected_w[address(i)] = z[i];
+            expected_p[address(i)] = Bn254::from_usize(address(sigma[i]) + 1);
+        }
+        for t in 0..64 {
+            assert_eq!(trace.columns[t % 4][t / 4], expected_w[t]);
+            assert_eq!(shape.preprocessed_evaluations[t % 4][t / 4], expected_p[t]);
+        }
+    }
+
+    #[test]
+    fn arithmetic_baseline_commits_only_permutation_and_binds_public_column() {
+        let n = 3;
+        let n0 = 2;
+        let mut permutation = (0..6 * n + n0).collect::<Vec<_>>();
+        permutation[0] = 6;
+        permutation[6] = 12;
+        permutation[12] = 0;
+        let circuit = crate::circuit::Circuit::new(n, n0, permutation).unwrap();
+        let assignment = [vec![1, 2, 3, 4, 5, 20].repeat(n), vec![9, 11]]
+            .concat()
+            .into_iter()
+            .map(Bn254::from_u64)
+            .collect::<Vec<_>>();
+        let public = [Bn254::from_u64(9), Bn254::from_u64(11)];
+        let program = crate::dynamic::regular_hyperplonk_program(&circuit, &assignment).unwrap();
+        let (pk, vk) = setup(&program).unwrap();
+        assert_eq!(pk.preprocessed_width(), 4);
+        assert_eq!(vk.preprocessed_width(), 4);
+        assert_eq!(pk.shape.preprocessed_evaluations.len(), 4);
+        let proof = prove(&pk, &program, &public).unwrap();
+        assert_eq!(proof.preprocessed_opening.evaluations.len(), 4);
+        verify(&vk, &public, &proof).unwrap();
+        assert!(verify(&vk, &[public[1], public[0]], &proof).is_err());
+        let mut bad = proof.clone();
+        bad.preprocessed_opening.evaluations[0] += Bn254::ONE;
+        assert!(verify(&vk, &public, &bad).is_err());
+        let mut wrong_shape = vk.clone();
+        wrong_shape.preprocessing = PreprocessingLayout::Arithmetic {
+            gate_pairs: 2,
+            public_inputs: 2,
+        };
+        assert!(verify(&wrong_shape, &public, &proof).is_err());
     }
 }

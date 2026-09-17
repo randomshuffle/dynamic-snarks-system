@@ -1,0 +1,44 @@
+{
+  "gates": 65536,
+  "samples": 5,
+  "warmups_per_path": 1,
+  "features": [
+    "parallel"
+  ],
+  "binary_sha256": {
+    "before": "6941f2502116a81aaae7cbc2a35a617d127c75f29526b4de5b1c4c34d7644dd7",
+    "after": "693664250aae9013bd04b769cc72863e9b10dde75296a37057eb9cf6d581d780"
+  },
+  "runs": [
+    {
+      "mode": "before",
+      "workers": 8,
+      "started_unix": 1788975046.357104,
+      "elapsed_seconds": 100.81364893913269,
+      "wrapper_exit_code": 1,
+      "statistics_error": "macOS time -l could not read kern.clockrate under the sandbox after the prover completed all verified records",
+      "complete_verified_records": 11
+    },
+    {
+      "mode": "after",
+      "workers": 8,
+      "started_unix": 1788975391.974433,
+      "exit_code": 0,
+      "elapsed_seconds": 54.9091420173645
+    },
+    {
+      "mode": "before",
+      "workers": 1,
+      "started_unix": 1788975446.886462,
+      "exit_code": 0,
+      "elapsed_seconds": 216.89606714248657
+    },
+    {
+      "mode": "after",
+      "workers": 1,
+      "started_unix": 1788975663.7855659,
+      "exit_code": 0,
+      "elapsed_seconds": 241.46839213371277
+    }
+  ]
+}

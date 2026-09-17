@@ -1,0 +1,65 @@
+mode,component,mean_ms,median_ms,count
+before,transition: update validation,0.0,0.0,90
+before,transition: hierarchy table insertion/composition,0.0,0.0,90
+before,transition: update sparse Merkle paths,0.0,0.0,90
+before,transition CAIR: statement/tree authentication,0.0,0.0,90
+before,transition CAIR: sparse DAG/table construction,1.1444444444444444,1.0,90
+before,transition CAIR: compact witness columns,0.0,0.0,90
+before,transition CAIR: Poseidon round trace,1.0,1.0,90
+before,transition CAIR: packed main table,0.0,0.0,90
+before,transition CAIR: routing product factors,0.06666666666666667,0.0,90
+before,transition CAIR: product-tree trace,0.0,0.0,90
+before,transition CAIR: packed product table,0.0,0.0,90
+before,transition CAIR: local sumcheck preparation,0.0,0.0,90
+before,transition CAIR: local sumcheck total,7.2,6.0,90
+before,transition CAIR: Poseidon sumcheck preparation,0.0,0.0,90
+before,transition CAIR: Poseidon sumcheck total,8.955555555555556,8.0,90
+before,transition CAIR: full-round reductions,4.144444444444445,4.0,90
+before,transition CAIR: product sumcheck preparation,0.0,0.0,90
+before,transition CAIR: product sumcheck total,2.2222222222222223,2.0,90
+before,transition CAIR: opening preparation,0.43333333333333335,0.0,90
+before,"WHIR initial claim weights (variables=12, claims=59)",0.3055777777777778,0.2825,90
+before,WHIR initial folding sumcheck (variables=12),0.4944,0.46499999999999997,90
+before,WHIR product total,4.533333333333333,5.0,90
+before,WHIR product evaluations,2.022222222222222,2.0,90
+before,WHIR product proximity,2.1333333333333333,2.0,90
+before,"WHIR initial claim weights (variables=15, claims=120)",1.2129444444444444,1.1895,90
+before,WHIR initial folding sumcheck (variables=15),1.1863444444444444,1.1560000000000001,90
+before,WHIR main total,11.2,11.0,90
+before,WHIR main evaluations,4.266666666666667,4.0,90
+before,WHIR main proximity,6.588888888888889,7.0,90
+before,transition: CAIR proof total,43.31111111111111,41.0,90
+before,transition: refresh cached public-input opening,0.0,0.0,90
+before,transition: complete hierarchy rebuild,43.56666666666667,41.0,90
+after,transition: update validation,0.0,0.0,90
+after,transition: hierarchy table insertion/composition,0.0,0.0,90
+after,transition: update sparse Merkle paths,0.0,0.0,90
+after,transition CAIR: statement/tree authentication,0.0,0.0,90
+after,transition CAIR: sparse DAG/table construction,1.1444444444444444,1.0,90
+after,transition CAIR: compact witness columns,0.0,0.0,90
+after,transition CAIR: Poseidon round trace,1.0,1.0,90
+after,transition CAIR: packed main table,0.0,0.0,90
+after,transition CAIR: routing product factors,0.03333333333333333,0.0,90
+after,transition CAIR: product-tree trace,0.0,0.0,90
+after,transition CAIR: packed product table,0.0,0.0,90
+after,transition CAIR: local sumcheck preparation,0.0,0.0,90
+after,transition CAIR: local sumcheck total,3.188888888888889,3.0,90
+after,transition CAIR: Poseidon sumcheck preparation,0.0,0.0,90
+after,transition CAIR: Poseidon sumcheck total,3.0,3.0,90
+after,transition CAIR: full-round reductions,4.044444444444444,4.0,90
+after,transition CAIR: product sumcheck preparation,0.0,0.0,90
+after,transition CAIR: product sumcheck total,2.1666666666666665,2.0,90
+after,transition CAIR: opening preparation,0.36666666666666664,0.0,90
+after,"WHIR initial claim weights (variables=12, claims=59)",0.35967777777777776,0.34099999999999997,90
+after,WHIR initial folding sumcheck (variables=12),0.5781444444444445,0.48150000000000004,90
+after,"WHIR initial claim weights (variables=15, claims=120)",1.4837888888888888,1.553,90
+after,WHIR product total,3.1444444444444444,3.0,90
+after,WHIR product evaluations,0.6888888888888889,1.0,90
+after,WHIR product proximity,2.388888888888889,2.0,90
+after,WHIR initial folding sumcheck (variables=15),1.232088888888889,1.119,90
+after,WHIR main total,8.11111111111111,8.0,90
+after,WHIR main evaluations,1.0,1.0,90
+after,WHIR main proximity,7.0,7.0,90
+after,transition: CAIR proof total,29.511111111111113,29.0,90
+after,transition: refresh cached public-input opening,0.0,0.0,90
+after,transition: complete hierarchy rebuild,29.833333333333332,30.0,90

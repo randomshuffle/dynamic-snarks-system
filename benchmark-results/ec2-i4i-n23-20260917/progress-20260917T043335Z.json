@@ -1,0 +1,131 @@
+{
+  "checked_utc": "2026-09-17T04:33:35.503989+00:00",
+  "progress.txt": "2026-09-17T04:19:59Z Running the single full 2^23 experiment: 48 workers, updates 1..128, 40 revisions, no warmups",
+  "status": {
+    "command": [
+      "scripts/run_experiment.py",
+      "--trace-log",
+      "23",
+      "--threads",
+      "48",
+      "--initial-interleaving",
+      "16",
+      "--update-logs",
+      "0,1,2,3,4,5,6,7",
+      "--sequence-len",
+      "40",
+      "--seed",
+      "20260909",
+      "--baseline-mode",
+      "shared",
+      "--offline",
+      "--numa-interleave",
+      "--output",
+      "/home/ubuntu/dynamic-snark-n23-20260917-NfZT0lLE/full-n23-u128"
+    ],
+    "started_utc": "2026-09-17T04:19:59.381575+00:00",
+    "state": "running"
+  },
+  "elapsed_minutes": 13.602042883333333,
+  "verified_samples": 3,
+  "counts": {
+    "initial-g0": 1,
+    "update-g1": 1,
+    "baseline-g1": 1
+  },
+  "last_samples": [
+    {
+      "phase": "initial",
+      "update_gates": "0",
+      "revision": "0",
+      "prove_seconds": "716.408348657",
+      "verify_seconds": "0.054708646",
+      "verified": "true",
+      "cumulative_distinct_gates": "0",
+      "proof_field_elements": "52856",
+      "proof_blake3_hashes": "36915",
+      "proof_poseidon_hashes": "553",
+      "proof_payload_bytes": "2872672",
+      "proof_serialized_bytes": "4214566",
+      "proof_overhead_bytes": "1341894",
+      "proof_file": "proofs/initial-g0-r0.cbor"
+    },
+    {
+      "phase": "update",
+      "update_gates": "1",
+      "revision": "1",
+      "prove_seconds": "0.145288350",
+      "verify_seconds": "0.064737141",
+      "verified": "true",
+      "cumulative_distinct_gates": "1",
+      "proof_field_elements": "63993",
+      "proof_blake3_hashes": "40227",
+      "proof_poseidon_hashes": "553",
+      "proof_payload_bytes": "3335040",
+      "proof_serialized_bytes": "4816020",
+      "proof_overhead_bytes": "1480980",
+      "proof_file": ""
+    },
+    {
+      "phase": "baseline",
+      "update_gates": "1",
+      "revision": "1",
+      "prove_seconds": "28.452629442",
+      "verify_seconds": "0.016651430",
+      "verified": "true",
+      "cumulative_distinct_gates": "1",
+      "proof_field_elements": "29514",
+      "proof_blake3_hashes": "26698",
+      "proof_poseidon_hashes": "0",
+      "proof_payload_bytes": "1798784",
+      "proof_serialized_bytes": "2741309",
+      "proof_overhead_bytes": "942525",
+      "proof_file": ""
+    }
+  ],
+  "initial_sample": {
+    "phase": "initial",
+    "update_gates": "0",
+    "revision": "0",
+    "prove_seconds": "716.408348657",
+    "verify_seconds": "0.054708646",
+    "verified": "true",
+    "cumulative_distinct_gates": "0",
+    "proof_field_elements": "52856",
+    "proof_blake3_hashes": "36915",
+    "proof_poseidon_hashes": "553",
+    "proof_payload_bytes": "2872672",
+    "proof_serialized_bytes": "4214566",
+    "proof_overhead_bytes": "1341894",
+    "proof_file": "proofs/initial-g0-r0.cbor"
+  },
+  "driver.log_tail": [
+    "compact node opening: 32 opening polynomial evaluations complete (0.002s opening elapsed)",
+    "compact update opening: WHIR opening proof complete (0.002s opening elapsed: 0.000s evaluations, 0.000s proof)",
+    "compact node opening: WHIR opening proof complete (0.005s opening elapsed: 0.001s evaluations, 0.003s proof)",
+    "compact product opening: WHIR opening proof complete (0.006s opening elapsed: 0.001s evaluations, 0.005s proof)",
+    "SAMPLE_COMPLETE phase=update gates=1 revision=1 prove_seconds=0.145288 verify_seconds=0.064737",
+    "SAMPLE_BEGIN phase=baseline gates=1 revision=1",
+    "SAMPLE_COMPLETE phase=baseline gates=1 revision=1 prove_seconds=28.452629 verify_seconds=0.016651",
+    "SAMPLE_BEGIN phase=baseline gates=1 revision=2"
+  ],
+  "run.log_tail": [
+    "compact node opening: 32 opening polynomial evaluations complete (0.002s opening elapsed)",
+    "compact update opening: WHIR opening proof complete (0.002s opening elapsed: 0.000s evaluations, 0.000s proof)",
+    "compact node opening: WHIR opening proof complete (0.005s opening elapsed: 0.001s evaluations, 0.003s proof)",
+    "compact product opening: WHIR opening proof complete (0.006s opening elapsed: 0.001s evaluations, 0.005s proof)",
+    "SAMPLE_COMPLETE phase=update gates=1 revision=1 prove_seconds=0.145288 verify_seconds=0.064737",
+    "SAMPLE_BEGIN phase=baseline gates=1 revision=1",
+    "SAMPLE_COMPLETE phase=baseline gates=1 revision=1 prove_seconds=28.452629 verify_seconds=0.016651",
+    "SAMPLE_BEGIN phase=baseline gates=1 revision=2"
+  ],
+  "benchmark_pid": 32804,
+  "process_status": {
+    "State": "S (sleeping)",
+    "VmHWM": "445173044 kB",
+    "VmRSS": "33940248 kB",
+    "Threads": "49",
+    "Cpus_allowed_list": "0-47"
+  },
+  "process_cpu": "13:35 2687 34016996"
+}

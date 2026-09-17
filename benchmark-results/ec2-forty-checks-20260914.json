@@ -1,0 +1,95 @@
+{
+  "validation": {
+    "complete": true,
+    "expected_samples": 481,
+    "ignored_incomplete_tail": false,
+    "missing_samples": [],
+    "proof_checkpoints": 13,
+    "proof_size_samples": 481,
+    "verified_samples": 481
+  },
+  "archived_checksums": 34,
+  "matching_code_files": 113,
+  "resources": {
+    "exit_code": 0,
+    "max_rss_bytes": 1368162304,
+    "signals_forwarded": [],
+    "system_seconds": 279.039004,
+    "user_seconds": 4020.839013,
+    "wall_seconds": 746.0810078331269
+  },
+  "payload_peaks": [
+    {
+      "update_gates": 1,
+      "max_payload_revision": 31,
+      "max_payload_bytes": 3724128,
+      "final_payload_bytes": 2414080
+    },
+    {
+      "update_gates": 2,
+      "max_payload_revision": 31,
+      "max_payload_bytes": 4109472,
+      "final_payload_bytes": 2579616
+    },
+    {
+      "update_gates": 4,
+      "max_payload_revision": 31,
+      "max_payload_bytes": 4658464,
+      "final_payload_bytes": 2781024
+    },
+    {
+      "update_gates": 8,
+      "max_payload_revision": 31,
+      "max_payload_bytes": 5257632,
+      "final_payload_bytes": 2950944
+    },
+    {
+      "update_gates": 16,
+      "max_payload_revision": 31,
+      "max_payload_bytes": 5759264,
+      "final_payload_bytes": 3183584
+    },
+    {
+      "update_gates": 32,
+      "max_payload_revision": 31,
+      "max_payload_bytes": 6262592,
+      "final_payload_bytes": 3344192
+    },
+    {
+      "update_gates": 64,
+      "max_payload_revision": 39,
+      "max_payload_bytes": 6805184,
+      "final_payload_bytes": 3616224
+    },
+    {
+      "update_gates": 128,
+      "max_payload_revision": 19,
+      "max_payload_bytes": 5909504,
+      "final_payload_bytes": 2187264
+    },
+    {
+      "update_gates": 256,
+      "max_payload_revision": 7,
+      "max_payload_bytes": 4732000,
+      "final_payload_bytes": 2187264
+    },
+    {
+      "update_gates": 512,
+      "max_payload_revision": 3,
+      "max_payload_bytes": 3476192,
+      "final_payload_bytes": 2187264
+    },
+    {
+      "update_gates": 1024,
+      "max_payload_revision": 1,
+      "max_payload_bytes": 2187264,
+      "final_payload_bytes": 2187264
+    }
+  ],
+  "python_tests_passed": 13,
+  "rust_proof_size_tests_passed": 2,
+  "source_package": "benchmark-results/ec2-experiment-compact-i16-r40-20260914.tar.gz",
+  "source_package_sha256": "9d56f07ace7fe219bdb233663b433d7d6fb89f3ca20fae91e331b3e1b5fd0b9f",
+  "source_package_files_verified": 123,
+  "source_tree_sha256": "fd8e3940d8187075b73fd3c1a4b94f868d25595be94b78f17b2a76daf6d9fe7c"
+}

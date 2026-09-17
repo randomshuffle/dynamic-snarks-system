@@ -1,0 +1,16 @@
+BN254 experiment: 2^15 gates; Rayon workers=8; WHIR=4 then 4 variables; full initial proof once
+Baseline mode: shared; reference update size=1
+Merkle PIOP: compact-merkle; initial FFT heights: [32768, 2048, 128]
+preflight: 1 updated gates; max composed positions=96; rows=4096; main width=16; projected peak=1.83 GiB
+preflight: 2 updated gates; max composed positions=192; rows=8192; main width=16; projected peak=1.83 GiB
+preflight: 4 updated gates; max composed positions=384; rows=16384; main width=16; projected peak=1.83 GiB
+preflight: 8 updated gates; max composed positions=768; rows=16384; main width=16; projected peak=1.83 GiB
+preflight: 16 updated gates; max composed positions=1524; rows=32768; main width=16; projected peak=1.83 GiB
+preflight: 32 updated gates; max composed positions=3042; rows=65536; main width=16; projected peak=3.12 GiB
+preflight: 64 updated gates; max composed positions=5970; rows=131072; main width=16; projected peak=5.99 GiB
+preflight: 128 updated gates; max composed positions=11637; rows=262144; main width=16; projected peak=11.73 GiB
+preflight: 256 updated gates; max composed positions=21774; rows=262144; main width=16; projected peak=11.92 GiB
+preflight: 512 updated gates; max composed positions=39159; rows=524288; main width=16; projected peak=23.59 GiB
+preflight: 1024 updated gates; max composed positions=62529; rows=1048576; main width=16; projected peak=46.94 GiB
+Projected run peak=46.94 GiB; available memory=123.79 GiB; 70% allowance=86.65 GiB
+PREFLIGHT_COMPLETE (no proofs generated)

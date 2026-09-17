@@ -1,0 +1,28 @@
+{
+  "command": [
+    "scripts/run_experiment.py",
+    "--trace-log",
+    "23",
+    "--threads",
+    "48",
+    "--initial-interleaving",
+    "16",
+    "--update-logs",
+    "0,1,2,3,4,5,6,7",
+    "--sequence-len",
+    "40",
+    "--seed",
+    "20260909",
+    "--baseline-mode",
+    "shared",
+    "--offline",
+    "--numa-interleave",
+    "--output",
+    "/home/ubuntu/dynamic-snark-n23-20260917-NfZT0lLE/full-n23-u128"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-09-17T05:02:40.316979+00:00",
+  "started_utc": "2026-09-17T04:19:59.381575+00:00",
+  "state": "complete",
+  "verified_samples": 361
+}

@@ -1,0 +1,5 @@
+phase,samples,mean_ms,median_ms
+"WHIR initial claim weights (variables=15, claims=120)",100,17.59334,17.5625
+WHIR initial folding sumcheck (variables=15),100,2.84242,2.7255000000000003
+"WHIR initial claim weights (variables=12, claims=59)",100,1.27517,1.2155
+WHIR initial folding sumcheck (variables=12),100,0.51752,0.5065

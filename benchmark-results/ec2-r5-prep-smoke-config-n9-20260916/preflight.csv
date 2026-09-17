@@ -1,0 +1,2 @@
+update_gates,max_composed_positions,max_sparse_rows,main_width,master_fields,transition_estimate_bytes,dense_envelope_bytes,initial_estimate_bytes,required_peak_bytes
+1,93,2048,16,32768,96337920,4194304,30670848,100532224

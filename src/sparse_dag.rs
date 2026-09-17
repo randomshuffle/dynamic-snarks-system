@@ -1,5 +1,6 @@
 //! Canonical sparse Merkle authentication DAGs used by transition proofs.
 
+use p3_maybe_rayon::prelude::*;
 use std::cmp::Reverse;
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -173,6 +174,32 @@ pub(crate) enum Error {
 }
 
 impl SparseMerkleDag {
+    /// Count all rows and non-boundary hashes from path coordinates alone.
+    /// This performs no dense allocation or hashing, even for a very large tree.
+    pub(crate) fn shape(tree_len: usize, indices: &[usize]) -> Result<(usize, usize), Error> {
+        if tree_len == 0
+            || indices.is_empty()
+            || indices.windows(2).any(|pair| pair[0] >= pair[1])
+            || indices.iter().any(|&index| index >= tree_len)
+        {
+            return Err(Error::NonCanonical);
+        }
+        let height = tree_len.next_power_of_two().trailing_zeros();
+        let mut active = indices.iter().copied().collect::<BTreeSet<_>>();
+        let mut rows = active.len();
+        let mut hashes = active.len();
+        for _ in 0..height {
+            rows += active
+                .iter()
+                .filter(|&&index| !active.contains(&(index ^ 1)))
+                .count();
+            active = active.into_iter().map(|index| index >> 1).collect();
+            rows += active.len();
+            hashes += active.len();
+        }
+        Ok((rows, hashes))
+    }
+
     /// Build a paired old/new authentication DAG. Complement nodes must be
     /// identical, so the two vectors can differ only at `indices`.
     pub(crate) fn paired(
@@ -252,8 +279,10 @@ impl SparseMerkleDag {
                 .transpose()?;
             let leaf_values = (kind == NodeKind::Leaf).then(|| {
                 [
-                    old.values()[coordinate.index],
-                    new.values()[coordinate.index],
+                    old.value(coordinate.index)
+                        .expect("a sparse leaf is within the old tree"),
+                    new.value(coordinate.index)
+                        .expect("a sparse leaf is within the new tree"),
                 ]
             });
             rows.push(NodeRow {
@@ -358,40 +387,46 @@ impl SparseMerkleDag {
             return Err(Error::NonCanonical);
         }
 
-        for row in &self.rows {
-            match row.kind {
-                NodeKind::Leaf => {
-                    let [old, new] = row.leaf_values.ok_or(Error::NonCanonical)?;
-                    if row.coordinate.level != 0
-                        || row.children.is_some()
-                        || row.digest.old != hash_leaf(row.coordinate.index, old)
-                        || row.digest.new != hash_leaf(row.coordinate.index, new)
-                    {
-                        return Err(Error::Hash);
+        self.rows
+            .par_iter()
+            .map(|row| {
+                match row.kind {
+                    NodeKind::Leaf => {
+                        let [old, new] = row.leaf_values.ok_or(Error::NonCanonical)?;
+                        if row.coordinate.level != 0
+                            || row.children.is_some()
+                            || row.digest.old != hash_leaf(row.coordinate.index, old)
+                            || row.digest.new != hash_leaf(row.coordinate.index, new)
+                        {
+                            return Err(Error::Hash);
+                        }
+                    }
+                    NodeKind::Boundary => {
+                        if row.children.is_some()
+                            || row.leaf_values.is_some()
+                            || row.digest.old != row.digest.new
+                        {
+                            return Err(Error::ChangedBoundary);
+                        }
+                    }
+                    NodeKind::Internal => {
+                        let [left, right] = row.children.ok_or(Error::NonCanonical)?;
+                        if row.coordinate.level == 0
+                            || row.leaf_values.is_some()
+                            || row.digest.old
+                                != hash_node(row.coordinate.level - 1, left.old, right.old)
+                            || row.digest.new
+                                != hash_node(row.coordinate.level - 1, left.new, right.new)
+                        {
+                            return Err(Error::Hash);
+                        }
                     }
                 }
-                NodeKind::Boundary => {
-                    if row.children.is_some()
-                        || row.leaf_values.is_some()
-                        || row.digest.old != row.digest.new
-                    {
-                        return Err(Error::ChangedBoundary);
-                    }
-                }
-                NodeKind::Internal => {
-                    let [left, right] = row.children.ok_or(Error::NonCanonical)?;
-                    if row.coordinate.level == 0
-                        || row.leaf_values.is_some()
-                        || row.digest.old
-                            != hash_node(row.coordinate.level - 1, left.old, right.old)
-                        || row.digest.new
-                            != hash_node(row.coordinate.level - 1, left.new, right.new)
-                    {
-                        return Err(Error::Hash);
-                    }
-                }
-            }
-        }
+                Ok(())
+            })
+            .collect::<Vec<Result<(), Error>>>()
+            .into_iter()
+            .collect::<Result<Vec<_>, _>>()?;
         if self.root().old != self.old_commitment.root
             || self.root().new != self.new_commitment.root
         {
@@ -427,6 +462,41 @@ fn route_multisets_match(producers: &[RouteTuple], references: &[RouteTuple]) ->
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn coordinate_only_shape_matches_materialized_dags() {
+        for length in [1, 7, 16, 31] {
+            let tree =
+                super::MerkleTree::new((0..length).map(p3_bn254::Bn254::from_usize).collect())
+                    .unwrap();
+            for indices in [
+                vec![0],
+                vec![length - 1],
+                (0..length).step_by(3).collect(),
+                (0..length).collect(),
+            ] {
+                let dag =
+                    super::SparseMerkleDag::single(super::TreeId::Assignment, &tree, &indices)
+                        .unwrap();
+                let hashes = dag
+                    .rows()
+                    .iter()
+                    .filter(|row| row.kind != super::NodeKind::Boundary)
+                    .count();
+                assert_eq!(
+                    super::SparseMerkleDag::shape(length, &indices).unwrap(),
+                    (dag.rows().len(), hashes)
+                );
+            }
+        }
+        assert!(super::SparseMerkleDag::shape(16, &[3, 3]).is_err());
+        assert!(super::SparseMerkleDag::shape(16, &[16]).is_err());
+        // A 2^26-leaf tree must be shape-checkable without building that tree.
+        assert_eq!(
+            super::SparseMerkleDag::shape(1 << 26, &[0]).unwrap(),
+            (53, 27)
+        );
+    }
+
     use crate::static_snark::commit_mle;
 
     use super::*;

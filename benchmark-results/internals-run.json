@@ -1,0 +1,22 @@
+{
+  "workload": "first single public-input leaf update, identity wiring",
+  "gates": 65536,
+  "samples_per_run": 30,
+  "rayon_threads": 8,
+  "features": [
+    "parallel"
+  ],
+  "instrumented_workspace": "/tmp/update-internals-profile",
+  "binary_sha256": "cacabdd124d1f7d0bd86c4d90a10f9b25134fc65fd5e4e540d6dd9bb93235f82",
+  "source_sha256": {
+    "src/transition_cair.rs": "0670712a1d8d63242caa0880c62bca5ddb9bfe700d68016273b4fd51459fb434",
+    "src/poseidon_scalar.rs": "1553eaf4547f776d014f0700646787660d203f2d3c8ec107f713b37116b017a2",
+    "src/static_snark/pcs.rs": "02be31f16f67c25fdaf6a7cae5f33a6a2839c31be29ec943bc0627de1fd33e2d",
+    "vendor/p3-whir/src/pcs/prover/mod.rs": "a0f9920797cfd60cced610bafcc7086c1a45c5843fa1625e97c282ace953fcbf",
+    "vendor/p3-whir/src/pcs/committer/writer.rs": "936742eef29dfc25d888c77c735d00bbcd6b3c0215f6ceacb6fb496abcbafac7",
+    "vendor/p3-sumcheck/src/strategy.rs": "02c9956fbdd6bebf11d4b6dd5f58b48ad0bec1fb99671b417d6065a20a0eba56",
+    "vendor/p3-sumcheck/src/product_polynomial.rs": "1b6d03903e7dae41c3c7ccac7a32a43afe9bfef23624ba55e6421e04359ffcb2",
+    "vendor/p3-sumcheck/src/constraints/mod.rs": "2004253d5206b0fba0dc3e26c4a26a7c9308175d93ccbde4f0f1299434cf6f6d",
+    "vendor/p3-sumcheck/src/constraints/statement/select.rs": "c4b2c5b8e16171c15c0c9cee874f2e5eacc1a05cb2f65c8a931c839b7c39dbfb"
+  }
+}

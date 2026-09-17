@@ -2,8 +2,8 @@
 //!
 //! The implementation uses the BN254 scalar field, Poseidon2 commitments, and
 //! Plonky3's multilinear WHIR PCS. It is sequential by default; enabling the
-//! `parallel` feature selects Plonky3's parallel polynomial backends without
-//! changing protocol code.
+//! `parallel` feature enables shared Rayon scheduling for all three provers
+//! and Plonky3's polynomial backends without changing protocol transcripts.
 
 #![forbid(unsafe_code)]
 
@@ -15,6 +15,8 @@ mod gkr;
 pub mod hash;
 pub mod merkle;
 mod multiset;
+mod parallel;
+mod poseidon_scalar;
 mod poseidon_sumcheck;
 mod sparse_dag;
 pub mod static_snark;

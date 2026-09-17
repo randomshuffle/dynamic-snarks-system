@@ -1,0 +1,23 @@
+{
+  "command": [
+    "scripts/run_experiment.py",
+    "--trace-log",
+    "18",
+    "--threads",
+    "8",
+    "--initial-interleaving",
+    "16",
+    "--update-logs",
+    "0",
+    "--sequence-len",
+    "1",
+    "--offline",
+    "--output",
+    "benchmark-results/endpoint-n18-default-guard-check-20260910"
+  ],
+  "exit_code": 1,
+  "finished_utc": "2026-09-10T20:24:07.632457+00:00",
+  "started_utc": "2026-09-10T20:24:07.055261+00:00",
+  "state": "failed",
+  "verified_samples": 0
+}

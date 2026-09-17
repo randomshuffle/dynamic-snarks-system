@@ -1,0 +1,3 @@
+update_gates,revisions,baseline_mean_payload_bytes,baseline_mean_serialized_bytes,initial_payload_bytes,initial_serialized_bytes,dynamic_final_payload_bytes,dynamic_final_serialized_bytes,final_over_baseline_payload,final_over_baseline_serialized,increment_over_initial_payload_bytes,initial_proof_file,baseline_proof_file,dynamic_final_proof_file
+1,12,335552,462152.5833333333,663328,870200,1891360,2514849,5.636563036429525,5.441598923587827,1228032,proofs/initial-g0-r0.cbor,proofs/baseline-g1-r12.cbor,proofs/update-g1-r12.cbor
+2,12,335552,462152.5833333333,663328,870200,1971008,2633619,5.873927140949838,5.6985919693549985,1307680,proofs/initial-g0-r0.cbor,proofs/baseline-g1-r12.cbor,proofs/update-g2-r12.cbor

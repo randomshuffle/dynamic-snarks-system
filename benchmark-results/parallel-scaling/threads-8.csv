@@ -1,0 +1,14 @@
+config,gates=65536,positions=1,threads=8,parallel=true,initial_folding=4
+phase,sample,threads,prove_ms,verify_ms
+update,0,8,80.458459,17.345209
+baseline,0,8,2634.369459,7.170875
+baseline,1,8,2738.983917,7.176958
+update,1,8,81.691500,17.353125
+update,2,8,79.644291,17.340083
+baseline,2,8,2612.540125,7.170916
+baseline,3,8,2628.941833,7.194041
+update,3,8,82.542375,17.325458
+update,4,8,80.935875,17.389125
+baseline,4,8,2666.111625,7.279666
+baseline,5,8,2734.657875,7.172167
+update,5,8,82.551666,17.345209

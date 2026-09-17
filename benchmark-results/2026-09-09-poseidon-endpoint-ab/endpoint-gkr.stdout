@@ -1,0 +1,8 @@
+config,variant=endpoint-gkr,gates=65536,seed=20260909,gate_index=36706,positions=3,samples=1,threads=8,parallel=true,rows=128,main_width=64,main_fields=8192,product_fields=4096,hash_slots=256,active_hashes=132,outer_sumcheck_rounds=526,workload_fingerprint=42870fd8c258cad74cb75c40d187dccbed499b7748a0cf3d21de443ec4260692
+timing_scope=update_including_tree_maintenance_and_public_opening; excludes_indexing_trusted_base_cloning_serialization_destruction; WHIR=fixed_half_rate_factor4_security127_pow0
+variant,update_ms,verify_ms,serialized_bytes,field_elements,blake3_hashes,payload_bytes
+endpoint-gkr,56.531583,21.039042,584059,10610,3151,440352
+component,commitments,serialized_bytes=932,field_elements=19,blake3_hashes=0
+component,transition_proofs,serialized_bytes=553122,field_elements=10071,blake3_hashes=3151
+component,public_input_opening,serialized_bytes=29953,field_elements=520,blake3_hashes=0
+component,outer_framing,serialized_bytes=52,field_elements=0,blake3_hashes=0

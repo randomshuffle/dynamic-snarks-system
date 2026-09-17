@@ -1,0 +1,23 @@
+{
+  "command": [
+    "scripts/run_experiment.py",
+    "--trace-log",
+    "24",
+    "--threads",
+    "48",
+    "--initial-interleaving",
+    "16",
+    "--sequence-len",
+    "40",
+    "--baseline-mode",
+    "shared",
+    "--preflight-only",
+    "--offline",
+    "--output",
+    "benchmark-results/ec2-prep-v2-n24-i16-r40-20260915"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-09-16T03:35:33.861722+00:00",
+  "started_utc": "2026-09-16T03:35:32.523692+00:00",
+  "state": "preflight_complete"
+}

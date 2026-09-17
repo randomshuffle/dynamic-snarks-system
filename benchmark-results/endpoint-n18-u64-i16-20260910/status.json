@@ -1,0 +1,29 @@
+{
+  "command": [
+    "scripts/run_experiment.py",
+    "--trace-log",
+    "18",
+    "--threads",
+    "8",
+    "--initial-interleaving",
+    "16",
+    "--update-logs",
+    "0,1,2,3,4,5,6",
+    "--sequence-len",
+    "12",
+    "--seed",
+    "20260909",
+    "--baseline-mode",
+    "shared",
+    "--rss-limit-gb",
+    "8",
+    "--offline",
+    "--output",
+    "benchmark-results/endpoint-n18-u64-i16-20260910"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-09-10T20:23:00.040719+00:00",
+  "started_utc": "2026-09-10T20:19:24.412656+00:00",
+  "state": "complete",
+  "verified_samples": 97
+}

@@ -6,7 +6,18 @@ license = "MIT OR Apache-2.0"
 description = "Section 4 dynamic SNARK compiler instantiated with Plonky3, Poseidon2, and WHIR"
 
 [features]
-default = []
+default = ["compact-merkle"]
+# Compact partial-tree node oracle plus a separate update/gate oracle.
+compact-merkle = ["poseidon-gkr"]
+# Initial/update PIOPs: commit digests/endpoints, reduce all 64 Poseidon2 rounds.
+# Disable default features to select the legacy scalar trace for comparisons.
+# The two variants use different proof formats and transcripts.
+poseidon-gkr = []
+# Compatibility alias for the former opt-in experiment.
+experimental-poseidon-gkr = ["poseidon-gkr"]
+# Experiment transcript: 64-way first WHIR interleaving, 16-way thereafter.
+# Keys and proofs must be generated and verified with the same feature set.
+whir-initial-64 = []
 parallel = [
     "p3-maybe-rayon/parallel",
     "p3-multilinear-util/parallel",
@@ -16,6 +27,7 @@ parallel = [
 [dependencies]
 num-bigint = "0.4"
 p3-bn254 = "=0.6.2"
+p3-blake3 = "=0.6.2"
 p3-challenger = "=0.6.2"
 p3-commit = "=0.6.2"
 p3-dft = "=0.6.2"
@@ -34,7 +46,14 @@ sha3 = "0.10"
 blake3 = "1.8"
 thiserror = "2.0"
 
+[dev-dependencies]
+ciborium = "=0.2.2"
+rayon = "1.12"
+serde_json = "1.0"
+
 [patch.crates-io]
+# Field-size-aware coefficient scheduling, shared by all three provers.
+p3-sumcheck = { path = "vendor/p3-sumcheck" }
 # Plonky3 0.6.2 calls `MaybeUninit::assume_init_ref` on a slice, an API that
 # remains unstable on Rust 1.92. The vendored crate changes only that call to
 # the equivalent stable `from_raw_parts` operation.
@@ -61,3 +80,12 @@ harness = false
 [[bench]]
 name = "hash_microbench"
 harness = false
+
+[[bench]]
+name = "whir_microbench"
+harness = false
+
+[[bench]]
+name = "ec2_experiment"
+harness = false
+required-features = ["parallel"]

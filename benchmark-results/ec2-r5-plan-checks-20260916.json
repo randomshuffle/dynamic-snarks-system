@@ -1,0 +1,36 @@
+{
+  "state": "ready_for_remote_preparation",
+  "full_experiment_run": false,
+  "instance_type": "r5.24xlarge",
+  "gates": 8388608,
+  "update_sizes": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    32,
+    64,
+    128
+  ],
+  "sequence_len": 40,
+  "baseline_proofs": 40,
+  "expected_full_samples": 361,
+  "expected_full_checkpoints": 10,
+  "preflight_peak_gib": 468,
+  "smoke_platform": "macOS; R5 smoke will run on new host",
+  "smoke_validation": {
+    "complete": true,
+    "expected_samples": 81,
+    "ignored_incomplete_tail": false,
+    "missing_samples": [],
+    "proof_checkpoints": 3,
+    "proof_size_samples": 81,
+    "verified_samples": 81
+  },
+  "unchanged_implementation_files": 97,
+  "package_files_verified": 127,
+  "package_sha256": "513c84610eaf5f2202367d3300bc7898b900b3f0b85a1d8b153a07e4639c8c1f",
+  "source_sha256": "d9049899e6c5c600fcfa577a33cdb5d782d0f151cfbafa56fa96aa0139380bb5",
+  "guide": "docs/ec2-r5-n23-20260916.md"
+}

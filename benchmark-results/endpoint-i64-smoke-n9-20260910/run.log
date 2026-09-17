@@ -1,0 +1,42 @@
+BN254 experiment: 2^9 gates; Rayon workers=8; WHIR=6 then 4 variables; full initial proof once
+Baseline mode: shared; reference update size=1
+Merkle PIOP: endpoint-gkr; initial FFT heights: [128]
+preflight: 1 updated gates; max composed positions=3; rows=128; main width=64; projected peak=0.03 GiB
+Projected run peak=0.03 GiB; available memory=16.00 GiB; 70% allowance=11.20 GiB
+Baseline indexing complete
+Dynamic indexing complete
+SAMPLE_BEGIN phase=initial gates=0 revision=0
+initial endpoint checkpoint: WHIR OOD polynomial evaluation 1/1 complete (0.002s opening elapsed)
+initial endpoint checkpoint: 5 opening polynomial evaluations complete (0.002s opening elapsed)
+initial endpoint checkpoint: WHIR opening proof complete (0.003s opening elapsed: 0.000s evaluations, 0.001s proof)
+Full initial proof generated and verified in 0.257s (verification separate)
+CASE_BEGIN update_gates=1
+SAMPLE_BEGIN phase=update gates=1 revision=1
+transition CAIR shape: updated_positions=3, level=10, rows=128, main_width=64, product_width=32
+transition CAIR checkpoint: main commitment complete in 0.001s
+transition CAIR checkpoint: product commitment complete in 0.001s
+transition CAIR checkpoint: local sumcheck round 1/7 complete (0.001s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 2/7 complete (0.002s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 3/7 complete (0.002s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 4/7 complete (0.002s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 5/7 complete (0.003s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 6/7 complete (0.003s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 7/7 complete (0.003s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 1/7 complete (0.001s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 2/7 complete (0.001s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 3/7 complete (0.002s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 4/7 complete (0.002s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 5/7 complete (0.002s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 6/7 complete (0.002s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 7/7 complete (0.002s phase elapsed)
+transition CAIR product checkpoint: WHIR OOD polynomial evaluation 1/1 complete (0.001s opening elapsed)
+transition CAIR main checkpoint: WHIR OOD polynomial evaluation 1/1 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: 58 opening polynomial evaluations complete (0.002s opening elapsed)
+transition CAIR main checkpoint: 96 opening polynomial evaluations complete (0.002s opening elapsed)
+transition CAIR product checkpoint: WHIR opening proof complete (0.003s opening elapsed: 0.001s evaluations, 0.001s proof)
+transition CAIR main checkpoint: WHIR opening proof complete (0.004s opening elapsed: 0.001s evaluations, 0.002s proof)
+SAMPLE_COMPLETE phase=update gates=1 revision=1 prove_seconds=0.049405 verify_seconds=0.034774
+SAMPLE_BEGIN phase=baseline gates=1 revision=1
+SAMPLE_COMPLETE phase=baseline gates=1 revision=1 prove_seconds=0.009685 verify_seconds=0.001892
+CASE_COMPLETE update_gates=1
+EXPERIMENT_COMPLETE

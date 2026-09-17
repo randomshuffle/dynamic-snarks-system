@@ -1,0 +1,956 @@
+warning: struct `Gadgets` is never constructed
+ --> src/dynamic/gadgets.rs:9:19
+  |
+9 | pub(crate) struct Gadgets {
+  |                   ^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: associated items `new`, `poseidon2`, `leaf`, `node`, and `merkle_path` are never used
+  --> src/dynamic/gadgets.rs:16:19
+   |
+15 | impl Gadgets {
+   | ------------ associated items in this implementation
+16 |     pub(crate) fn new() -> Self {
+   |                   ^^^
+...
+25 |     pub(crate) fn poseidon2(
+   |                   ^^^^^^^^^
+...
+43 |     pub(crate) fn leaf(
+   |                   ^^^^
+...
+53 |     pub(crate) fn node(
+   |                   ^^^^
+...
+64 |     pub(crate) fn merkle_path(
+   |                   ^^^^^^^^^^^
+
+warning: function `full_round` is never used
+  --> src/dynamic/gadgets.rs:83:4
+   |
+83 | fn full_round(
+   |    ^^^^^^^^^^
+
+warning: function `external_linear` is never used
+  --> src/dynamic/gadgets.rs:95:4
+   |
+95 | fn external_linear(builder: &mut ProgramBuilder, state: [Variable; 3]) -> [Variable; 3] {
+   |    ^^^^^^^^^^^^^^^
+
+warning: function `partial_round` is never used
+   --> src/dynamic/gadgets.rs:103:4
+    |
+103 | fn partial_round(
+    |    ^^^^^^^^^^^^^
+
+warning: function `linear` is never used
+   --> src/dynamic/gadgets.rs:119:15
+    |
+119 | pub(crate) fn linear(
+    |               ^^^^^^
+
+warning: function `not` is never used
+   --> src/dynamic/gadgets.rs:131:15
+    |
+131 | pub(crate) fn not(builder: &mut ProgramBuilder, value: Variable, zero: Variable) -> Variable {
+    |               ^^^
+
+warning: function `conditional_equal` is never used
+   --> src/dynamic/gadgets.rs:144:15
+    |
+144 | pub(crate) fn conditional_equal(
+    |               ^^^^^^^^^^^^^^^^^
+
+warning: function `select` is never used
+   --> src/dynamic/gadgets.rs:165:15
+    |
+165 | pub(crate) fn select(
+    |               ^^^^^^
+
+warning: function `allocate_bits` is never used
+   --> src/dynamic/gadgets.rs:184:15
+    |
+184 | pub(crate) fn allocate_bits(
+    |               ^^^^^^^^^^^^^
+
+warning: function `less_than` is never used
+   --> src/dynamic/gadgets.rs:216:15
+    |
+216 | pub(crate) fn less_than(
+    |               ^^^^^^^^^
+
+warning: function `constant_bits` is never used
+   --> src/dynamic/gadgets.rs:242:15
+    |
+242 | pub(crate) fn constant_bits(
+    |               ^^^^^^^^^^^^^
+
+warning: associated items `from_table` and `gkr_input` are never used
+  --> src/multiset.rs:47:19
+   |
+46 | impl ProductFactors {
+   | ------------------- associated items in this implementation
+47 |     pub(crate) fn from_table(table: &RoutingTable, challenges: RoutingChallenges) -> Self {
+   |                   ^^^^^^^^^^
+...
+94 |     pub(crate) fn gkr_input(&self) -> Vec<Bn254> {
+   |                   ^^^^^^^^^
+
+warning: function `compress_optional` is never used
+   --> src/multiset.rs:140:4
+    |
+140 | fn compress_optional(tuple: Option<&RouteTuple>, theta: Bn254) -> Bn254 {
+    |    ^^^^^^^^^^^^^^^^^
+
+warning: constant `PARTIAL_ROUNDS` is never used
+  --> src/poseidon_sumcheck.rs:15:18
+   |
+15 | pub(crate) const PARTIAL_ROUNDS: usize = 56;
+   |                  ^^^^^^^^^^^^^^
+
+warning: constant `STATE_WIDTH` is never used
+  --> src/poseidon_sumcheck.rs:16:7
+   |
+16 | const STATE_WIDTH: usize = 3;
+   |       ^^^^^^^^^^^
+
+warning: constant `PARTIAL_ROUND_START` is never used
+  --> src/poseidon_sumcheck.rs:17:7
+   |
+17 | const PARTIAL_ROUND_START: usize = 4;
+   |       ^^^^^^^^^^^^^^^^^^^
+
+warning: function `partial_round_weights` is never used
+   --> src/poseidon_sumcheck.rs:126:15
+    |
+126 | pub(crate) fn partial_round_weights(weights: &[Bn254]) -> [[Bn254; STATE_WIDTH]; PARTIAL_ROUNDS] {
+    |               ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `partial_round_residual_evaluations` is never used
+   --> src/poseidon_sumcheck.rs:145:15
+    |
+145 | pub(crate) fn partial_round_residual_evaluations(
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: method `fields` is never used
+  --> src/sparse_dag.rs:67:19
+   |
+65 | impl RouteTuple {
+   | --------------- method in this implementation
+66 |     /// Fixed field encoding used later by the routing multiset argument.
+67 |     pub(crate) fn fields(self) -> [Bn254; 6] {
+   |                   ^^^^^^
+
+warning: struct `RoutingTable` is never constructed
+  --> src/sparse_dag.rs:94:19
+   |
+94 | pub(crate) struct RoutingTable {
+   |                   ^^^^^^^^^^^^
+
+warning: associated items `from_dags`, `row_count`, `producers`, `references`, and `evaluations` are never used
+   --> src/sparse_dag.rs:101:19
+    |
+100 | impl RoutingTable {
+    | ----------------- associated items in this implementation
+101 |     pub(crate) fn from_dags(dags: &[SparseMerkleDag]) -> Result<Self, Error> {
+    |                   ^^^^^^^^^
+...
+121 |     pub(crate) const fn row_count(&self) -> usize {
+    |                         ^^^^^^^^^
+...
+125 |     pub(crate) fn producers(&self) -> &[RouteTuple] {
+    |                   ^^^^^^^^^
+...
+129 |     pub(crate) fn references(&self) -> &[RouteTuple] {
+    |                   ^^^^^^^^^^
+...
+135 |     pub(crate) fn evaluations(&self) -> Vec<Bn254> {
+    |                   ^^^^^^^^^^^
+
+warning: method `open` is never used
+  --> src/static_snark.rs:56:19
+   |
+51 | impl MleCommitted {
+   | ----------------- method in this implementation
+...
+56 |     pub(crate) fn open(
+   |                   ^^^^
+
+warning: variant `WhirDefault` is never constructed
+  --> src/static_snark/pcs.rs:56:5
+   |
+54 | pub(crate) enum RateSchedule {
+   |                 ------------ variant in this enum
+55 |     FixedHalf,
+56 |     WhirDefault,
+   |     ^^^^^^^^^^^
+   |
+   = note: `RateSchedule` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+
+warning: method `label` is never used
+  --> src/static_snark/pcs.rs:60:25
+   |
+59 | impl RateSchedule {
+   | ----------------- method in this implementation
+60 |     pub(crate) const fn label(self) -> &'static str {
+   |                         ^^^^^
+
+warning: method `payload_size_bytes` is never used
+  --> src/static_snark/pcs.rs:86:19
+   |
+81 | impl OpeningProof {
+   | ----------------- method in this implementation
+...
+86 |     pub(crate) fn payload_size_bytes(&self) -> usize {
+   |                   ^^^^^^^^^^^^^^^^^^
+
+warning: struct `ParameterSummary` is never constructed
+   --> src/static_snark/pcs.rs:129:19
+    |
+129 | pub(crate) struct ParameterSummary {
+    |                   ^^^^^^^^^^^^^^^^
+
+warning: fields `evaluations` and `proof` are never read
+   --> src/static_snark/pcs.rs:143:16
+    |
+141 | pub(crate) struct OpeningTimings {
+    |                   -------------- fields in this struct
+142 |     /// Time spent evaluating the committed MLE at OOD and requested points.
+143 |     pub(crate) evaluations: Duration,
+    |                ^^^^^^^^^^^
+144 |     /// Time spent constructing the batched sumcheck and WHIR proximity proof.
+145 |     pub(crate) proof: Duration,
+    |                ^^^^^
+    |
+    = note: `OpeningTimings` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+
+warning: methods `parameter_summary` and `open_profiled` are never used
+   --> src/static_snark/pcs.rs:197:19
+    |
+148 | impl ExplicitWhir {
+    | ----------------- methods in this implementation
+...
+197 |     pub(crate) fn parameter_summary(&self) -> ParameterSummary {
+    |                   ^^^^^^^^^^^^^^^^^
+...
+272 |     pub(crate) fn open_profiled(
+    |                   ^^^^^^^^^^^^^
+
+warning: method `residual` is never used
+  --> src/static_snark/program.rs:46:19
+   |
+43 | impl Operation {
+   | -------------- method in this implementation
+...
+46 |     pub(crate) fn residual(&self, values: &[Bn254], public_values: &[Bn254]) -> Bn254 {
+   |                   ^^^^^^^^
+
+warning: function `fifth` is never used
+  --> src/static_snark/program.rs:85:4
+   |
+85 | fn fifth(value: Bn254) -> Bn254 {
+   |    ^^^^^
+
+warning: field `assignment_len` is never read
+  --> src/transition_relation.rs:39:16
+   |
+36 | pub(crate) struct Statement {
+   |                   --------- field in this struct
+...
+39 |     pub(crate) assignment_len: usize,
+   |                ^^^^^^^^^^^^^^
+   |
+   = note: `Statement` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+
+warning: field `active` is never read
+  --> src/transition_relation.rs:61:5
+   |
+60 | struct Row {
+   |        --- field in this struct
+61 |     active: bool,
+   |     ^^^^^^
+   |
+   = note: `Row` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+
+warning: method `poseidon_inputs` is never used
+   --> src/transition_relation.rs:355:19
+    |
+190 | impl TransitionTable {
+    | -------------------- method in this implementation
+...
+355 |     pub(crate) fn poseidon_inputs(&self) -> Vec<Bn254> {
+    |                   ^^^^^^^^^^^^^^^
+
+warning: function `template_program` is never used
+   --> src/transition_relation.rs:386:15
+    |
+386 | pub(crate) fn template_program(statement: Statement) -> ConstraintProgram {
+    |               ^^^^^^^^^^^^^^^^
+
+warning: function `master_block_size` is never used
+   --> src/transition_relation.rs:462:4
+    |
+462 | fn master_block_size(program: &ConstraintProgram) -> usize {
+    |    ^^^^^^^^^^^^^^^^^
+
+warning: struct `RowVariables` is never constructed
+    --> src/transition_relation.rs:1163:8
+     |
+1163 | struct RowVariables {
+     |        ^^^^^^^^^^^^
+
+warning: function `row_program` is never used
+    --> src/transition_relation.rs:1196:4
+     |
+1196 | fn row_program(row: &Row, statement: Statement) -> ConstraintProgram {
+     |    ^^^^^^^^^^^
+
+warning: function `allocate_row` is never used
+    --> src/transition_relation.rs:1330:4
+     |
+1330 | fn allocate_row(builder: &mut ProgramBuilder, row: &Row) -> RowVariables {
+     |    ^^^^^^^^^^^^
+
+warning: function `constrain_hash_blocks` is never used
+    --> src/transition_relation.rs:1369:4
+     |
+1369 | fn constrain_hash_blocks(
+     |    ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `constrain_link` is never used
+    --> src/transition_relation.rs:1408:4
+     |
+1408 | fn constrain_link(
+     |    ^^^^^^^^^^^^^^
+
+warning: function `constrain_gate` is never used
+    --> src/transition_relation.rs:1477:4
+     |
+1477 | fn constrain_gate(
+     |    ^^^^^^^^^^^^^^
+
+warning: function `constrain_tuples` is never used
+    --> src/transition_relation.rs:1512:4
+     |
+1512 | fn constrain_tuples(
+     |    ^^^^^^^^^^^^^^^^
+
+warning: function `assert_scaled_tuple` is never used
+    --> src/transition_relation.rs:1668:4
+     |
+1668 | fn assert_scaled_tuple(
+     |    ^^^^^^^^^^^^^^^^^^^
+
+warning: function `assert_sum_of_scaled_tuples` is never used
+    --> src/transition_relation.rs:1682:4
+     |
+1682 | fn assert_sum_of_scaled_tuples(
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `assert_zero_tuple` is never used
+    --> src/transition_relation.rs:1697:4
+     |
+1697 | fn assert_zero_tuple(
+     |    ^^^^^^^^^^^^^^^^^
+
+warning: function `add_many` is never used
+    --> src/transition_relation.rs:1707:4
+     |
+1707 | fn add_many(builder: &mut ProgramBuilder, values: &[Variable], zero: Variable) -> Variable {
+     |    ^^^^^^^^
+
+warning: function `scale` is never used
+    --> src/transition_relation.rs:1714:4
+     |
+1714 | fn scale(
+     |    ^^^^^
+
+warning: function `less_than_constant` is never used
+    --> src/transition_relation.rs:1731:4
+     |
+1731 | fn less_than_constant(
+     |    ^^^^^^^^^^^^^^^^^^
+
+warning: field `verifier` is never read
+  --> src/wiring.rs:46:5
+   |
+44 | pub(crate) struct ProverWiringIndex {
+   |                   ----------------- field in this struct
+45 |     permutation_tree: MerkleTree,
+46 |     verifier: VerifierWiringIndex,
+   |     ^^^^^^^^
+   |
+   = note: `ProverWiringIndex` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+
+warning: method `verifier` is never used
+  --> src/wiring.rs:87:25
+   |
+82 | impl ProverWiringIndex {
+   | ---------------------- method in this implementation
+...
+87 |     pub(crate) const fn verifier(&self) -> VerifierWiringIndex {
+   |                         ^^^^^^^^
+
+warning: method `statement_elements` is never used
+   --> src/wiring.rs:102:19
+    |
+ 92 | impl VerifierWiringIndex {
+    | ------------------------ method in this implementation
+...
+102 |     pub(crate) fn statement_elements(&self) -> [Bn254; 6] {
+    |                   ^^^^^^^^^^^^^^^^^^
+
+warning: `dynamic-snarks-system` (lib) generated 52 warnings
+    Finished `bench` profile [optimized] target(s) in 0.16s
+     Running benches/dynamic_snark.rs (target/release/deps/dynamic_snark-68e8c752338c9c77)
+dynamic SNARK benchmark
+  original HyperPlonk trace: 2^16 = 65536 gate rows
+  source arithmetic gates: 65536
+  assignment positions: 196864
+  assignment Merkle leaves: 262144 (aligned four-column layout)
+  WHIR: fixed rate 1/2, folding factor 4, 127-bit target, zero PoW
+  public inputs: 256
+  composed initial-relation trace: 65536 rows
+  sequential updates per average: 1
+  preprocessing/indexing: excluded from all reported timings
+  initial relation proof: excluded and not materialized (trusted base commitment harness)
+  wiring: identity
+  update pattern: the same contiguous prefix of gates on every revision
+  workload seed: 20260909 (StdRng; use the checked-in Cargo.lock)
+  baseline proving enabled: false
+  physical memory: 16.0 GiB
+
+update_gates,update_positions,first_transition_poseidon_hashes,first_dynamic_ms,first_scratch_ms,first_speedup,sequence_dynamic_total_ms,sequence_dynamic_avg_ms,sequence_scratch_total_ms,sequence_scratch_avg_ms,sequence_speedup
+workload_fingerprint,1,ea1cf8e5b86d19d6ee5d235d65a49e7a9b3c71eab792dbef678af6c9ffbadde3
+2^0 preflight: transition rows=128, Poseidon hashes=132, row width=128, master=1.0 MiB, transition+key peak <= 0.0 GiB, full initial CAIR RAM peak <= 6.9 GiB (not materialized)
+sequence preflight: unique positions=3, max composed positions=3, max composed rows=128, row width=128, master=1.0 MiB, transition+key peak <= 0.0 GiB
+preprocessing: dynamic initial 4 columns; trace rows=65536
+indexed source circuit for the 1-updated-gate case in 6.73 s (excluded; transitions need no preprocessing)
+preparing trusted base commitment for the 1-updated-gate transition benchmark (excluded)
+starting first dynamic update
+profile checkpoint: transition: update validation complete in 0.000s
+profile checkpoint: transition: hierarchy table insertion/composition complete in 0.000s
+profile checkpoint: transition: update sparse Merkle paths complete in 0.000s
+profile checkpoint: transition CAIR: statement/tree authentication complete in 0.000s
+profile checkpoint: transition CAIR: sparse DAG/table construction complete in 0.004s
+transition CAIR shape: updated_positions=3, level=17, rows=128, main_width=128, product_width=32
+profile checkpoint: transition CAIR: compact witness columns complete in 0.000s
+profile checkpoint: transition CAIR: Poseidon round trace complete in 0.003s
+profile checkpoint: transition CAIR: packed main table complete in 0.000s
+transition CAIR checkpoint: main commitment complete in 0.004s
+profile checkpoint: transition CAIR: routing product factors complete in 0.000s
+profile checkpoint: transition CAIR: product-tree trace complete in 0.000s
+profile checkpoint: transition CAIR: packed product table complete in 0.000s
+transition CAIR checkpoint: product commitment complete in 0.001s
+profile checkpoint: transition CAIR: local sumcheck preparation complete in 0.000s
+transition CAIR checkpoint: local sumcheck round 1/7 complete (0.012s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 2/7 complete (0.018s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 3/7 complete (0.021s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 4/7 complete (0.023s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 5/7 complete (0.024s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 6/7 complete (0.024s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 7/7 complete (0.024s phase elapsed)
+profile checkpoint: transition CAIR: local sumcheck total complete in 0.024s
+profile checkpoint: transition CAIR: Poseidon sumcheck preparation complete in 0.000s
+transition CAIR checkpoint: Poseidon sumcheck round 1/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: Poseidon sumcheck round 2/8 complete (0.005s phase elapsed)
+transition CAIR checkpoint: Poseidon sumcheck round 3/8 complete (0.010s phase elapsed)
+transition CAIR checkpoint: Poseidon sumcheck round 4/8 complete (0.012s phase elapsed)
+transition CAIR checkpoint: Poseidon sumcheck round 5/8 complete (0.013s phase elapsed)
+transition CAIR checkpoint: Poseidon sumcheck round 6/8 complete (0.014s phase elapsed)
+transition CAIR checkpoint: Poseidon sumcheck round 7/8 complete (0.014s phase elapsed)
+transition CAIR checkpoint: Poseidon sumcheck round 8/8 complete (0.014s phase elapsed)
+profile checkpoint: transition CAIR: Poseidon sumcheck total complete in 0.014s
+transition CAIR checkpoint: full-round sumcheck 1/4 round 1/8 complete (0.000s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 1/4 round 2/8 complete (0.000s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 1/4 round 3/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 1/4 round 4/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 1/4 round 5/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 1/4 round 6/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 1/4 round 7/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 1/4 round 8/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 1/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 2/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 3/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 4/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 5/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 6/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 7/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 8/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 1/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 2/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 3/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 4/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 5/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 6/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 7/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 8/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 1/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 2/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 3/8 complete (0.004s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 4/8 complete (0.004s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 5/8 complete (0.004s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 6/8 complete (0.004s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 7/8 complete (0.004s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 8/8 complete (0.004s phase elapsed)
+profile checkpoint: transition CAIR: full-round reductions complete in 0.004s
+profile checkpoint: transition CAIR: product sumcheck preparation complete in 0.000s
+transition CAIR checkpoint: product sumcheck round 1/7 complete (0.003s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 2/7 complete (0.004s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 3/7 complete (0.005s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 4/7 complete (0.005s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 5/7 complete (0.005s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 6/7 complete (0.005s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 7/7 complete (0.006s phase elapsed)
+profile checkpoint: transition CAIR: product sumcheck total complete in 0.006s
+profile checkpoint: transition CAIR: opening preparation complete in 0.001s
+transition CAIR main checkpoint: WHIR OOD polynomial evaluation 1/1 complete (0.000s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 1/119 complete (0.001s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 2/119 complete (0.001s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 3/119 complete (0.001s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 4/119 complete (0.001s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 5/119 complete (0.002s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 6/119 complete (0.002s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 7/119 complete (0.002s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 8/119 complete (0.002s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 9/119 complete (0.002s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 10/119 complete (0.003s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 11/119 complete (0.003s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 12/119 complete (0.003s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 13/119 complete (0.003s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 14/119 complete (0.004s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 15/119 complete (0.004s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 16/119 complete (0.004s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 17/119 complete (0.004s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 18/119 complete (0.004s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 19/119 complete (0.005s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 20/119 complete (0.005s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 21/119 complete (0.005s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 22/119 complete (0.005s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 23/119 complete (0.006s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 24/119 complete (0.006s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 25/119 complete (0.006s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 26/119 complete (0.006s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 27/119 complete (0.006s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 28/119 complete (0.007s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 29/119 complete (0.007s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 30/119 complete (0.007s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 31/119 complete (0.007s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 32/119 complete (0.008s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 33/119 complete (0.008s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 34/119 complete (0.008s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 35/119 complete (0.008s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 36/119 complete (0.009s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 37/119 complete (0.009s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 38/119 complete (0.009s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 39/119 complete (0.009s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 40/119 complete (0.010s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 41/119 complete (0.010s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 42/119 complete (0.010s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 43/119 complete (0.010s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 44/119 complete (0.010s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 45/119 complete (0.011s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 46/119 complete (0.011s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 47/119 complete (0.011s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 48/119 complete (0.011s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 49/119 complete (0.012s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 50/119 complete (0.012s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 51/119 complete (0.012s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 52/119 complete (0.012s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 53/119 complete (0.012s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 54/119 complete (0.013s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 55/119 complete (0.013s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 56/119 complete (0.013s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 57/119 complete (0.013s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 58/119 complete (0.014s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 59/119 complete (0.014s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 60/119 complete (0.014s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 61/119 complete (0.014s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 62/119 complete (0.015s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 63/119 complete (0.015s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 64/119 complete (0.015s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 65/119 complete (0.015s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 66/119 complete (0.015s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 67/119 complete (0.016s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 68/119 complete (0.016s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 69/119 complete (0.016s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 70/119 complete (0.016s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 71/119 complete (0.016s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 72/119 complete (0.017s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 73/119 complete (0.017s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 74/119 complete (0.017s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 75/119 complete (0.017s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 76/119 complete (0.018s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 77/119 complete (0.018s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 78/119 complete (0.018s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 79/119 complete (0.018s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 80/119 complete (0.018s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 81/119 complete (0.019s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 82/119 complete (0.019s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 83/119 complete (0.019s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 84/119 complete (0.019s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 85/119 complete (0.019s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 86/119 complete (0.020s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 87/119 complete (0.020s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 88/119 complete (0.020s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 89/119 complete (0.020s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 90/119 complete (0.021s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 91/119 complete (0.021s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 92/119 complete (0.021s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 93/119 complete (0.021s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 94/119 complete (0.021s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 95/119 complete (0.022s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 96/119 complete (0.022s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 97/119 complete (0.022s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 98/119 complete (0.022s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 99/119 complete (0.023s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 100/119 complete (0.023s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 101/119 complete (0.023s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 102/119 complete (0.023s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 103/119 complete (0.023s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 104/119 complete (0.024s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 105/119 complete (0.024s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 106/119 complete (0.024s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 107/119 complete (0.024s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 108/119 complete (0.025s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 109/119 complete (0.025s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 110/119 complete (0.025s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 111/119 complete (0.025s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 112/119 complete (0.026s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 113/119 complete (0.026s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 114/119 complete (0.026s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 115/119 complete (0.026s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 116/119 complete (0.027s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 117/119 complete (0.027s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 118/119 complete (0.027s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 119/119 complete (0.027s opening elapsed)
+transition CAIR main checkpoint: WHIR opening proof complete (0.057s opening elapsed: 0.027s evaluations, 0.029s proof)
+transition CAIR product checkpoint: WHIR OOD polynomial evaluation 1/1 complete (0.000s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 1/58 complete (0.000s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 2/58 complete (0.000s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 3/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 4/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 5/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 6/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 7/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 8/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 9/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 10/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 11/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 12/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 13/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 14/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 15/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 16/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 17/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 18/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 19/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 20/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 21/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 22/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 23/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 24/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 25/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 26/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 27/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 28/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 29/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 30/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 31/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 32/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 33/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 34/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 35/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 36/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 37/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 38/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 39/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 40/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 41/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 42/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 43/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 44/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 45/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 46/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 47/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 48/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 49/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 50/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 51/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 52/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 53/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 54/58 complete (0.006s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 55/58 complete (0.006s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 56/58 complete (0.006s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 57/58 complete (0.006s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 58/58 complete (0.006s opening elapsed)
+transition CAIR product checkpoint: WHIR opening proof complete (0.009s opening elapsed: 0.006s evaluations, 0.003s proof)
+profile checkpoint: transition: CAIR proof total complete in 0.129s
+profile checkpoint: transition: refresh cached public-input opening complete in 0.000s
+profile checkpoint: transition: complete hierarchy rebuild complete in 0.129s
+first dynamic update complete in 0.13 s (verification excluded)
+starting sequential dynamic update 1/1
+profile checkpoint: transition: update validation complete in 0.000s
+profile checkpoint: transition: hierarchy table insertion/composition complete in 0.000s
+profile checkpoint: transition: update sparse Merkle paths complete in 0.000s
+profile checkpoint: transition CAIR: statement/tree authentication complete in 0.000s
+profile checkpoint: transition CAIR: sparse DAG/table construction complete in 0.004s
+transition CAIR shape: updated_positions=3, level=17, rows=128, main_width=128, product_width=32
+profile checkpoint: transition CAIR: compact witness columns complete in 0.000s
+profile checkpoint: transition CAIR: Poseidon round trace complete in 0.003s
+profile checkpoint: transition CAIR: packed main table complete in 0.000s
+transition CAIR checkpoint: main commitment complete in 0.004s
+profile checkpoint: transition CAIR: routing product factors complete in 0.000s
+profile checkpoint: transition CAIR: product-tree trace complete in 0.000s
+profile checkpoint: transition CAIR: packed product table complete in 0.000s
+transition CAIR checkpoint: product commitment complete in 0.001s
+profile checkpoint: transition CAIR: local sumcheck preparation complete in 0.000s
+transition CAIR checkpoint: local sumcheck round 1/7 complete (0.012s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 2/7 complete (0.018s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 3/7 complete (0.021s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 4/7 complete (0.023s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 5/7 complete (0.024s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 6/7 complete (0.024s phase elapsed)
+transition CAIR checkpoint: local sumcheck round 7/7 complete (0.024s phase elapsed)
+profile checkpoint: transition CAIR: local sumcheck total complete in 0.024s
+profile checkpoint: transition CAIR: Poseidon sumcheck preparation complete in 0.000s
+transition CAIR checkpoint: Poseidon sumcheck round 1/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: Poseidon sumcheck round 2/8 complete (0.005s phase elapsed)
+transition CAIR checkpoint: Poseidon sumcheck round 3/8 complete (0.010s phase elapsed)
+transition CAIR checkpoint: Poseidon sumcheck round 4/8 complete (0.012s phase elapsed)
+transition CAIR checkpoint: Poseidon sumcheck round 5/8 complete (0.013s phase elapsed)
+transition CAIR checkpoint: Poseidon sumcheck round 6/8 complete (0.014s phase elapsed)
+transition CAIR checkpoint: Poseidon sumcheck round 7/8 complete (0.014s phase elapsed)
+transition CAIR checkpoint: Poseidon sumcheck round 8/8 complete (0.014s phase elapsed)
+profile checkpoint: transition CAIR: Poseidon sumcheck total complete in 0.014s
+transition CAIR checkpoint: full-round sumcheck 1/4 round 1/8 complete (0.000s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 1/4 round 2/8 complete (0.000s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 1/4 round 3/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 1/4 round 4/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 1/4 round 5/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 1/4 round 6/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 1/4 round 7/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 1/4 round 8/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 1/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 2/8 complete (0.001s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 3/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 4/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 5/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 6/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 7/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 2/4 round 8/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 1/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 2/8 complete (0.002s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 3/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 4/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 5/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 6/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 7/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 3/4 round 8/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 1/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 2/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 3/8 complete (0.003s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 4/8 complete (0.004s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 5/8 complete (0.004s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 6/8 complete (0.004s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 7/8 complete (0.004s phase elapsed)
+transition CAIR checkpoint: full-round sumcheck 4/4 round 8/8 complete (0.004s phase elapsed)
+profile checkpoint: transition CAIR: full-round reductions complete in 0.004s
+profile checkpoint: transition CAIR: product sumcheck preparation complete in 0.000s
+transition CAIR checkpoint: product sumcheck round 1/7 complete (0.003s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 2/7 complete (0.004s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 3/7 complete (0.005s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 4/7 complete (0.005s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 5/7 complete (0.005s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 6/7 complete (0.006s phase elapsed)
+transition CAIR checkpoint: product sumcheck round 7/7 complete (0.006s phase elapsed)
+profile checkpoint: transition CAIR: product sumcheck total complete in 0.006s
+profile checkpoint: transition CAIR: opening preparation complete in 0.000s
+transition CAIR main checkpoint: WHIR OOD polynomial evaluation 1/1 complete (0.000s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 1/119 complete (0.001s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 2/119 complete (0.001s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 3/119 complete (0.001s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 4/119 complete (0.001s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 5/119 complete (0.002s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 6/119 complete (0.002s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 7/119 complete (0.002s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 8/119 complete (0.002s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 9/119 complete (0.003s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 10/119 complete (0.003s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 11/119 complete (0.003s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 12/119 complete (0.003s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 13/119 complete (0.003s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 14/119 complete (0.004s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 15/119 complete (0.004s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 16/119 complete (0.004s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 17/119 complete (0.004s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 18/119 complete (0.005s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 19/119 complete (0.005s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 20/119 complete (0.005s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 21/119 complete (0.005s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 22/119 complete (0.006s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 23/119 complete (0.006s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 24/119 complete (0.006s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 25/119 complete (0.006s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 26/119 complete (0.007s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 27/119 complete (0.007s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 28/119 complete (0.007s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 29/119 complete (0.007s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 30/119 complete (0.007s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 31/119 complete (0.008s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 32/119 complete (0.008s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 33/119 complete (0.008s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 34/119 complete (0.008s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 35/119 complete (0.009s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 36/119 complete (0.009s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 37/119 complete (0.009s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 38/119 complete (0.009s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 39/119 complete (0.009s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 40/119 complete (0.010s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 41/119 complete (0.010s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 42/119 complete (0.010s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 43/119 complete (0.010s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 44/119 complete (0.011s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 45/119 complete (0.011s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 46/119 complete (0.011s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 47/119 complete (0.011s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 48/119 complete (0.011s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 49/119 complete (0.012s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 50/119 complete (0.012s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 51/119 complete (0.012s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 52/119 complete (0.012s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 53/119 complete (0.013s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 54/119 complete (0.013s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 55/119 complete (0.013s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 56/119 complete (0.013s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 57/119 complete (0.013s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 58/119 complete (0.014s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 59/119 complete (0.014s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 60/119 complete (0.014s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 61/119 complete (0.014s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 62/119 complete (0.015s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 63/119 complete (0.015s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 64/119 complete (0.015s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 65/119 complete (0.015s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 66/119 complete (0.016s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 67/119 complete (0.016s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 68/119 complete (0.016s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 69/119 complete (0.016s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 70/119 complete (0.016s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 71/119 complete (0.017s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 72/119 complete (0.017s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 73/119 complete (0.017s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 74/119 complete (0.017s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 75/119 complete (0.018s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 76/119 complete (0.018s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 77/119 complete (0.018s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 78/119 complete (0.018s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 79/119 complete (0.018s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 80/119 complete (0.019s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 81/119 complete (0.019s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 82/119 complete (0.019s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 83/119 complete (0.019s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 84/119 complete (0.020s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 85/119 complete (0.020s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 86/119 complete (0.020s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 87/119 complete (0.020s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 88/119 complete (0.020s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 89/119 complete (0.021s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 90/119 complete (0.021s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 91/119 complete (0.021s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 92/119 complete (0.021s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 93/119 complete (0.022s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 94/119 complete (0.022s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 95/119 complete (0.022s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 96/119 complete (0.022s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 97/119 complete (0.023s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 98/119 complete (0.023s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 99/119 complete (0.023s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 100/119 complete (0.023s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 101/119 complete (0.023s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 102/119 complete (0.024s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 103/119 complete (0.024s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 104/119 complete (0.024s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 105/119 complete (0.024s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 106/119 complete (0.025s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 107/119 complete (0.025s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 108/119 complete (0.025s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 109/119 complete (0.025s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 110/119 complete (0.025s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 111/119 complete (0.026s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 112/119 complete (0.026s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 113/119 complete (0.026s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 114/119 complete (0.026s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 115/119 complete (0.027s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 116/119 complete (0.027s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 117/119 complete (0.027s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 118/119 complete (0.027s opening elapsed)
+transition CAIR main checkpoint: opening polynomial evaluation 119/119 complete (0.027s opening elapsed)
+transition CAIR main checkpoint: WHIR opening proof complete (0.054s opening elapsed: 0.027s evaluations, 0.027s proof)
+transition CAIR product checkpoint: WHIR OOD polynomial evaluation 1/1 complete (0.000s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 1/58 complete (0.000s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 2/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 3/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 4/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 5/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 6/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 7/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 8/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 9/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 10/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 11/58 complete (0.001s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 12/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 13/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 14/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 15/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 16/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 17/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 18/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 19/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 20/58 complete (0.002s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 21/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 22/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 23/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 24/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 25/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 26/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 27/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 28/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 29/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 30/58 complete (0.003s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 31/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 32/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 33/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 34/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 35/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 36/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 37/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 38/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 39/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 40/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 41/58 complete (0.004s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 42/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 43/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 44/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 45/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 46/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 47/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 48/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 49/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 50/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 51/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 52/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 53/58 complete (0.005s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 54/58 complete (0.006s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 55/58 complete (0.006s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 56/58 complete (0.006s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 57/58 complete (0.006s opening elapsed)
+transition CAIR product checkpoint: opening polynomial evaluation 58/58 complete (0.006s opening elapsed)
+transition CAIR product checkpoint: WHIR opening proof complete (0.009s opening elapsed: 0.006s evaluations, 0.003s proof)
+profile checkpoint: transition: CAIR proof total complete in 0.125s
+profile checkpoint: transition: refresh cached public-input opening complete in 0.000s
+profile checkpoint: transition: complete hierarchy rebuild complete in 0.125s
+update_sample,1,125.059,3
+sequential dynamic update 1/1 complete and verified in 0.13 s (verification excluded)
+1,3,132,129.324,,,125.059,125.059,,,

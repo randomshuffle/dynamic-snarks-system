@@ -1,0 +1,137 @@
+kind,version,phase,mean_ms,median_ms
+leaf,control,transition: update validation,0.0,0.0
+leaf,control,transition: hierarchy table insertion/composition,0.0,0.0
+leaf,control,transition: update sparse Merkle paths,0.0,0.0
+leaf,control,transition CAIR: statement/tree authentication,0.0,0.0
+leaf,control,transition CAIR: sparse DAG/table construction,4.0,4.0
+leaf,control,transition CAIR: compact witness columns,0.0,0.0
+leaf,control,transition CAIR: Poseidon round trace,3.0,3.0
+leaf,control,transition CAIR: packed main table,0.0,0.0
+leaf,control,main commitment,3.933333333333333,4.0
+leaf,control,transition CAIR: routing product factors,0.0,0.0
+leaf,control,transition CAIR: product-tree trace,0.0,0.0
+leaf,control,transition CAIR: packed product table,0.0,0.0
+leaf,control,product commitment,1.0,1.0
+leaf,control,transition CAIR: local sumcheck preparation,0.0,0.0
+leaf,control,transition CAIR: local sumcheck total,24.0,24.0
+leaf,control,transition CAIR: Poseidon sumcheck preparation,0.0,0.0
+leaf,control,transition CAIR: Poseidon sumcheck total,14.033333333333333,14.0
+leaf,control,transition CAIR: full-round reductions,4.066666666666666,4.0
+leaf,control,transition CAIR: product sumcheck preparation,0.0,0.0
+leaf,control,transition CAIR: product sumcheck total,5.066666666666666,5.0
+leaf,control,transition CAIR: opening preparation,0.26666666666666666,0.0
+leaf,control,"WHIR initial claim weights (variables=15, claims=120)",17.5328,17.1235
+leaf,control,WHIR initial folding sumcheck (variables=15),2.5987,2.5629999999999997
+leaf,control,WHIR main opening total,54.4,54.0
+leaf,control,WHIR main evaluations,27.433333333333334,27.0
+leaf,control,WHIR main proof,26.733333333333334,26.0
+leaf,control,"WHIR initial claim weights (variables=12, claims=59)",1.2374666666666667,1.174
+leaf,control,WHIR initial folding sumcheck (variables=12),0.4904,0.48849999999999993
+leaf,control,WHIR product opening total,9.1,9.0
+leaf,control,WHIR product evaluations,5.933333333333334,6.0
+leaf,control,WHIR product proof,3.1,3.0
+leaf,control,transition: CAIR proof total,123.2,122.0
+leaf,control,transition: refresh cached public-input opening,0.0,0.0
+leaf,control,transition: complete hierarchy rebuild,123.46666666666667,122.0
+leaf,after,transition: update validation,0.0,0.0
+leaf,after,transition: hierarchy table insertion/composition,0.0,0.0
+leaf,after,transition: update sparse Merkle paths,0.0,0.0
+leaf,after,transition CAIR: statement/tree authentication,0.0,0.0
+leaf,after,transition CAIR: sparse DAG/table construction,4.0,4.0
+leaf,after,transition CAIR: compact witness columns,0.0,0.0
+leaf,after,transition CAIR: Poseidon round trace,3.0,3.0
+leaf,after,transition CAIR: packed main table,0.0,0.0
+leaf,after,main commitment,4.0,4.0
+leaf,after,transition CAIR: routing product factors,0.0,0.0
+leaf,after,transition CAIR: product-tree trace,0.0,0.0
+leaf,after,transition CAIR: packed product table,0.0,0.0
+leaf,after,product commitment,1.0,1.0
+leaf,after,transition CAIR: local sumcheck preparation,0.0,0.0
+leaf,after,transition CAIR: local sumcheck total,24.0,24.0
+leaf,after,transition CAIR: Poseidon sumcheck preparation,0.0,0.0
+leaf,after,transition CAIR: Poseidon sumcheck total,14.0,14.0
+leaf,after,transition CAIR: full-round reductions,4.0,4.0
+leaf,after,transition CAIR: product sumcheck preparation,0.0,0.0
+leaf,after,transition CAIR: product sumcheck total,5.0,5.0
+leaf,after,transition CAIR: opening preparation,0.16666666666666666,0.0
+leaf,after,"WHIR initial claim weights (variables=15, claims=120)",1.6701666666666666,1.665
+leaf,after,WHIR initial folding sumcheck (variables=15),2.625566666666667,2.5814999999999997
+leaf,after,WHIR main opening total,14.133333333333333,14.0
+leaf,after,WHIR main evaluations,3.0,3.0
+leaf,after,WHIR main proof,11.033333333333333,11.0
+leaf,after,"WHIR initial claim weights (variables=12, claims=59)",0.48596666666666666,0.486
+leaf,after,WHIR initial folding sumcheck (variables=12),0.5031,0.49649999999999994
+leaf,after,WHIR product opening total,4.0,4.0
+leaf,after,WHIR product evaluations,1.0,1.0
+leaf,after,WHIR product proof,2.5,2.5
+leaf,after,transition: CAIR proof total,77.5,77.0
+leaf,after,transition: refresh cached public-input opening,0.0,0.0
+leaf,after,transition: complete hierarchy rebuild,77.7,78.0
+gate,control,transition: update validation,0.0,0.0
+gate,control,transition: hierarchy table insertion/composition,0.0,0.0
+gate,control,transition: update sparse Merkle paths,0.0,0.0
+gate,control,transition CAIR: statement/tree authentication,0.0,0.0
+gate,control,transition CAIR: sparse DAG/table construction,4.0,4.0
+gate,control,transition CAIR: compact witness columns,0.0,0.0
+gate,control,transition CAIR: Poseidon round trace,3.0,3.0
+gate,control,transition CAIR: packed main table,0.0,0.0
+gate,control,main commitment,4.033333333333333,4.0
+gate,control,transition CAIR: routing product factors,0.0,0.0
+gate,control,transition CAIR: product-tree trace,0.0,0.0
+gate,control,transition CAIR: packed product table,0.0,0.0
+gate,control,product commitment,1.0,1.0
+gate,control,transition CAIR: local sumcheck preparation,0.0,0.0
+gate,control,transition CAIR: local sumcheck total,24.4,24.0
+gate,control,transition CAIR: Poseidon sumcheck preparation,0.0,0.0
+gate,control,transition CAIR: Poseidon sumcheck total,14.166666666666666,14.0
+gate,control,transition CAIR: full-round reductions,4.033333333333333,4.0
+gate,control,transition CAIR: product sumcheck preparation,0.0,0.0
+gate,control,transition CAIR: product sumcheck total,5.2,5.0
+gate,control,transition CAIR: opening preparation,0.4,0.0
+gate,control,"WHIR initial claim weights (variables=15, claims=120)",17.4607,16.9785
+gate,control,WHIR initial folding sumcheck (variables=15),2.7091333333333334,2.6174999999999997
+gate,control,WHIR main opening total,55.4,53.0
+gate,control,WHIR main evaluations,28.033333333333335,27.0
+gate,control,WHIR main proof,27.266666666666666,26.0
+gate,control,"WHIR initial claim weights (variables=12, claims=59)",1.2364,1.1745
+gate,control,WHIR initial folding sumcheck (variables=12),0.4935,0.47550000000000003
+gate,control,WHIR product opening total,9.966666666666667,9.0
+gate,control,WHIR product evaluations,6.633333333333334,6.0
+gate,control,WHIR product proof,3.1333333333333333,3.0
+gate,control,transition: CAIR proof total,126.46666666666667,123.0
+gate,control,transition: refresh cached public-input opening,0.0,0.0
+gate,control,transition: complete hierarchy rebuild,126.8,124.0
+gate,after,transition: update validation,0.0,0.0
+gate,after,transition: hierarchy table insertion/composition,0.0,0.0
+gate,after,transition: update sparse Merkle paths,0.0,0.0
+gate,after,transition CAIR: statement/tree authentication,0.0,0.0
+gate,after,transition CAIR: sparse DAG/table construction,4.033333333333333,4.0
+gate,after,transition CAIR: compact witness columns,0.0,0.0
+gate,after,transition CAIR: Poseidon round trace,3.0,3.0
+gate,after,transition CAIR: packed main table,0.0,0.0
+gate,after,main commitment,3.966666666666667,4.0
+gate,after,transition CAIR: routing product factors,0.0,0.0
+gate,after,transition CAIR: product-tree trace,0.0,0.0
+gate,after,transition CAIR: packed product table,0.0,0.0
+gate,after,product commitment,1.0,1.0
+gate,after,transition CAIR: local sumcheck preparation,0.0,0.0
+gate,after,transition CAIR: local sumcheck total,24.0,24.0
+gate,after,transition CAIR: Poseidon sumcheck preparation,0.0,0.0
+gate,after,transition CAIR: Poseidon sumcheck total,14.066666666666666,14.0
+gate,after,transition CAIR: full-round reductions,4.0,4.0
+gate,after,transition CAIR: product sumcheck preparation,0.0,0.0
+gate,after,transition CAIR: product sumcheck total,5.1,5.0
+gate,after,transition CAIR: opening preparation,0.23333333333333334,0.0
+gate,after,"WHIR initial claim weights (variables=15, claims=120)",1.6998666666666666,1.685
+gate,after,WHIR initial folding sumcheck (variables=15),2.6720333333333333,2.6494999999999997
+gate,after,WHIR main opening total,14.1,14.0
+gate,after,WHIR main evaluations,3.0,3.0
+gate,after,WHIR main proof,11.066666666666666,11.0
+gate,after,"WHIR initial claim weights (variables=12, claims=59)",0.4984,0.498
+gate,after,WHIR initial folding sumcheck (variables=12),0.4893,0.489
+gate,after,WHIR product opening total,4.0,4.0
+gate,after,WHIR product evaluations,1.0,1.0
+gate,after,WHIR product proof,2.533333333333333,3.0
+gate,after,transition: CAIR proof total,78.4,78.0
+gate,after,transition: refresh cached public-input opening,0.0,0.0
+gate,after,transition: complete hierarchy rebuild,78.56666666666666,78.0

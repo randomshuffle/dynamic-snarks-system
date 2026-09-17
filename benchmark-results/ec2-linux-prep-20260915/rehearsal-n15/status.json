@@ -1,0 +1,28 @@
+{
+  "command": [
+    "scripts/run_experiment.py",
+    "--trace-log",
+    "15",
+    "--threads",
+    "8",
+    "--initial-interleaving",
+    "16",
+    "--update-logs",
+    "0,1,2,3,4,5,6,7,8,9,10",
+    "--sequence-len",
+    "40",
+    "--seed",
+    "20260909",
+    "--baseline-mode",
+    "shared",
+    "--offline",
+    "--numa-interleave",
+    "--output",
+    "/home/ubuntu/bench-results/prep-20260915/rehearsal-n15"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-09-16T04:24:10.849245+00:00",
+  "started_utc": "2026-09-16T03:41:38.868987+00:00",
+  "state": "complete",
+  "verified_samples": 481
+}

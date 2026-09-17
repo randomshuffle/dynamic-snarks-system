@@ -1,0 +1,15 @@
+{
+  "production_files_unchanged_during_run": 83,
+  "restored_original_result_files_checked": 30,
+  "source_files_checked": 117,
+  "source_sha256": "c43e70fd119f4b9543b5e44023e139e9f5104a7e7a8e2a8364cb5b2fd9890080",
+  "validation": {
+    "complete": true,
+    "expected_samples": 97,
+    "ignored_incomplete_tail": false,
+    "missing_samples": [],
+    "proof_checkpoints": 9,
+    "proof_size_samples": 97,
+    "verified_samples": 97
+  }
+}

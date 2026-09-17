@@ -1,0 +1,17 @@
+{
+  "exit_code": 0,
+  "max_rss_bytes": 3512795136,
+  "memory_monitor": {
+    "error": null,
+    "limit_exceeded": false,
+    "peak_sampled_phys_footprint_bytes": 14283484928,
+    "peak_sampled_rss_bytes": 3489660928,
+    "rss_limit_bytes": 8000000000,
+    "samples": 1031,
+    "sampling_interval_seconds": 0.2
+  },
+  "signals_forwarded": [],
+  "system_seconds": 63.23504,
+  "user_seconds": 1221.173283,
+  "wall_seconds": 212.8792445419822
+}

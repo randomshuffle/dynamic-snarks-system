@@ -16,10 +16,9 @@ pub(crate) const PARTIAL_ROUNDS: usize = 56;
 const STATE_WIDTH: usize = 3;
 const PARTIAL_ROUND_START: usize = 4;
 
-/// Each item in this reduction performs all 64 Poseidon rounds at all seven
-/// points, so a much smaller threshold than a simple field dot product is
-/// enough to amortize Rayon scheduling.
-const PARALLEL_PAIR_THRESHOLD: usize = 1 << 6;
+/// A pair already contains enough field work to form a task. Larger domains
+/// are grouped by the shared worker-count-aware scheduler.
+const MIN_PAIRS_PER_TASK: usize = 1;
 
 /// Evaluate the line `zero + t * (one - zero)` at
 /// `0, 1, -1, 2, -2, 1/2, -1/2`.
@@ -171,16 +170,19 @@ pub(crate) fn sum_pairs<F>(pair_count: usize, evaluate_pair: F) -> [Bn254; EVALU
 where
     F: Fn(usize) -> [Bn254; EVALUATIONS] + Sync + Send,
 {
-    if pair_count < PARALLEL_PAIR_THRESHOLD {
-        return (0..pair_count).fold([Bn254::ZERO; EVALUATIONS], |sum, pair| {
-            add_evaluations(sum, evaluate_pair(pair))
-        });
-    }
-    (0..pair_count).into_par_iter().par_fold_reduce(
-        || [Bn254::ZERO; EVALUATIONS],
-        |sum, pair| add_evaluations(sum, evaluate_pair(pair)),
-        add_evaluations,
-    )
+    let chunk = crate::parallel::grain(pair_count, MIN_PAIRS_PER_TASK);
+    (0..pair_count.div_ceil(chunk))
+        .into_par_iter()
+        .par_fold_reduce(
+            || [Bn254::ZERO; EVALUATIONS],
+            |mut sum, task| {
+                for pair in task * chunk..((task + 1) * chunk).min(pair_count) {
+                    sum = add_evaluations(sum, evaluate_pair(pair));
+                }
+                sum
+            },
+            add_evaluations,
+        )
 }
 
 #[inline(always)]
@@ -303,7 +305,7 @@ mod tests {
 
     #[test]
     fn pair_reduction_matches_direct_sum() {
-        let pair_count = 2 * PARALLEL_PAIR_THRESHOLD;
+        let pair_count = 128;
         let contribution = |pair: usize| {
             core::array::from_fn(|evaluation| Bn254::from_usize((pair + 1) * (evaluation + 3)))
         };

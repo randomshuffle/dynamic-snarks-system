@@ -21,10 +21,7 @@ impl CircuitShape {
             gate_pairs: circuit.n,
             public_inputs: circuit.num_public_inputs,
             assignment_len: circuit.assignment_len(),
-            merkle_height: circuit
-                .assignment_len()
-                .next_power_of_two()
-                .trailing_zeros() as usize,
+            merkle_height: circuit.assignment_tree_len().trailing_zeros() as usize,
         }
     }
 
@@ -33,7 +30,11 @@ impl CircuitShape {
     }
 
     pub(crate) fn public_positions(self) -> Vec<usize> {
-        (6 * self.gate_pairs..self.assignment_len).collect()
+        (0..self.public_inputs).map(|index| 4 * index + 3).collect()
+    }
+
+    pub(crate) fn assignment_tree_len(self) -> usize {
+        4 * (2 * self.gate_pairs).next_power_of_two()
     }
 }
 
@@ -59,9 +60,8 @@ pub(crate) fn preprocess(
 ) -> Result<(ProverWiringIndex, VerifierWiringIndex), MerkleError> {
     let permutation_tree = MerkleTree::new(
         circuit
-            .permutation
-            .iter()
-            .copied()
+            .encoded_permutation()
+            .into_iter()
             .map(Bn254::from_usize)
             .collect(),
     )?;

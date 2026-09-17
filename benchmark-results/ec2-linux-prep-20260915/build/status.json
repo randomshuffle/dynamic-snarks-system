@@ -1,0 +1,17 @@
+{
+  "command": [
+    "scripts/run_experiment.py",
+    "--threads",
+    "8",
+    "--initial-interleaving",
+    "16",
+    "--build-only",
+    "--offline",
+    "--output",
+    "/home/ubuntu/bench-results/prep-20260915/build"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-09-16T03:41:35.606422+00:00",
+  "started_utc": "2026-09-16T03:41:17.670229+00:00",
+  "state": "build_complete"
+}

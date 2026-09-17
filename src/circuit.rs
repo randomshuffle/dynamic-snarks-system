@@ -1,8 +1,19 @@
 //! Section 4 fan-in-two circuit representation.
 
+use p3_maybe_rayon::prelude::*;
+
 use p3_bn254::Bn254;
+use p3_field::PrimeCharacteristicRing;
 use serde::{Deserialize, Serialize};
+#[cfg(test)]
+use std::cell::Cell;
 use thiserror::Error;
+
+#[cfg(test)]
+thread_local! {
+    static FULL_ASSIGNMENT_CHECKS: Cell<usize> = const { Cell::new(0) };
+    static PUBLIC_POSITION_ENUMERATIONS: Cell<usize> = const { Cell::new(0) };
+}
 
 /// A padded Plonkish circuit with `n` addition and `n` multiplication rows.
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -103,10 +114,50 @@ impl Circuit {
         })
     }
 
-    /// Total number of committed assignment entries.
+    /// Number of logical assignment occurrences, before physical tree padding.
     #[must_use]
     pub const fn assignment_len(&self) -> usize {
         6 * self.n + self.num_public_inputs
+    }
+
+    /// Physical four-column assignment tree: three gate wires and one public slot per row.
+    pub(crate) fn assignment_tree_len(&self) -> usize {
+        4 * (2 * self.n).next_power_of_two()
+    }
+
+    pub(crate) fn assignment_leaf_index(&self, logical: usize) -> usize {
+        assert!(logical < self.assignment_len());
+        if logical < 6 * self.n {
+            4 * (logical / 3) + logical % 3
+        } else {
+            4 * (logical - 6 * self.n) + 3
+        }
+    }
+
+    pub(crate) fn encode_assignment(&self, values: &[Bn254]) -> Vec<Bn254> {
+        assert_eq!(values.len(), self.assignment_len());
+        let mut encoded = vec![Bn254::ZERO; self.assignment_tree_len()];
+        encoded
+            .par_chunks_mut(4)
+            .enumerate()
+            .for_each(|(row, output)| {
+                if row < 2 * self.n {
+                    output[..3].copy_from_slice(&values[3 * row..3 * row + 3]);
+                }
+                if row < self.num_public_inputs {
+                    output[3] = values[6 * self.n + row];
+                }
+            });
+        encoded
+    }
+
+    /// Conjugate the logical wiring by the assignment embedding; padding is fixed.
+    pub(crate) fn encoded_permutation(&self) -> Vec<usize> {
+        let mut permutation = (0..self.assignment_tree_len()).collect::<Vec<_>>();
+        for (index, &neighbor) in self.permutation.iter().enumerate() {
+            permutation[self.assignment_leaf_index(index)] = self.assignment_leaf_index(neighbor);
+        }
+        permutation
     }
 
     /// Number of update hierarchy levels, `ceil(log2(m + 1))`.
@@ -118,28 +169,37 @@ impl Circuit {
     /// Public-input positions in the assignment vector.
     #[must_use]
     pub fn public_positions(&self) -> Vec<usize> {
+        #[cfg(test)]
+        PUBLIC_POSITION_ENUMERATIONS.with(|count| count.set(count.get() + 1));
         (6 * self.n..self.assignment_len()).collect()
     }
 
     /// Check all gate and wiring constraints natively.
     pub fn check_assignment(&self, z: &[Bn254]) -> Result<(), CircuitError> {
+        #[cfg(test)]
+        FULL_ASSIGNMENT_CHECKS.with(|count| count.set(count.get() + 1));
         if z.len() != self.assignment_len() {
             return Err(CircuitError::AssignmentLength {
                 expected: self.assignment_len(),
                 actual: z.len(),
             });
         }
-        for i in 0..self.n {
-            if z[6 * i] + z[6 * i + 1] != z[6 * i + 2]
-                || z[6 * i + 3] * z[6 * i + 4] != z[6 * i + 5]
-            {
-                return Err(CircuitError::GateConstraint { pair: i });
-            }
+        if let Some(i) = (0..self.n)
+            .into_par_iter()
+            .filter(|&i| {
+                z[6 * i] + z[6 * i + 1] != z[6 * i + 2]
+                    || z[6 * i + 3] * z[6 * i + 4] != z[6 * i + 5]
+            })
+            .min()
+        {
+            return Err(CircuitError::GateConstraint { pair: i });
         }
-        for (i, &sigma_i) in self.permutation.iter().enumerate() {
-            if z[i] != z[sigma_i] {
-                return Err(CircuitError::WiringConstraint { position: i });
-            }
+        if let Some(i) = (0..self.permutation.len())
+            .into_par_iter()
+            .filter(|&i| z[i] != z[self.permutation[i]])
+            .min()
+        {
+            return Err(CircuitError::WiringConstraint { position: i });
         }
         Ok(())
     }
@@ -169,6 +229,20 @@ impl Circuit {
         }
         Ok(())
     }
+}
+
+#[cfg(test)]
+pub(crate) fn reset_dense_work_counts() {
+    FULL_ASSIGNMENT_CHECKS.with(|count| count.set(0));
+    PUBLIC_POSITION_ENUMERATIONS.with(|count| count.set(0));
+}
+
+#[cfg(test)]
+pub(crate) fn dense_work_counts() -> (usize, usize) {
+    (
+        FULL_ASSIGNMENT_CHECKS.with(Cell::get),
+        PUBLIC_POSITION_ENUMERATIONS.with(Cell::get),
+    )
 }
 
 #[cfg(test)]

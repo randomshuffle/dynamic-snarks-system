@@ -1,0 +1,10 @@
+{
+  "complete": true,
+  "verified_file_checksums": 34,
+  "verified_samples": 481,
+  "proof_checkpoints": 13,
+  "source_and_binary_match": true,
+  "timing_and_size_aggregates_recomputed": true,
+  "max_rss_gib": 28.674274444580078,
+  "wall_minutes": 42.52913952275
+}

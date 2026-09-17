@@ -1,0 +1,13 @@
+{
+  "binary_sha256": {
+    "control": "91028773edc46a8172d9b0ae251d070462f3a4085f6513396eb6e7fa49ef4440",
+    "after": "775eff24038455bb7b8f0388d0c8d66d64c88f66d680d7703b2cf5a5c23f2674"
+  },
+  "trace_log": 16,
+  "samples_per_case": 30,
+  "rayon_threads": 8,
+  "features": [
+    "parallel"
+  ],
+  "workdir": "/tmp/first-update-opening-opts/workspace"
+}

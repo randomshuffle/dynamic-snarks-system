@@ -1,0 +1,9 @@
+update_gates,revisions,baseline_mean_payload_bytes,baseline_mean_serialized_bytes,initial_payload_bytes,initial_serialized_bytes,dynamic_final_payload_bytes,dynamic_final_serialized_bytes,final_over_baseline_payload,final_over_baseline_serialized,increment_over_initial_payload_bytes,initial_proof_file,baseline_proof_file,dynamic_final_proof_file
+1,12,1335232,1676986.75,2094656,2719048,3838240,4887185,2.8745865886976945,2.914265720942637,1743584,proofs/initial-g0-r0.cbor,proofs/baseline-g1-r12.cbor,proofs/update-g1-r12.cbor
+2,12,1335232,1676826.6666666667,2094656,2719048,4002144,5132270,2.9973397881416863,3.0607039487285506,1907488,proofs/initial-g0-r0.cbor,proofs/baseline-g2-r12.cbor,proofs/update-g2-r12.cbor
+4,12,1335232,1676758.3333333333,2094656,2719048,4141920,5344191,3.1020227196472225,3.187216007077148,2047264,proofs/initial-g0-r0.cbor,proofs/baseline-g4-r12.cbor,proofs/update-g4-r12.cbor
+8,12,1335232,1676628.0833333333,2094656,2719048,4286080,5567744,3.209988975698605,3.3207984855715122,2191424,proofs/initial-g0-r0.cbor,proofs/baseline-g8-r12.cbor,proofs/update-g8-r12.cbor
+16,12,1335232,1676795.25,2094656,2719048,4434624,5796303,3.321238556295835,3.4567744630717434,2339968,proofs/initial-g0-r0.cbor,proofs/baseline-g16-r12.cbor,proofs/update-g16-r12.cbor
+32,12,1335232,1676893.3333333333,2094656,2719048,4587552,6034354,3.435771461438911,3.598531808821074,2492896,proofs/initial-g0-r0.cbor,proofs/baseline-g32-r12.cbor,proofs/update-g32-r12.cbor
+64,12,1335232,1676783.5,2094656,2719048,4654976,6143508,3.4862675550016777,3.663864774432716,2560320,proofs/initial-g0-r0.cbor,proofs/baseline-g64-r12.cbor,proofs/update-g64-r12.cbor
+128,12,1335232,1676740.4166666667,2094656,2719048,4744864,6282674,3.553587691127834,3.746956856022983,2650208,proofs/initial-g0-r0.cbor,proofs/baseline-g128-r12.cbor,proofs/update-g128-r12.cbor

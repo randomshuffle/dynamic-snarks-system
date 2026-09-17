@@ -1,0 +1,25 @@
+{
+  "command": [
+    "scripts/run_experiment.py",
+    "--trace-log",
+    "9",
+    "--update-logs",
+    "0,1",
+    "--sequence-len",
+    "12",
+    "--seed",
+    "20260909",
+    "--threads",
+    "8",
+    "--baseline-mode",
+    "shared",
+    "--offline",
+    "--output",
+    "benchmark-results/ec2-proof-size-smoke-n9"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-09-09T20:28:34.558052+00:00",
+  "started_utc": "2026-09-09T20:28:16.346418+00:00",
+  "state": "complete",
+  "verified_samples": 37
+}

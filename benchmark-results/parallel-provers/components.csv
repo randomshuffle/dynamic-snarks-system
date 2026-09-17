@@ -1,0 +1,285 @@
+mode,workers,phase,component,count,mean_ms
+before,1,initial,initial: native assignment validation,1,1.0
+before,1,initial,initial: assignment Merkle tree,1,6887.0
+before,1,initial,initial: relation arithmetization,1,4.0
+before,1,initial,static: preprocessed commitment,1,140.0
+before,1,initial,static: main trace construction,1,3.0
+before,1,initial,static: main commitment,1,126.0
+before,1,initial,initial CAIR: Poseidon/Merkle trace construction,1,6592.0
+before,1,initial,initial CAIR: packed commitment table,1,311.0
+before,1,initial,initial CAIR: routing work table,1,41.0
+before,1,initial,initial CAIR: routing sumcheck total,1,1574.0
+before,1,initial,initial CAIR: Poseidon sumcheck total,1,78849.0
+before,1,initial,initial CAIR: full-round reductions,1,13402.0
+before,1,initial,"WHIR initial claim weights (variables=25, claims=16)",1,2909.781
+before,1,initial,WHIR initial folding sumcheck (variables=25),1,5291.457
+before,1,initial,static: composed CAIR callback,1,177079.0
+before,1,initial,static: HyperPlonk product oracle,1,111.0
+before,1,initial,static: product commitment,1,55.0
+before,1,initial,static: local sumcheck,1,980.0
+before,1,initial,static: product sumcheck,1,1350.0
+before,1,initial,"WHIR initial claim weights (variables=18, claims=5)",1,19.042
+before,1,initial,WHIR initial folding sumcheck (variables=18),1,63.306
+before,1,initial,static: preprocessed WHIR opening,1,285.0
+before,1,initial,"WHIR initial claim weights (variables=18, claims=10)",1,41.083
+before,1,initial,static: main WHIR opening,1,315.0
+before,1,initial,"WHIR initial claim weights (variables=17, claims=6)",1,18.648999999999997
+before,1,initial,WHIR initial folding sumcheck (variables=17),1,14.036
+before,1,initial,static: product WHIR opening,1,133.0
+before,1,initial,initial: composed static+CAIR proof,1,180580.0
+before,1,initial,initial: public-input Merkle opening,1,1.0
+before,1,update,transition: update validation,5,0.0
+before,1,update,transition: hierarchy table insertion/composition,5,0.0
+before,1,update,transition: update sparse Merkle paths,5,0.0
+before,1,update,transition CAIR: statement/tree authentication,5,0.0
+before,1,update,transition CAIR: sparse DAG/table construction,5,4.0
+before,1,update,transition CAIR: compact witness columns,5,0.0
+before,1,update,transition CAIR: Poseidon round trace,5,3.0
+before,1,update,transition CAIR: packed main table,5,0.0
+before,1,update,transition CAIR: routing product factors,5,0.2
+before,1,update,transition CAIR: product-tree trace,5,0.0
+before,1,update,transition CAIR: packed product table,5,0.0
+before,1,update,transition CAIR: local sumcheck preparation,5,0.0
+before,1,update,transition CAIR: local sumcheck total,5,25.0
+before,1,update,transition CAIR: Poseidon sumcheck preparation,5,0.0
+before,1,update,transition CAIR: Poseidon sumcheck total,5,33.2
+before,1,update,transition CAIR: full-round reductions,5,6.0
+before,1,update,transition CAIR: product sumcheck preparation,5,0.0
+before,1,update,transition CAIR: product sumcheck total,5,6.0
+before,1,update,transition CAIR: opening preparation,5,0.0
+before,1,update,"WHIR initial claim weights (variables=15, claims=120)",5,3.269
+before,1,update,WHIR initial folding sumcheck (variables=15),5,3.8651999999999997
+before,1,update,"WHIR initial claim weights (variables=12, claims=59)",5,0.3306
+before,1,update,WHIR initial folding sumcheck (variables=12),5,0.5408000000000001
+before,1,update,transition: CAIR proof total,5,134.4
+before,1,update,transition: refresh cached public-input opening,5,0.0
+before,1,update,transition: complete hierarchy rebuild,5,134.8
+before,1,baseline,static: preprocessed commitment,5,139.4
+before,1,baseline,static: main trace construction,5,2.4
+before,1,baseline,static: main commitment,5,124.4
+before,1,baseline,static: composed CAIR callback,5,0.0
+before,1,baseline,static: HyperPlonk product oracle,5,54.2
+before,1,baseline,static: product commitment,5,52.8
+before,1,baseline,static: local sumcheck,5,957.8
+before,1,baseline,static: product sumcheck,5,1519.8
+before,1,baseline,"WHIR initial claim weights (variables=18, claims=5)",5,17.4708
+before,1,baseline,WHIR initial folding sumcheck (variables=18),5,63.2652
+before,1,baseline,static: preprocessed WHIR opening,5,252.2
+before,1,baseline,"WHIR initial claim weights (variables=18, claims=9)",5,31.4248
+before,1,baseline,static: main WHIR opening,5,254.8
+before,1,baseline,"WHIR initial claim weights (variables=17, claims=6)",5,19.1802
+before,1,baseline,WHIR initial folding sumcheck (variables=17),5,14.0576
+before,1,baseline,static: product WHIR opening,5,131.8
+before,8,initial,initial: native assignment validation,1,1.0
+before,8,initial,initial: assignment Merkle tree,1,6864.0
+before,8,initial,initial: relation arithmetization,1,8.0
+before,8,initial,static: preprocessed commitment,1,37.0
+before,8,initial,static: main trace construction,1,3.0
+before,8,initial,static: main commitment,1,38.0
+before,8,initial,initial CAIR: Poseidon/Merkle trace construction,1,7080.0
+before,8,initial,initial CAIR: packed commitment table,1,745.0
+before,8,initial,initial CAIR: routing work table,1,47.0
+before,8,initial,initial CAIR: routing sumcheck total,1,1590.0
+before,8,initial,initial CAIR: Poseidon sumcheck total,1,16958.0
+before,8,initial,initial CAIR: full-round reductions,1,3941.0
+before,8,initial,"WHIR initial claim weights (variables=25, claims=16)",1,1838.573
+before,8,initial,WHIR initial folding sumcheck (variables=25),1,1792.085
+before,8,initial,static: composed CAIR callback,1,65543.0
+before,8,initial,static: HyperPlonk product oracle,1,107.0
+before,8,initial,static: product commitment,1,13.0
+before,8,initial,static: local sumcheck,1,1012.9999999999999
+before,8,initial,static: product sumcheck,1,1415.0
+before,8,initial,"WHIR initial claim weights (variables=18, claims=5)",1,11.613
+before,8,initial,WHIR initial folding sumcheck (variables=18),1,16.933999999999997
+before,8,initial,static: preprocessed WHIR opening,1,122.0
+before,8,initial,"WHIR initial claim weights (variables=18, claims=10)",1,26.994
+before,8,initial,static: main WHIR opening,1,143.0
+before,8,initial,"WHIR initial claim weights (variables=17, claims=6)",1,7.127
+before,8,initial,WHIR initial folding sumcheck (variables=17),1,4.518000000000001
+before,8,initial,static: product WHIR opening,1,41.0
+before,8,initial,initial: composed static+CAIR proof,1,68502.0
+before,8,initial,initial: public-input Merkle opening,1,2.0
+before,8,update,transition: update validation,5,0.0
+before,8,update,transition: hierarchy table insertion/composition,5,0.0
+before,8,update,transition: update sparse Merkle paths,5,0.0
+before,8,update,transition CAIR: statement/tree authentication,5,0.0
+before,8,update,transition CAIR: sparse DAG/table construction,5,4.0
+before,8,update,transition CAIR: compact witness columns,5,0.0
+before,8,update,transition CAIR: Poseidon round trace,5,3.0
+before,8,update,transition CAIR: packed main table,5,0.0
+before,8,update,transition CAIR: routing product factors,5,0.2
+before,8,update,transition CAIR: product-tree trace,5,0.0
+before,8,update,transition CAIR: packed product table,5,0.0
+before,8,update,transition CAIR: local sumcheck preparation,5,0.0
+before,8,update,transition CAIR: local sumcheck total,5,24.0
+before,8,update,transition CAIR: Poseidon sumcheck preparation,5,0.0
+before,8,update,transition CAIR: Poseidon sumcheck total,5,14.2
+before,8,update,transition CAIR: full-round reductions,5,4.0
+before,8,update,transition CAIR: product sumcheck preparation,5,0.0
+before,8,update,transition CAIR: product sumcheck total,5,6.0
+before,8,update,transition CAIR: opening preparation,5,0.4
+before,8,update,"WHIR initial claim weights (variables=15, claims=120)",5,1.6945999999999999
+before,8,update,WHIR initial folding sumcheck (variables=15),5,2.6644
+before,8,update,"WHIR initial claim weights (variables=12, claims=59)",5,0.5028
+before,8,update,WHIR initial folding sumcheck (variables=12),5,0.5196
+before,8,update,transition: CAIR proof total,5,80.0
+before,8,update,transition: refresh cached public-input opening,5,0.0
+before,8,update,transition: complete hierarchy rebuild,5,80.2
+before,8,baseline,static: preprocessed commitment,5,30.4
+before,8,baseline,static: main trace construction,5,2.0
+before,8,baseline,static: main commitment,5,27.2
+before,8,baseline,static: composed CAIR callback,5,0.0
+before,8,baseline,static: HyperPlonk product oracle,5,54.0
+before,8,baseline,static: product commitment,5,12.2
+before,8,baseline,static: local sumcheck,5,953.2
+before,8,baseline,static: product sumcheck,5,1581.6
+before,8,baseline,"WHIR initial claim weights (variables=18, claims=5)",5,9.5732
+before,8,baseline,WHIR initial folding sumcheck (variables=18),5,15.2336
+before,8,baseline,static: preprocessed WHIR opening,5,69.0
+before,8,baseline,"WHIR initial claim weights (variables=18, claims=9)",5,19.4302
+before,8,baseline,static: main WHIR opening,5,85.4
+before,8,baseline,"WHIR initial claim weights (variables=17, claims=6)",5,7.3468
+before,8,baseline,WHIR initial folding sumcheck (variables=17),5,4.5628
+before,8,baseline,static: product WHIR opening,5,40.6
+after,1,initial,initial: native assignment validation,1,1.0
+after,1,initial,initial: assignment Merkle tree,1,7050.0
+after,1,initial,initial: relation arithmetization,1,4.0
+after,1,initial,static: preprocessed commitment,1,140.0
+after,1,initial,static: main trace construction,1,4.0
+after,1,initial,static: main commitment,1,125.0
+after,1,initial,initial CAIR: Poseidon/Merkle trace construction,1,7063.0
+after,1,initial,initial CAIR: packed commitment table,1,369.0
+after,1,initial,initial CAIR: routing work table,1,42.0
+after,1,initial,initial CAIR: routing sumcheck total,1,1675.0
+after,1,initial,initial CAIR: Poseidon sumcheck total,1,79558.0
+after,1,initial,initial CAIR: full-round reductions,1,13188.0
+after,1,initial,"WHIR initial claim weights (variables=25, claims=16)",1,4776.6320000000005
+after,1,initial,WHIR initial folding sumcheck (variables=25),1,6939.097000000001
+after,1,initial,static: composed CAIR callback,1,162960.0
+after,1,initial,static: HyperPlonk product oracle,1,102.0
+after,1,initial,static: product commitment,1,57.0
+after,1,initial,static: local sumcheck,1,983.0
+after,1,initial,static: product sumcheck,1,1333.0
+after,1,initial,"WHIR initial claim weights (variables=18, claims=5)",1,18.856
+after,1,initial,WHIR initial folding sumcheck (variables=18),1,66.947
+after,1,initial,static: preprocessed WHIR opening,1,204.0
+after,1,initial,"WHIR initial claim weights (variables=18, claims=10)",1,131.70999999999998
+after,1,initial,static: main WHIR opening,1,337.0
+after,1,initial,"WHIR initial claim weights (variables=17, claims=6)",1,25.753
+after,1,initial,WHIR initial folding sumcheck (variables=17),1,21.325
+after,1,initial,static: product WHIR opening,1,109.0
+after,1,initial,initial: composed static+CAIR proof,1,166355.0
+after,1,initial,initial: public-input Merkle opening,1,0.0
+after,1,update,transition: update validation,5,0.0
+after,1,update,transition: hierarchy table insertion/composition,5,0.0
+after,1,update,transition: update sparse Merkle paths,5,0.0
+after,1,update,transition CAIR: statement/tree authentication,5,0.0
+after,1,update,transition CAIR: sparse DAG/table construction,5,4.2
+after,1,update,transition CAIR: compact witness columns,5,0.0
+after,1,update,transition CAIR: Poseidon round trace,5,3.0
+after,1,update,transition CAIR: packed main table,5,0.0
+after,1,update,transition CAIR: routing product factors,5,0.0
+after,1,update,transition CAIR: product-tree trace,5,0.0
+after,1,update,transition CAIR: packed product table,5,0.0
+after,1,update,transition CAIR: local sumcheck preparation,5,0.0
+after,1,update,transition CAIR: local sumcheck total,5,24.0
+after,1,update,transition CAIR: Poseidon sumcheck preparation,5,0.0
+after,1,update,transition CAIR: Poseidon sumcheck total,5,33.2
+after,1,update,transition CAIR: full-round reductions,5,7.0
+after,1,update,transition CAIR: product sumcheck preparation,5,0.0
+after,1,update,transition CAIR: product sumcheck total,5,6.2
+after,1,update,transition CAIR: opening preparation,5,1.0
+after,1,update,"WHIR initial claim weights (variables=15, claims=120)",5,3.3116
+after,1,update,WHIR initial folding sumcheck (variables=15),5,3.7816
+after,1,update,"WHIR initial claim weights (variables=12, claims=59)",5,0.332
+after,1,update,WHIR initial folding sumcheck (variables=12),5,0.4864
+after,1,update,transition: CAIR proof total,5,121.6
+after,1,update,transition: refresh cached public-input opening,5,0.0
+after,1,update,transition: complete hierarchy rebuild,5,121.8
+after,1,baseline,static: preprocessed commitment,5,138.0
+after,1,baseline,static: main trace construction,5,3.0
+after,1,baseline,static: main commitment,5,124.2
+after,1,baseline,static: composed CAIR callback,5,0.0
+after,1,baseline,static: HyperPlonk product oracle,5,53.6
+after,1,baseline,static: product commitment,5,52.6
+after,1,baseline,static: local sumcheck,5,967.6
+after,1,baseline,static: product sumcheck,5,1324.2
+after,1,baseline,"WHIR initial claim weights (variables=18, claims=5)",5,17.4806
+after,1,baseline,WHIR initial folding sumcheck (variables=18),5,62.8416
+after,1,baseline,static: preprocessed WHIR opening,5,156.6
+after,1,baseline,"WHIR initial claim weights (variables=18, claims=9)",5,31.5818
+after,1,baseline,static: main WHIR opening,5,174.6
+after,1,baseline,"WHIR initial claim weights (variables=17, claims=6)",5,19.23
+after,1,baseline,WHIR initial folding sumcheck (variables=17),5,13.9442
+after,1,baseline,static: product WHIR opening,5,92.0
+after,8,initial,initial: native assignment validation,1,1.0
+after,8,initial,initial: assignment Merkle tree,1,1480.0
+after,8,initial,initial: relation arithmetization,1,4.0
+after,8,initial,static: preprocessed commitment,1,50.0
+after,8,initial,static: main trace construction,1,2.0
+after,8,initial,static: main commitment,1,40.0
+after,8,initial,initial CAIR: Poseidon/Merkle trace construction,1,1583.0
+after,8,initial,initial CAIR: packed commitment table,1,661.0
+after,8,initial,initial CAIR: routing work table,1,32.0
+after,8,initial,initial CAIR: routing sumcheck total,1,375.0
+after,8,initial,initial CAIR: Poseidon sumcheck total,1,16295.000000000002
+after,8,initial,initial CAIR: full-round reductions,1,2766.0
+after,8,initial,"WHIR initial claim weights (variables=25, claims=16)",1,687.721
+after,8,initial,WHIR initial folding sumcheck (variables=25),1,1506.4679999999998
+after,8,initial,static: composed CAIR callback,1,35460.0
+after,8,initial,static: HyperPlonk product oracle,1,13.0
+after,8,initial,static: product commitment,1,13.0
+after,8,initial,static: local sumcheck,1,203.0
+after,8,initial,static: product sumcheck,1,287.0
+after,8,initial,"WHIR initial claim weights (variables=18, claims=5)",1,8.929
+after,8,initial,"WHIR initial claim weights (variables=17, claims=6)",1,10.042
+after,8,initial,"WHIR initial claim weights (variables=18, claims=10)",1,13.043000000000001
+after,8,initial,WHIR initial folding sumcheck (variables=17),1,22.611
+after,8,initial,WHIR initial folding sumcheck (variables=18),1,37.153999999999996
+after,8,initial,static: product WHIR opening,1,88.0
+after,8,initial,static: main WHIR opening,1,94.0
+after,8,initial,static: preprocessed WHIR opening,1,95.0
+after,8,initial,initial: composed static+CAIR proof,1,36166.0
+after,8,initial,initial: public-input Merkle opening,1,0.0
+after,8,update,transition: update validation,5,0.0
+after,8,update,transition: hierarchy table insertion/composition,5,0.0
+after,8,update,transition: update sparse Merkle paths,5,0.0
+after,8,update,transition CAIR: statement/tree authentication,5,0.0
+after,8,update,transition CAIR: sparse DAG/table construction,5,1.6
+after,8,update,transition CAIR: compact witness columns,5,0.0
+after,8,update,transition CAIR: Poseidon round trace,5,1.0
+after,8,update,transition CAIR: packed main table,5,0.0
+after,8,update,transition CAIR: routing product factors,5,0.4
+after,8,update,transition CAIR: product-tree trace,5,0.0
+after,8,update,transition CAIR: packed product table,5,0.0
+after,8,update,transition CAIR: local sumcheck preparation,5,0.0
+after,8,update,transition CAIR: local sumcheck total,5,6.8
+after,8,update,transition CAIR: Poseidon sumcheck preparation,5,0.0
+after,8,update,transition CAIR: Poseidon sumcheck total,5,9.2
+after,8,update,transition CAIR: full-round reductions,5,4.2
+after,8,update,transition CAIR: product sumcheck preparation,5,0.0
+after,8,update,transition CAIR: product sumcheck total,5,2.2
+after,8,update,transition CAIR: opening preparation,5,0.8
+after,8,update,"WHIR initial claim weights (variables=12, claims=59)",5,0.4006
+after,8,update,WHIR initial folding sumcheck (variables=12),5,0.5700000000000001
+after,8,update,"WHIR initial claim weights (variables=15, claims=120)",5,1.2691999999999999
+after,8,update,WHIR initial folding sumcheck (variables=15),5,1.2452
+after,8,update,transition: CAIR proof total,5,45.2
+after,8,update,transition: refresh cached public-input opening,5,0.0
+after,8,update,transition: complete hierarchy rebuild,5,45.6
+after,8,baseline,static: preprocessed commitment,5,32.2
+after,8,baseline,static: main trace construction,5,1.6
+after,8,baseline,static: main commitment,5,29.4
+after,8,baseline,static: composed CAIR callback,5,0.0
+after,8,baseline,static: HyperPlonk product oracle,5,13.4
+after,8,baseline,static: product commitment,5,13.6
+after,8,baseline,static: local sumcheck,5,222.8
+after,8,baseline,static: product sumcheck,5,284.4
+after,8,baseline,"WHIR initial claim weights (variables=18, claims=5)",5,8.449
+after,8,baseline,"WHIR initial claim weights (variables=17, claims=6)",5,11.5896
+after,8,baseline,"WHIR initial claim weights (variables=18, claims=9)",5,15.0334
+after,8,baseline,WHIR initial folding sumcheck (variables=18),5,47.2552
+after,8,baseline,WHIR initial folding sumcheck (variables=17),5,16.8616
+after,8,baseline,static: product WHIR opening,5,85.4
+after,8,baseline,static: preprocessed WHIR opening,5,101.8
+after,8,baseline,static: main WHIR opening,5,108.4

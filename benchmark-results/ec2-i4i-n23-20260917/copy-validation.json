@@ -1,0 +1,14 @@
+{
+  "complete": true,
+  "archive_sha256": "8d3300d5abf62c05bfe3b279a7c7587ab45941857bbdb2700b65e8233a935832",
+  "verified_file_checksums": 31,
+  "preparation_file_checksums": 10,
+  "verified_samples": 361,
+  "proof_checkpoints": 10,
+  "source_files_match_prepared_package": true,
+  "timing_and_size_aggregates_recomputed": true,
+  "peak_rss_gib": 424.55009841918945,
+  "wall_minutes": 42.677471540650004,
+  "checked_utc": "2026-09-17T05:07:42.593238+00:00",
+  "proof_component_totals_checked": true
+}

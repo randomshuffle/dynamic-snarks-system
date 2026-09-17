@@ -1,6 +1,10 @@
 //! Canonical Poseidon2 Merkle vector commitments and reusable multiproofs.
 
+use p3_maybe_rayon::prelude::*;
+#[cfg(test)]
+use std::cell::Cell;
 use std::collections::{BTreeMap, BTreeSet};
+use std::sync::Arc;
 
 use p3_bn254::Bn254;
 use p3_field::PrimeCharacteristicRing;
@@ -8,6 +12,11 @@ use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 use crate::hash::{Digest, hash_leaf, hash_node};
+
+#[cfg(test)]
+thread_local! {
+    static DENSE_CONSTRUCTIONS: Cell<usize> = const { Cell::new(0) };
+}
 
 /// A deterministic vector commitment.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -41,8 +50,24 @@ pub struct MultiProof {
 /// Prover-side tree retained to support efficient openings and updates.
 #[derive(Clone, Debug)]
 pub struct MerkleTree {
-    values: Vec<Bn254>,
-    levels: Vec<Vec<Digest>>,
+    len: usize,
+    height: usize,
+    storage: Arc<TreeStorage>,
+}
+
+/// Dense indexed trees are constructed once. Updates retain their parent and
+/// store only the changed values and the union of changed authentication paths.
+#[derive(Debug)]
+enum TreeStorage {
+    Dense {
+        values: Vec<Bn254>,
+        levels: Vec<Vec<Digest>>,
+    },
+    Overlay {
+        parent: Arc<TreeStorage>,
+        values: BTreeMap<usize, Bn254>,
+        digests: BTreeMap<(usize, usize), Digest>,
+    },
 }
 
 /// Merkle commitment or proof validation failure.
@@ -84,81 +109,195 @@ impl MerkleTree {
         if values.is_empty() {
             return Err(MerkleError::EmptyVector);
         }
+        #[cfg(test)]
+        DENSE_CONSTRUCTIONS.with(|count| count.set(count.get() + 1));
 
         let padded_len = values.len().next_power_of_two();
-        let mut leaves = Vec::with_capacity(padded_len);
-        leaves.extend(
-            values
-                .iter()
-                .copied()
-                .enumerate()
-                .map(|(i, value)| hash_leaf(i, value)),
-        );
-        leaves.extend((values.len()..padded_len).map(|i| hash_leaf(i, Bn254::ZERO)));
+        let leaves = (0..padded_len)
+            .into_par_iter()
+            .map(|index| hash_leaf(index, values.get(index).copied().unwrap_or(Bn254::ZERO)))
+            .collect::<Vec<_>>();
 
         let mut levels = vec![leaves];
         let mut level = 0;
         while levels[level].len() > 1 {
             let next = levels[level]
-                .chunks_exact(2)
+                .par_chunks_exact(2)
                 .map(|children| hash_node(level, children[0], children[1]))
                 .collect();
             levels.push(next);
             level += 1;
         }
 
-        Ok(Self { values, levels })
+        Ok(Self {
+            len: values.len(),
+            height: padded_len.trailing_zeros() as usize,
+            storage: Arc::new(TreeStorage::Dense { values, levels }),
+        })
     }
 
     /// Return the public commitment.
     #[must_use]
     pub fn commitment(&self) -> Commitment {
         Commitment {
-            root: self.levels.last().expect("tree has a root")[0],
-            len: self.values.len(),
+            root: self
+                .digest_at(self.height, 0)
+                .expect("a retained Merkle tree has a root"),
+            len: self.len,
         }
     }
 
-    /// Return the committed values.
-    pub fn values(&self) -> &[Bn254] {
-        &self.values
+    /// Return one committed vector value by position.
+    pub fn value(&self, index: usize) -> Option<Bn254> {
+        (index < self.len)
+            .then(|| storage_value(&self.storage, index))
+            .flatten()
     }
 
     /// Return one retained digest by `(level, index)` for protocol builders.
     pub(crate) fn digest_at(&self, level: usize, index: usize) -> Option<Digest> {
-        self.levels
-            .get(level)
-            .and_then(|nodes| nodes.get(index))
-            .copied()
+        if level > self.height || index >= (1usize << (self.height - level)) {
+            return None;
+        }
+        storage_digest(&self.storage, level, index)
     }
 
     /// Create the canonical complement proof for `indices`.
     pub fn open(&self, indices: &[usize]) -> Result<MultiProof, MerkleError> {
-        validate_indices(indices, self.values.len())?;
-        let coordinates = required_siblings(indices, self.levels.len() - 1);
+        validate_indices(indices, self.len)?;
+        let coordinates = required_siblings(indices, self.height);
         let nodes = coordinates
             .into_iter()
             .map(|(level, index)| ProofNode {
                 level,
                 index,
-                digest: self.levels[level][index],
+                digest: self
+                    .digest_at(level, index)
+                    .expect("a canonical proof coordinate is retained"),
             })
             .collect();
         Ok(MultiProof {
-            len: self.values.len(),
+            len: self.len,
             nodes,
         })
     }
 
-    /// Apply replacements and rebuild the sequential tree.
-    pub fn update(&mut self, updates: &[(usize, Bn254)]) -> Result<(), MerkleError> {
-        let indices: Vec<_> = updates.iter().map(|(index, _)| *index).collect();
-        validate_indices(&indices, self.values.len())?;
-        for &(index, value) in updates {
-            self.values[index] = value;
+    /// Return a new tree after recomputing only the union of changed paths.
+    pub fn updated(&self, updates: &[(usize, Bn254)]) -> Result<Self, MerkleError> {
+        let indices = updates.iter().map(|(index, _)| *index).collect::<Vec<_>>();
+        validate_indices(&indices, self.len)?;
+
+        let values = updates.iter().copied().collect::<BTreeMap<_, _>>();
+        let mut digests = updates
+            .iter()
+            .map(|&(index, value)| ((0, index), hash_leaf(index, value)))
+            .collect::<BTreeMap<_, _>>();
+        let mut active = indices.into_iter().collect::<BTreeSet<_>>();
+        for level in 0..self.height {
+            let parents = active
+                .iter()
+                .map(|index| index >> 1)
+                .collect::<BTreeSet<_>>();
+            let parent_list = parents.iter().copied().collect::<Vec<_>>();
+            let next = parent_list
+                .into_par_iter()
+                .map(|parent| {
+                    let left_index = 2 * parent;
+                    let right_index = left_index + 1;
+                    let left = digests
+                        .get(&(level, left_index))
+                        .copied()
+                        .or_else(|| self.digest_at(level, left_index))
+                        .expect("an affected parent has a retained left child");
+                    let right = digests
+                        .get(&(level, right_index))
+                        .copied()
+                        .or_else(|| self.digest_at(level, right_index))
+                        .expect("an affected parent has a retained right child");
+                    ((level + 1, parent), hash_node(level, left, right))
+                })
+                .collect::<Vec<_>>();
+            digests.extend(next);
+            active = parents;
         }
-        *self = Self::new(self.values.clone())?;
+
+        Ok(Self {
+            len: self.len,
+            height: self.height,
+            storage: Arc::new(TreeStorage::Overlay {
+                parent: Arc::clone(&self.storage),
+                values,
+                digests,
+            }),
+        })
+    }
+
+    /// Apply replacements by installing a path-local persistent update.
+    pub fn update(&mut self, updates: &[(usize, Bn254)]) -> Result<(), MerkleError> {
+        *self = self.updated(updates)?;
         Ok(())
+    }
+
+    /// Refresh only authentication nodes whose subtrees contain an update.
+    /// The opened index set is fixed, so no scan over it is required.
+    pub(crate) fn refresh_opening(
+        &self,
+        proof: &mut MultiProof,
+        changed_indices: &[usize],
+    ) -> Result<(), MerkleError> {
+        validate_indices(changed_indices, self.len)?;
+        if proof.len != self.len {
+            return Err(MerkleError::NonCanonicalProof);
+        }
+        for &changed in changed_indices {
+            for level in 0..self.height {
+                let coordinate = (level, changed >> level);
+                if let Ok(position) = proof
+                    .nodes
+                    .binary_search_by_key(&coordinate, |node| (node.level, node.index))
+                {
+                    proof.nodes[position].digest = self
+                        .digest_at(coordinate.0, coordinate.1)
+                        .expect("an updated proof coordinate is retained");
+                }
+            }
+        }
+        Ok(())
+    }
+}
+
+#[cfg(test)]
+pub(crate) fn reset_dense_construction_count() {
+    DENSE_CONSTRUCTIONS.with(|count| count.set(0));
+}
+
+#[cfg(test)]
+pub(crate) fn dense_construction_count() -> usize {
+    DENSE_CONSTRUCTIONS.with(Cell::get)
+}
+
+fn storage_value(storage: &TreeStorage, index: usize) -> Option<Bn254> {
+    match storage {
+        TreeStorage::Dense { values, .. } => values.get(index).copied(),
+        TreeStorage::Overlay { parent, values, .. } => values
+            .get(&index)
+            .copied()
+            .or_else(|| storage_value(parent, index)),
+    }
+}
+
+fn storage_digest(storage: &TreeStorage, level: usize, index: usize) -> Option<Digest> {
+    match storage {
+        TreeStorage::Dense { levels, .. } => levels
+            .get(level)
+            .and_then(|nodes| nodes.get(index))
+            .copied(),
+        TreeStorage::Overlay {
+            parent, digests, ..
+        } => digests
+            .get(&(level, index))
+            .copied()
+            .or_else(|| storage_digest(parent, level, index)),
     }
 }
 
@@ -277,7 +416,7 @@ mod tests {
     fn multiproof_round_trip_and_tamper_rejection() {
         let tree = MerkleTree::new(values(7)).unwrap();
         let indices = [1, 2, 6];
-        let opened = indices.map(|i| tree.values()[i]);
+        let opened = indices.map(|i| tree.value(i).unwrap());
         let proof = tree.open(&indices).unwrap();
         verify(tree.commitment(), &indices, &opened, &proof).unwrap();
 
@@ -293,7 +432,7 @@ mod tests {
     fn complement_proof_is_reusable_for_exact_update_set() {
         let mut tree = MerkleTree::new(values(8)).unwrap();
         let indices = [2, 3];
-        let old_values = indices.map(|i| tree.values()[i]);
+        let old_values = indices.map(|i| tree.value(i).unwrap());
         let proof = tree.open(&indices).unwrap();
         let old_commitment = tree.commitment();
 
@@ -310,7 +449,7 @@ mod tests {
         let tree = MerkleTree::new(values(7)).unwrap();
         let commitment = tree.commitment();
         let indices = [1, 2, 6];
-        let opened = indices.map(|index| tree.values()[index]);
+        let opened = indices.map(|index| tree.value(index).unwrap());
         let proof = tree.open(&indices).unwrap();
 
         assert_eq!(
@@ -345,5 +484,54 @@ mod tests {
             verify(commitment, &indices, &opened, &wrong_length),
             Err(MerkleError::NonCanonicalProof)
         );
+    }
+
+    #[test]
+    fn persistent_update_matches_dense_recomputation_and_preserves_parent() {
+        let original = values(19);
+        let tree = MerkleTree::new(original.clone()).unwrap();
+        let old_commitment = tree.commitment();
+        let replacements = [
+            (2, Bn254::from_u64(200)),
+            (3, Bn254::from_u64(300)),
+            (17, Bn254::from_u64(1700)),
+        ];
+        let updated = tree.updated(&replacements).unwrap();
+
+        let mut expected_values = original.clone();
+        for &(index, value) in &replacements {
+            expected_values[index] = value;
+        }
+        let dense = MerkleTree::new(expected_values.clone()).unwrap();
+        assert_eq!(updated.commitment(), dense.commitment());
+        assert_eq!(tree.commitment(), old_commitment);
+        for (index, (&old, &new)) in original.iter().zip(&expected_values).enumerate() {
+            assert_eq!(tree.value(index), Some(old));
+            assert_eq!(updated.value(index), Some(new));
+        }
+    }
+
+    #[test]
+    fn cached_opening_refresh_touches_only_changed_paths() {
+        let original = values(20);
+        let tree = MerkleTree::new(original.clone()).unwrap();
+        let public_positions = (12..20).collect::<Vec<_>>();
+        let mut opening = tree.open(&public_positions).unwrap();
+        let replacements = [(2, Bn254::from_u64(200)), (17, Bn254::from_u64(1700))];
+        let updated = tree.updated(&replacements).unwrap();
+        updated.refresh_opening(&mut opening, &[2, 17]).unwrap();
+
+        let public_values = public_positions
+            .iter()
+            .map(|&index| updated.value(index).unwrap())
+            .collect::<Vec<_>>();
+        verify(
+            updated.commitment(),
+            &public_positions,
+            &public_values,
+            &opening,
+        )
+        .unwrap();
+        assert_eq!(opening, updated.open(&public_positions).unwrap());
     }
 }

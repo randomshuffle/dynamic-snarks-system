@@ -1,0 +1,28 @@
+{
+  "host": "98.87.149.163",
+  "user": "ubuntu",
+  "instance_type": "x8i.2xlarge",
+  "remote_results": "/home/ubuntu/bench-results/prep-20260915",
+  "remote_log": "/home/ubuntu/snark-prep-20260915.log",
+  "remote_source": "/home/ubuntu/dynamic-snarks-system",
+  "source_archive": "ec2-experiment-compact-i16-r40-20260915.tar.gz",
+  "source_archive_sha256": "8024196b98a5fd0cf2cd89f2788d3479e10e7deb382588910ea5e603603ca705",
+  "source_tree_sha256": "f90188767ec9291727dc54a9907b6474038db403e4b2490ac8ee609783fe5f74",
+  "binary_sha256": "d1d96a28b5726b9d4eee6ff1aa6d4d085011dadc375f5845549deac84e554b68",
+  "expected_samples": 481,
+  "expected_checkpoints": 13,
+  "ami_created": false,
+  "status": "complete",
+  "local_validation": {
+    "complete": true,
+    "verified_file_checksums": 34,
+    "verified_samples": 481,
+    "proof_checkpoints": 13,
+    "source_and_binary_match": true,
+    "timing_and_size_aggregates_recomputed": true,
+    "max_rss_gib": 28.674274444580078,
+    "wall_minutes": 42.52913952275
+  },
+  "results_copied": true,
+  "prep_instance_stopped": false
+}

@@ -1,0 +1,17 @@
+{
+  "benchmark_source_sha256": "88a48acbd8e79ef7b7345474d16b18d7924917cfb311e7b4b78f8c0f2fb0238d",
+  "production_source_files_matching_optimized_rerun": 80,
+  "restored_files_checked": 38,
+  "retained_initial_components_equal_in_all_final_proofs": true,
+  "source_files_checked": 108,
+  "validation": {
+    "complete": true,
+    "expected_samples": 193,
+    "ignored_incomplete_tail": false,
+    "missing_samples": [],
+    "proof_checkpoints": 17,
+    "proof_size_samples": 193,
+    "verified_samples": 193
+  },
+  "workload_identical_to_optimized_rerun": true
+}

@@ -1,0 +1,27 @@
+{
+  "command": [
+    "scripts/run_experiment.py",
+    "--trace-log",
+    "11",
+    "--threads",
+    "8",
+    "--initial-interleaving",
+    "16",
+    "--update-logs",
+    "0,1,2,3,4,5,6,7,8,9,10",
+    "--sequence-len",
+    "12",
+    "--seed",
+    "20260909",
+    "--baseline-mode",
+    "shared",
+    "--offline",
+    "--output",
+    "benchmark-results/ec2-readiness-compact-n11-i16-20260913"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-09-14T04:00:54.835608+00:00",
+  "started_utc": "2026-09-14T03:55:46.002327+00:00",
+  "state": "complete",
+  "verified_samples": 145
+}

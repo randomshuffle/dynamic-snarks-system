@@ -1,0 +1,13 @@
+{
+  "current_source_sha256": "da73e848401c297a7491342dbb5ae750fc89b4fda28a6ead014ee144f012e29d",
+  "current_wall_seconds": 142.29562625009567,
+  "optimization_files_matched": 100,
+  "optimization_manifest_sha256": "977a45cdcd9975fcb81e1a089f73bf803a20acf76777bdb481359938a9baefbf",
+  "previous_source_sha256": "9ccd3f14b01a5b964d82a11b75c974f6eb19d5d6c76c12d10a0ca9dad1b6808f",
+  "previous_wall_seconds": 492.71466125012375,
+  "same_experiment": true,
+  "same_toolchain_features_and_workers": true,
+  "source_unchanged_during_run": true,
+  "verified_samples": 193,
+  "workload_sha256": "f8cb570991e21a72cb9148bd51b59c6b8ea66cee1b7af69a4e08f566f8fd0893"
+}

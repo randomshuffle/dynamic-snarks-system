@@ -1,0 +1,3 @@
+config,variant=endpoint-gkr,gates=65536,seed=20260909,changed_gates=16,first_gate_index=3639,positions=48,samples=1,threads=8,parallel=true,rows=2048,main_width=64,main_fields=131072,product_fields=131072,hash_slots=4096,active_hashes=1758,outer_sumcheck_rounds=790,conservative_transition_peak_bytes=126222336,workload_fingerprint=d2632a4da9be7397c80f13e458a3c1595f7f74acb419dbc8d506360a03433c6a
+selected_gate_indices=3639:6489:10615:12422:17927:18630:19519:21687:26307:27485:36698:38037:40580:51929:52132:59199
+timing_scope=update_including_tree_maintenance_and_public_opening; excludes_indexing_trusted_base_cloning_serialization_destruction; WHIR=fixed_half_rate_factor4_security127_pow0

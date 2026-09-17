@@ -1,0 +1,19 @@
+{
+  "command": [
+    "scripts/run_experiment.py",
+    "--trace-log",
+    "11",
+    "--threads",
+    "8",
+    "--baseline-mode",
+    "shared",
+    "--offline",
+    "--output",
+    "benchmark-results/ec2-rehearsal-n11"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-09-09T07:25:52.096815+00:00",
+  "started_utc": "2026-09-09T07:11:18.433930+00:00",
+  "state": "complete",
+  "verified_samples": 145
+}

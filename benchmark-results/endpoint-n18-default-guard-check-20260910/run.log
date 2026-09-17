@@ -1,0 +1,6 @@
+BN254 experiment: 2^18 gates; Rayon workers=8; WHIR=4 then 4 variables; full initial proof once
+Baseline mode: shared; reference update size=1
+Merkle PIOP: endpoint-gkr; initial FFT heights: [262144, 16384, 1024, 64]
+preflight: 1 updated gates; max composed positions=3; rows=256; main width=64; projected peak=14.62 GiB
+Projected run peak=14.62 GiB; available memory=16.00 GiB; 70% allowance=11.20 GiB
+Error: "memory guard: projected 14.62 GiB exceeds 70% of 16.00 GiB; use a larger host or a smaller rehearsal (no cases were silently skipped)"

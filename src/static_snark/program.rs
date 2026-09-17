@@ -13,6 +13,14 @@ pub struct ConstraintProgram {
     pub(crate) values: Vec<Bn254>,
     pub(crate) operations: Vec<Operation>,
     pub(crate) num_public_values: usize,
+    pub(crate) aligned: Option<AlignedTrace>,
+}
+
+/// A four-column arithmetic layout sharing its table with the assignment tree.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct AlignedTrace {
+    pub(crate) public_variables: Vec<Variable>,
+    pub(crate) permutation: Vec<usize>,
 }
 
 /// Builder whose methods always append a fixed operation sequence.
@@ -21,6 +29,7 @@ pub struct ProgramBuilder {
     values: Vec<Bn254>,
     operations: Vec<Operation>,
     num_public_values: usize,
+    aligned: Option<AlignedTrace>,
 }
 
 impl ConstraintProgram {
@@ -100,6 +109,7 @@ impl ProgramBuilder {
             values: Vec::new(),
             operations: Vec::new(),
             num_public_values,
+            aligned: None,
         }
     }
 
@@ -124,6 +134,36 @@ impl ProgramBuilder {
         self.operations
             .push(Operation::Public(variable, public_index));
         variable
+    }
+
+    /// Bind an existing witness variable to a relation public input.
+    pub fn assert_public(&mut self, variable: Variable, public_index: usize) {
+        assert!(public_index < self.num_public_values);
+        self.operations
+            .push(Operation::Public(variable, public_index));
+    }
+
+    /// Constrain three existing variables with one addition gate row.
+    pub fn assert_add(&mut self, left: Variable, right: Variable, output: Variable) {
+        self.operations.push(Operation::Add(left, right, output));
+    }
+
+    /// Constrain three existing variables with one multiplication gate row.
+    pub fn assert_mul(&mut self, left: Variable, right: Variable, output: Variable) {
+        self.operations.push(Operation::Mul(left, right, output));
+    }
+
+    /// Put public-input occurrences in column three and use the supplied cell permutation.
+    pub(crate) fn align_arithmetic(
+        &mut self,
+        public_variables: &[Variable],
+        permutation: Vec<usize>,
+    ) {
+        assert!(self.aligned.is_none());
+        self.aligned = Some(AlignedTrace {
+            public_variables: public_variables.to_vec(),
+            permutation,
+        });
     }
 
     /// Constrain `left + right = output` and return `output`.
@@ -235,6 +275,7 @@ impl ProgramBuilder {
             values: self.values,
             operations: self.operations,
             num_public_values: self.num_public_values,
+            aligned: self.aligned,
         }
     }
 }
