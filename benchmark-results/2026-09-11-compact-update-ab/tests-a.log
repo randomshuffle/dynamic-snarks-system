@@ -1,4 +1,4 @@
-   Compiling dynamic-snarks-system v0.1.0 (/Users/anubhavbaweja/Desktop/Research/research-git/dynamic-snarks-system)
+   Compiling dynamic-snarks-system v0.1.0 (/path/to/dynamic-snarks-system)
 warning: constant `COMPOSED_DEGREE` is never used
   --> src/cair.rs:28:7
    |

@@ -53,7 +53,7 @@ Files:
 - [Validation](rehearsal-n15/validation.json) and [process resources](rehearsal-n15/resources.json)
 - [Source and build metadata](rehearsal-n15/metadata.json)
 
-Source aggregate SHA256: `f90188767ec9291727dc54a9907b6474038db403e4b2490ac8ee609783fe5f74`.
+Source aggregate SHA256: `47280a990159efc055115869573e7637c13e6bfedd2290e1b7541243fa4f68a3`.
 
 Linux binary SHA256: `d1d96a28b5726b9d4eee6ff1aa6d4d085011dadc375f5845549deac84e554b68`.
 

@@ -18,7 +18,7 @@ Local validation on September 9, 2026. These runs check proof generation, verifi
 - BN254, identity permutation, WHIR 64 first / 16 subsequent, 8 Rayon workers, seed 20260909.
 - One full initial proof: 23.338 seconds; independent sequences of 12 updates for each size.
 - Paired baseline mode: 96 baseline proofs and 96 updates, plus one initial proof.
-- Recorded source-tree SHA256: `9ccd3f14b01a5b964d82a11b75c974f6eb19d5d6c76c12d10a0ca9dad1b6808f`.
+- Recorded source-tree SHA256: `08c3a3740107c76196870721a8cafc9c0f8ee4c7eb126997af973fc08307cdfd`.
 - [Result archive](../benchmark-results/ec2-rehearsal-n15.tar.gz), [raw timings](../benchmark-results/ec2-rehearsal-n15/samples.csv), [completion check](../benchmark-results/ec2-rehearsal-n15/validation.json).
 
 | Updated gates | Baseline mean (s) | Update mean (s) | Baseline / update |
@@ -42,7 +42,7 @@ Each mean includes all twelve revisions, including the first and the expensive h
 - BN254, identity permutation, WHIR 64 first / 16 subsequent, 8 Rayon workers, seed 20260909.
 - One full initial proof: 1.396474 seconds; eleven independent 12-update sequences.
 - Shared baseline mode: 12 baseline proofs on the one-gate sequence, 132 updates and one initial proof.
-- Recorded source-tree SHA256: `06f5c942f61fdbae7632cf3cfd0581fe54389fd1467378ff5171faed007b3693`.
+- Recorded source-tree SHA256: `e6d2c1f808fe46e9c7f64fc9941253653d4d21c54f46e2d8c73f8d870a486d80`.
 - [Result archive](../benchmark-results/ec2-rehearsal-n11.tar.gz), [raw timings](../benchmark-results/ec2-rehearsal-n11/samples.csv), [completion check](../benchmark-results/ec2-rehearsal-n11/validation.json).
 
 | Updated gates | Shared baseline mean (s) | Update mean (s) |

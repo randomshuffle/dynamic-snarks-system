@@ -173,7 +173,7 @@ the locked dependencies manifest and the vendored patch; it excludes build
 outputs, benchmark results and `.git`.
 
 ```bash
-cd /Users/anubhavbaweja/Desktop/Research/research-git/dynamic-snarks-system
+cd /path/to/dynamic-snarks-system
 SOURCE_ARCHIVE="$HOME/Desktop/dynamic-snarks-experiment-$(date -u +%Y%m%dT%H%M%SZ).tar.gz"
 python3 scripts/package_experiment.py "$SOURCE_ARCHIVE"
 
@@ -194,7 +194,7 @@ sudo apt-get update
 sudo apt-get install -y git
 mkdir -p ~/research
 cd ~/research
-git clone https://github.com/randomshuffle/dynamic-snarks-system.git
+git clone https://example.invalid/anonymous/dynamic-snarks-system.git
 cd dynamic-snarks-system
 tar -xzf ~/experiment-source.tar.gz --strip-components=1 -C .
 bash scripts/bootstrap_ec2.sh

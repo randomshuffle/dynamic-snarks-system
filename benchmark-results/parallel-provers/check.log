@@ -1,6 +1,6 @@
-    Checking p3-sumcheck v0.6.2 (/Users/anubhavbaweja/Desktop/Research/research-git/dynamic-snarks-system/vendor/p3-sumcheck)
+    Checking p3-sumcheck v0.6.2 (/path/to/dynamic-snarks-system/vendor/p3-sumcheck)
     Checking p3-whir v0.6.2
-    Checking dynamic-snarks-system v0.1.0 (/Users/anubhavbaweja/Desktop/Research/research-git/dynamic-snarks-system)
+    Checking dynamic-snarks-system v0.1.0 (/path/to/dynamic-snarks-system)
 warning: unused import: `p3_field::Field`
    --> src/parallel.rs:158:13
     |

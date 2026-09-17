@@ -62,8 +62,8 @@ Ran 13 tests in 0.618s
 OK
 Building the experiment (subsequent launches reuse Cargo's cache)
 Status: build_complete
-Results: /home/ubuntu/dynamic-snark-n23-20260917-NfZT0lLE/build
-Archive: /home/ubuntu/dynamic-snark-n23-20260917-NfZT0lLE/build.tar.gz
+Results: /home/ubuntu/dynamic-snark-benchmark/build
+Archive: /home/ubuntu/dynamic-snark-benchmark/build.tar.gz
 2026-09-17T04:19:54Z Checking the full experiment memory requirements without proving
 Building the experiment (subsequent launches reuse Cargo's cache)
 BN254 experiment: 2^23 gates; Rayon workers=48; WHIR=4 then 4 variables; full initial proof once
@@ -80,8 +80,8 @@ preflight: 128 updated gates; max composed positions=12288; rows=524288; main wi
 Projected run peak=468.00 GiB; available memory=743.97 GiB; 70% allowance=520.78 GiB
 PREFLIGHT_COMPLETE (no proofs generated)
 Status: preflight_complete
-Results: /home/ubuntu/dynamic-snark-n23-20260917-NfZT0lLE/preflight-n23
-Archive: /home/ubuntu/dynamic-snark-n23-20260917-NfZT0lLE/preflight-n23.tar.gz
+Results: /home/ubuntu/dynamic-snark-benchmark/preflight-n23
+Archive: /home/ubuntu/dynamic-snark-benchmark/preflight-n23.tar.gz
 2026-09-17T04:19:55Z Checking the executable on a separate 512-gate smoke test
 Building the experiment (subsequent launches reuse Cargo's cache)
 BN254 experiment: 2^9 gates; Rayon workers=48; WHIR=4 then 4 variables; full initial proof once
@@ -152,8 +152,8 @@ SAMPLE_COMPLETE phase=update gates=128 revision=2 prove_seconds=0.815352 verify_
 CASE_COMPLETE update_gates=128
 EXPERIMENT_COMPLETE
 Status: complete
-Results: /home/ubuntu/dynamic-snark-n23-20260917-NfZT0lLE/smoke-n9
-Archive: /home/ubuntu/dynamic-snark-n23-20260917-NfZT0lLE/smoke-n9.tar.gz
+Results: /home/ubuntu/dynamic-snark-benchmark/smoke-n9
+Archive: /home/ubuntu/dynamic-snark-benchmark/smoke-n9.tar.gz
 true
 true
 Results disk free: 2.248 GiB
@@ -4113,8 +4113,8 @@ SAMPLE_COMPLETE phase=update gates=128 revision=40 prove_seconds=8.451969 verify
 CASE_COMPLETE update_gates=128
 EXPERIMENT_COMPLETE
 Status: complete
-Results: /home/ubuntu/dynamic-snark-n23-20260917-NfZT0lLE/full-n23-u128
-Archive: /home/ubuntu/dynamic-snark-n23-20260917-NfZT0lLE/full-n23-u128.tar.gz
+Results: /home/ubuntu/dynamic-snark-benchmark/full-n23-u128
+Archive: /home/ubuntu/dynamic-snark-benchmark/full-n23-u128.tar.gz
 2026-09-17T05:02:42Z Validating the completed experiment and checksums
 true
 true

@@ -91,8 +91,8 @@
     "total_committed_fields": -2.0000000000000018
   },
   "sha256": {
-    "source-before.tar.gz": "681fb91baad16337b269bcffd0a520e5fe71d2cd655ec65a21fad6313ad62432",
-    "source-after.tar.gz": "bb781b446042d65f4d79c04953a7f1d02dc607ab673a949f03ec3bde5f26a80f",
+    "source-before.tar.gz": "5cfb5d2e2fedc4cbab9736d6ef8d979585cf757fec103cbf1c4bb0e19c5edee2",
+    "source-after.tar.gz": "8c60714b84a5195ff1358f971660ab920ea27e23febb46b63ff581d63fb7db06",
     "before.bin": "3378efab92d11b562231ea5dcde548b812886aa8d5a873633ea80e63baabb304",
     "after.bin": "bb7a3161e15d7ffa03a977bd62a9aec5ddd77f214afa93fe61f74d6d72e96b54"
   },

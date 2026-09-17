@@ -127,7 +127,7 @@ checked: the original guard still refuses before generating a proof.
 - [Configuration](experiment.json), [host/build/source manifest](metadata.json)
 - Binary proofs: `proofs/`; exact measured source snapshot: `source.tar.gz`.
 
-Source-tree SHA256: `522979ae26d10d0c748828866c56ed4fbf716b9be4c9d1f722a4fb0f434d5fb6`.
+Source-tree SHA256: `d346e2b8f9dcccc5b6e1cdaea93102f8e794f6f0b676b3d17f420e930cbaf3f3`.
 
 ## Reproduction
 

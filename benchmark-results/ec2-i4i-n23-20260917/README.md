@@ -65,16 +65,16 @@ For one-gate updates, the payload maximum occurred at revision 31: 6.164 MiB. Th
 - [Source and build metadata](full-n23-u128/metadata.json)
 - [Preparation evidence](remote-preparation/)
 
-Source aggregate SHA256: `d9049899e6c5c600fcfa577a33cdb5d782d0f151cfbafa56fa96aa0139380bb5`.
+Source aggregate SHA256: `5c0ef44f371f42a8473708a6b17ff31610c3043489ddffede65d8a82f7fe7374`.
 Binary SHA256: `658089cc77634969a2b24c3f0697f622145a3fa88f6006142530586322a5e1ad`.
-Archive SHA256: `8d3300d5abf62c05bfe3b279a7c7587ab45941857bbdb2700b65e8233a935832`.
+Archive SHA256: `c0a87f3f4088ca7a6a1066e197312372e9f4f93804705ffe92518086525acbbc`.
 
 Run started at `2026-09-17T04:19:59.381575+00:00` and finished at `2026-09-17T05:02:40.316979+00:00`.
 
 Exact invocation (with inherited CPU affinity `0-47`):
 
 ```sh
-python3 scripts/run_experiment.py --trace-log 23 --threads 48 --initial-interleaving 16 --update-logs 0,1,2,3,4,5,6,7 --sequence-len 40 --seed 20260909 --baseline-mode shared --offline --numa-interleave --output /home/ubuntu/dynamic-snark-n23-20260917-NfZT0lLE/full-n23-u128
+python3 scripts/run_experiment.py --trace-log 23 --threads 48 --initial-interleaving 16 --update-logs 0,1,2,3,4,5,6,7 --sequence-len 40 --seed 20260909 --baseline-mode shared --offline --numa-interleave --output /home/ubuntu/dynamic-snark-benchmark/full-n23-u128
 ```
 
-All original remote experiment data was preserved. This task did not stop, terminate, reboot, or reconfigure the instance. Build files are isolated under a new /tmp directory; results remain in /home/ubuntu/dynamic-snark-n23-20260917-NfZT0lLE as well as on this Mac.
+All original remote experiment data was preserved. This task did not stop, terminate, reboot, or reconfigure the instance. Build files are isolated under a new /tmp directory; results remain in /home/ubuntu/dynamic-snark-benchmark as well as on this Mac.

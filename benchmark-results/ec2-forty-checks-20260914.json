@@ -89,7 +89,7 @@
   "python_tests_passed": 13,
   "rust_proof_size_tests_passed": 2,
   "source_package": "benchmark-results/ec2-experiment-compact-i16-r40-20260914.tar.gz",
-  "source_package_sha256": "9d56f07ace7fe219bdb233663b433d7d6fb89f3ca20fae91e331b3e1b5fd0b9f",
+  "source_package_sha256": "bd94fb786358d50848d2ea0a4613084c26a678264cee6aa4a30509ac2deceb64",
   "source_package_files_verified": 123,
-  "source_tree_sha256": "fd8e3940d8187075b73fd3c1a4b94f868d25595be94b78f17b2a76daf6d9fe7c"
+  "source_tree_sha256": "f9e0b79551ac85ddeb50debc0dcea186ffa385c8a0321c10b997135e51cce075"
 }

@@ -1,6 +1,6 @@
 {
   "date_utc": "2026-09-11T05:54:40.631453+00:00",
-  "base_commit": "92a2215227e7e1675f26e2c8e46e2926cf4d8af9",
+  "base_commit": "anonymous",
   "source_state": "dirty working tree; source manifests and preserved pre-edit binary below",
   "a": {
     "variant": "endpoint-gkr",

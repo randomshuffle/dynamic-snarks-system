@@ -12,14 +12,14 @@
     "--output",
     "benchmark-results/ec2-rehearsal-n15"
   ],
-  "binary": "/Users/anubhavbaweja/Desktop/Research/research-git/dynamic-snarks-system/target/release/deps/ec2_experiment-aa1bf673d3dbd379",
+  "binary": "/path/to/dynamic-snarks-system/target/release/deps/ec2_experiment-aa1bf673d3dbd379",
   "binary_sha256": "09bc38cf7f1094f9399e9c9201eff852e8560c2dd71ab4d45da5ce56903530b9",
   "cargo": "cargo 1.92.0 (344c4567c 2025-10-21)",
   "features": [
     "parallel",
     "whir-initial-64"
   ],
-  "git_head": "92a2215227e7e1675f26e2c8e46e2926cf4d8af9",
+  "git_head": null,
   "git_status": "M .gitignore\n M Cargo.lock\n M Cargo.toml\n M README.md\n M benches/dynamic_snark.rs\n M src/cair.rs\n M src/circuit.rs\n M src/dynamic.rs\n M src/lib.rs\n M src/merkle.rs\n M src/sparse_dag.rs\n M src/static_snark.rs\n M src/static_snark/air.rs\n M src/static_snark/pcs.rs\n M src/static_snark/program.rs\n M src/transcript.rs\n M src/transition_cair.rs\n M src/transition_relation.rs\n M src/wiring.rs\n M tests/end_to_end.rs\n?? benches/ec2_experiment.rs\n?? benches/support/\n?? benches/whir_microbench.rs\n?? benchmark-results/\n?? docs/\n?? examples/\n?? scripts/\n?? src/poseidon_scalar.rs\n?? src/static_snark/pcs/\n?? tests/random_update_workload.rs",
   "logical_cpus": 8,
   "lscpu": null,
@@ -34,7 +34,7 @@
     "files": {
       "Cargo.lock": "b15dd579b040c9730583daf3f5d8e5fe4b19bb5cbb9ba63b6ddaa099c8b9327b",
       "Cargo.toml": "edfd017b8d0404f9b39aa5c78a804725f8d04cc8a2d162d73cc7101ab992bdc9",
-      "README.md": "b296257662226806684500248c7709a39d1e38c96f03d50891025f106d9979c1",
+      "README.md": "56ba0f24e185ce2e7fe9618f3f242b1fd0912c232140501d38826c31acde98ca",
       "benches/dynamic_snark.rs": "e32234673ecc9a87e9b2363961032a261cef975ca4681ffa23b4c64d2751a92b",
       "benches/ec2_experiment.rs": "17b99481b14ed5e6d6a391a693aba649a57381963c33e1f6df836537899342ec",
       "benches/hash_microbench.rs": "18dd2f738131fa4c9010000a5b0d6846c9c8135f8f920627eb8b7eac05f18442",
@@ -88,7 +88,7 @@
       "vendor/p3-util/src/transpose/square.rs": "72de1420abe03c0c4dca0e6789f638546b45c19caeffdd94e9d1166dea41e592",
       "vendor/p3-util/src/zip_eq.rs": "e80e4f1fb3e023e8fa4bbbeadd96f301e62a7331fde18a92474f027d455075a4"
     },
-    "sha256": "9ccd3f14b01a5b964d82a11b75c974f6eb19d5d6c76c12d10a0ca9dad1b6808f"
+    "sha256": "08c3a3740107c76196870721a8cafc9c0f8ee4c7eb126997af973fc08307cdfd"
   },
   "started_utc": "2026-09-09T07:02:15.834298+00:00"
 }

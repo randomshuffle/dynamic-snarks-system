@@ -2,7 +2,7 @@
   "files": {
     "Cargo.lock": "eee42c68fdce931701789f6f4eeb44335756a9d18cafb769fdb2ae07f00f904d",
     "Cargo.toml": "04adf34c83cdf6daf77e906c1e26b3435d51db6ca4de3593ae736c2556956ccb",
-    "README.md": "ab0ec732c3a68dc63318c317035dc1838d6cff33478f4a09e77f1512cae443d0",
+    "README.md": "88e68e96a9c8a23d69e68066f5ad71f0eefeb3fd24e32f5c12dfdbc0855eb321",
     "benches/dynamic_snark.rs": "e32234673ecc9a87e9b2363961032a261cef975ca4681ffa23b4c64d2751a92b",
     "benches/ec2_experiment.rs": "0841cafcf3f4a9cef54d04cdeb0b0429c3bdb5e8e4c6c6e3b6d96476798f99ec",
     "benches/hash_microbench.rs": "18dd2f738131fa4c9010000a5b0d6846c9c8135f8f920627eb8b7eac05f18442",
@@ -10,9 +10,9 @@
     "benches/support/update_workload.rs": "0f32a92bdc3548c9f9830e40c6c53bb9f13f0aa2b22731d5bba41ceab8a61630",
     "benches/whir_microbench.rs": "7ba82c6155b2558334c7a7cf0fab564d8577d2e75dcf9485022c486f6af6dd7a",
     "docs/aligned-oracles.md": "23245151078c1ce8d40bfd12009f8359f2c0d48f7eb4084ac608aaf594cef663",
-    "docs/ec2-2p24-experiment.md": "5a0a027a1983118d47db9c48d7a88333fa1e09e5308415d22cee732d22737d02",
-    "docs/ec2-proof-size-results.md": "5a6ea74a982141078b18dc97c46b202728a2e460256cb4f33baf4bb4f604321d",
-    "docs/ec2-rehearsal-results.md": "0ad0b385a301cfeba61eb2b44973dfbf917510b642126d488e0797b34c7201bc",
+    "docs/ec2-2p24-experiment.md": "161374d3459311ce5a88df3f0fc3e13d32d9458798177dcbf78ad136d5b5ac14",
+    "docs/ec2-proof-size-results.md": "f4cb4b58182d7c4d4810df60b3890176bb1b1cb2ec2a527f3969d8ae19f1a704",
+    "docs/ec2-rehearsal-results.md": "44137b0eb367c129b4aa0ac3fd0aa88bcde7e23d6344de4bc549e4a4445e2a23",
     "examples/first_update.rs": "db4c9e16263732c1de2e9e7008e8e5e3bd4954b976dd653dc67a23cc5d34caff",
     "examples/parallel_scaling.rs": "1cb699a89470470fa296ef3d1d9967e7512e42ca1221294a6d55e316165fc979",
     "examples/prover_comparison.rs": "c82192854635976e6bc3a759129a2f2961afe5834d51f81a3063656818bda462",
@@ -110,5 +110,5 @@
     "vendor/p3-util/src/transpose/square.rs": "72de1420abe03c0c4dca0e6789f638546b45c19caeffdd94e9d1166dea41e592",
     "vendor/p3-util/src/zip_eq.rs": "e80e4f1fb3e023e8fa4bbbeadd96f301e62a7331fde18a92474f027d455075a4"
   },
-  "sha256": "b4aa713890a72a2e7b7c69917f1b75aaea0b358b6ab890d519f21492f504ce83"
+  "sha256": "9ac2c293876efadbbfb977b4859d8256b308bed4c6848df0fd0754ab2d1ea84b"
 }

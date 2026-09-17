@@ -87,7 +87,7 @@ and its audit record after the run; timing and proof data were retained unchange
 - [Configuration](experiment.json), [host and source manifest](metadata.json)
 - Saved proofs are under `proofs/`; the exact measured sources are in `source.tar.gz`.
 
-Source-tree SHA256: `c43e70fd119f4b9543b5e44023e139e9f5104a7e7a8e2a8364cb5b2fd9890080`.
+Source-tree SHA256: `fda1bb5cfcf88651aab70f773bfe43abb32b230f5405ce5544d308239d90f7dd`.
 
 ## Reproduction
 

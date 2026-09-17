@@ -54,7 +54,7 @@
     "files": {
       "Cargo.lock": "eee42c68fdce931701789f6f4eeb44335756a9d18cafb769fdb2ae07f00f904d",
       "Cargo.toml": "eb2196ac113fedcc042c5a0f27cc73dd284898bd90ad6dae836d7b7a41cd7489",
-      "README.md": "a5c2c7266bf70403a296b68c5662a0b642e7293100d2039aa3b8163fc45026cb",
+      "README.md": "8777dc3181f38111b6aa1a03e86f02f09b98c2b97857da4169b2798793a0dd1b",
       "benches/dynamic_snark.rs": "e32234673ecc9a87e9b2363961032a261cef975ca4681ffa23b4c64d2751a92b",
       "benches/ec2_experiment.rs": "e4dd3cdf6ed34c24b68b43effe1eac725b9a201941646665c82092f18763806c",
       "benches/hash_microbench.rs": "18dd2f738131fa4c9010000a5b0d6846c9c8135f8f920627eb8b7eac05f18442",
@@ -62,12 +62,12 @@
       "benches/support/update_workload.rs": "0f32a92bdc3548c9f9830e40c6c53bb9f13f0aa2b22731d5bba41ceab8a61630",
       "benches/whir_microbench.rs": "7ba82c6155b2558334c7a7cf0fab564d8577d2e75dcf9485022c486f6af6dd7a",
       "docs/aligned-oracles.md": "29f47c0c71284320e122b9781bef78d90ba3309611b24063dd1d78a5b8f7b093",
-      "docs/ec2-2p24-experiment.md": "4c54f40c5d825b8b7cc2b3a8611c25b117794a1fd8042b56a737868ae16c454d",
-      "docs/ec2-prep-20260915.md": "646f27799df15c87e90833dc095cb68ee183e93b03bdfbac4f393e806b550294",
-      "docs/ec2-proof-size-results.md": "5a6ea74a982141078b18dc97c46b202728a2e460256cb4f33baf4bb4f604321d",
+      "docs/ec2-2p24-experiment.md": "a25edcdbc43a4e51aaef1b776c22b88e6b6f8109063ec7a9824acef172e9804a",
+      "docs/ec2-prep-20260915.md": "fe4d3e1e0b4bf22b1baf9b3e8099eb6e0d1eb3c2bda08472f06ef5828fdeb9f1",
+      "docs/ec2-proof-size-results.md": "f4cb4b58182d7c4d4810df60b3890176bb1b1cb2ec2a527f3969d8ae19f1a704",
       "docs/ec2-readiness-20260913.md": "d888ccc1e7c25105f98fd565ff5c24068301e9403f5286077cac43f7da854b48",
       "docs/ec2-readiness-20260914.md": "cceb8fb1776715cc8d9dd24e5df33cb2b1d33bf17162a1a14b238e7937c5c46d",
-      "docs/ec2-rehearsal-results.md": "0ad0b385a301cfeba61eb2b44973dfbf917510b642126d488e0797b34c7201bc",
+      "docs/ec2-rehearsal-results.md": "44137b0eb367c129b4aa0ac3fd0aa88bcde7e23d6344de4bc549e4a4445e2a23",
       "docs/endpoint-memory-plan.md": "ea0598cd5abc8adee6e6cca863d08711194bb28b33dbffe7e4aa850f3e04c1d1",
       "docs/initial-endpoint-experiment.md": "b13f645ec525e6c72383fb1621ddf63cb02219c185f0d8171a29e5944e54a09c",
       "docs/poseidon-endpoint-experiment.md": "83920fd0424d563cd56da08807572bae491155b6d8f989f7fc6785d6442cfa8b",
@@ -178,7 +178,7 @@
       "vendor/p3-util/src/transpose/square.rs": "72de1420abe03c0c4dca0e6789f638546b45c19caeffdd94e9d1166dea41e592",
       "vendor/p3-util/src/zip_eq.rs": "e80e4f1fb3e023e8fa4bbbeadd96f301e62a7331fde18a92474f027d455075a4"
     },
-    "sha256": "f90188767ec9291727dc54a9907b6474038db403e4b2490ac8ee609783fe5f74"
+    "sha256": "47280a990159efc055115869573e7637c13e6bfedd2290e1b7541243fa4f68a3"
   },
   "started_utc": "2026-09-16T03:41:38.868987+00:00"
 }

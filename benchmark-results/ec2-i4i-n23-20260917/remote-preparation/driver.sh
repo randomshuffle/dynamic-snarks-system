@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 umask 077
-BENCH_RUN_ROOT=/home/ubuntu/dynamic-snark-n23-20260917-NfZT0lLE
+BENCH_RUN_ROOT=/home/ubuntu/dynamic-snark-benchmark
 cd "$BENCH_RUN_ROOT"
 # This directory was newly created for this run. Never remove existing data.
 exec 9> "$BENCH_RUN_ROOT/driver.lock"

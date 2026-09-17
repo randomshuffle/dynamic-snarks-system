@@ -1,7 +1,7 @@
 {
   "recorded_at_utc": "2026-09-10T00:09:23.363401+00:00",
   "rustc": "rustc 1.92.0 (ded5c06cf 2025-12-08)\nbinary: rustc\ncommit-hash: ded5c06cf21d2b93bffd5d884aa6e96934ee4234\ncommit-date: 2025-12-08\nhost: aarch64-apple-darwin\nrelease: 1.92.0\nLLVM version: 21.1.3\n",
-  "git_head": "92a2215227e7e1675f26e2c8e46e2926cf4d8af9",
+  "git_head": null,
   "source_sha256": {
     "Cargo.toml": "091b377ced37d584229751c0c9fdc6d8244c2a9feb6862a9b5b6a3f98880b47b",
     "Cargo.lock": "eee42c68fdce931701789f6f4eeb44335756a9d18cafb769fdb2ae07f00f904d",

@@ -1,4 +1,4 @@
-    Checking dynamic-snarks-system v0.1.0 (/Users/anubhavbaweja/Desktop/Research/research-git/dynamic-snarks-system)
+    Checking dynamic-snarks-system v0.1.0 (/path/to/dynamic-snarks-system)
 warning: struct `Gadgets` is never constructed
  --> src/dynamic/gadgets.rs:9:19
   |

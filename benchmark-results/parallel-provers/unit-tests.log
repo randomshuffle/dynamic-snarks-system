@@ -7,9 +7,9 @@
    Compiling serde_json v1.0.151
    Compiling itoa v1.0.18
    Compiling memchr v2.8.3
-   Compiling p3-sumcheck v0.6.2 (/Users/anubhavbaweja/Desktop/Research/research-git/dynamic-snarks-system/vendor/p3-sumcheck)
+   Compiling p3-sumcheck v0.6.2 (/path/to/dynamic-snarks-system/vendor/p3-sumcheck)
    Compiling p3-whir v0.6.2
-   Compiling dynamic-snarks-system v0.1.0 (/Users/anubhavbaweja/Desktop/Research/research-git/dynamic-snarks-system)
+   Compiling dynamic-snarks-system v0.1.0 (/path/to/dynamic-snarks-system)
 warning: unused import: `p3_maybe_rayon::prelude`
  --> src/transition_relation.rs:3:5
   |

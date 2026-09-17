@@ -10,14 +10,14 @@
     "--output",
     "benchmark-results/ec2-guard-check-n15"
   ],
-  "binary": "/Users/anubhavbaweja/Desktop/Research/research-git/dynamic-snarks-system/target/release/deps/ec2_experiment-aa1bf673d3dbd379",
+  "binary": "/path/to/dynamic-snarks-system/target/release/deps/ec2_experiment-aa1bf673d3dbd379",
   "binary_sha256": "ba40b79932806e445298b190b598dc298b969ea18672e1a481c9fc3525498a9f",
   "cargo": "cargo 1.92.0 (344c4567c 2025-10-21)",
   "features": [
     "parallel",
     "whir-initial-64"
   ],
-  "git_head": "92a2215227e7e1675f26e2c8e46e2926cf4d8af9",
+  "git_head": null,
   "git_status": "M .gitignore\n M Cargo.lock\n M Cargo.toml\n M README.md\n M benches/dynamic_snark.rs\n M src/cair.rs\n M src/circuit.rs\n M src/dynamic.rs\n M src/lib.rs\n M src/merkle.rs\n M src/sparse_dag.rs\n M src/static_snark.rs\n M src/static_snark/air.rs\n M src/static_snark/pcs.rs\n M src/static_snark/program.rs\n M src/transcript.rs\n M src/transition_cair.rs\n M src/transition_relation.rs\n M src/wiring.rs\n M tests/end_to_end.rs\n?? benches/ec2_experiment.rs\n?? benches/support/\n?? benches/whir_microbench.rs\n?? benchmark-results/\n?? docs/\n?? examples/\n?? scripts/\n?? src/poseidon_scalar.rs\n?? src/static_snark/pcs/\n?? tests/random_update_workload.rs",
   "logical_cpus": 8,
   "lscpu": null,
@@ -32,15 +32,15 @@
     "files": {
       "Cargo.lock": "b15dd579b040c9730583daf3f5d8e5fe4b19bb5cbb9ba63b6ddaa099c8b9327b",
       "Cargo.toml": "edfd017b8d0404f9b39aa5c78a804725f8d04cc8a2d162d73cc7101ab992bdc9",
-      "README.md": "e2a4e5f1817146d7230a33f3eb3b84f07f92df53a4f84c425dc446ae740640de",
+      "README.md": "6292970d8f8a637339ff5e6b291ce8094adb8514ffc90b8e9c6154dbfd9f9a0a",
       "benches/dynamic_snark.rs": "e32234673ecc9a87e9b2363961032a261cef975ca4681ffa23b4c64d2751a92b",
       "benches/ec2_experiment.rs": "3d826276cafba72b63be69eb83f3ced3ef43e7ba0a24dfdb61424359a1ac121d",
       "benches/hash_microbench.rs": "18dd2f738131fa4c9010000a5b0d6846c9c8135f8f920627eb8b7eac05f18442",
       "benches/support/update_workload.rs": "0f32a92bdc3548c9f9830e40c6c53bb9f13f0aa2b22731d5bba41ceab8a61630",
       "benches/whir_microbench.rs": "8b29eb45834e0e19a19fa1a71e592d9011a8e7533abac7191f96266aab620acd",
       "docs/aligned-oracles.md": "23245151078c1ce8d40bfd12009f8359f2c0d48f7eb4084ac608aaf594cef663",
-      "docs/ec2-2p24-experiment.md": "d2def42cc534ba60f9c01a4290a7962da5e48d54bb56c4341c6507274124b9a8",
-      "docs/ec2-rehearsal-results.md": "72615d9257e42f24deed49b46e1e77f833df0bde3116d48b59b792b0d6e6d23a",
+      "docs/ec2-2p24-experiment.md": "3e05713862f51a2256e45f37ac37488450106593ed4437c4b8b1c0d6ee5f10ce",
+      "docs/ec2-rehearsal-results.md": "2bf647ab95b8293f8c8634ee0c425c5a8c6c93179f5c41e7b24c1e92c31de0fe",
       "examples/first_update.rs": "db4c9e16263732c1de2e9e7008e8e5e3bd4954b976dd653dc67a23cc5d34caff",
       "scripts/bootstrap_ec2.sh": "018e6254c29c7e1394cf61730dfbe0be0cfbecaaa0d231af0cfa3a45b8cb0f44",
       "scripts/experiment_support.py": "2f073ebc30333f3d157dade4ea6978379007b0678a6060f808718cd9242b2767",
@@ -88,7 +88,7 @@
       "vendor/p3-util/src/transpose/square.rs": "72de1420abe03c0c4dca0e6789f638546b45c19caeffdd94e9d1166dea41e592",
       "vendor/p3-util/src/zip_eq.rs": "e80e4f1fb3e023e8fa4bbbeadd96f301e62a7331fde18a92474f027d455075a4"
     },
-    "sha256": "03a6e8441399bb68c4db7aba54e95b6c45a232189c07c9cbf6fbe7089fe30c7f"
+    "sha256": "04fce5b1d1dd0c7888f9fe4f17fd9ce8ac24306386cba0b016c732d01e4fd53b"
   },
   "started_utc": "2026-09-09T07:26:10.364948+00:00"
 }

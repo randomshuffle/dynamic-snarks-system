@@ -22,7 +22,7 @@
    Compiling ciborium-ll v0.2.2
    Compiling ciborium v0.2.2
    Compiling p3-merkle-tree v0.6.2
-   Compiling p3-sumcheck v0.6.2 (/Users/anubhavbaweja/Desktop/Research/research-git/dynamic-snarks-system/vendor/p3-sumcheck)
+   Compiling p3-sumcheck v0.6.2 (/path/to/dynamic-snarks-system/vendor/p3-sumcheck)
    Compiling p3-whir v0.6.2
-   Compiling dynamic-snarks-system v0.1.0 (/Users/anubhavbaweja/Desktop/Research/research-git/dynamic-snarks-system)
+   Compiling dynamic-snarks-system v0.1.0 (/path/to/dynamic-snarks-system)
     Finished `bench` profile [optimized] target(s) in 14.30s

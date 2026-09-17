@@ -21,7 +21,7 @@
       "--offline",
       "--numa-interleave",
       "--output",
-      "/home/ubuntu/dynamic-snark-n23-20260917-NfZT0lLE/full-n23-u128"
+      "/home/ubuntu/dynamic-snark-benchmark/full-n23-u128"
     ],
     "started_utc": "2026-09-17T04:19:59.381575+00:00",
     "state": "running"

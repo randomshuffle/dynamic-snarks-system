@@ -102,7 +102,7 @@ tests (9 tests).
 - [Artifact audit](../benchmark-results/ec2-proof-sizes-n15-20260909/artifact-audit.json)
 
 The recorded benchmark source-tree SHA256 is
-`88a48acbd8e79ef7b7345474d16b18d7924917cfb311e7b4b78f8c0f2fb0238d`.
+`520a7c8e4ab7acd5a28aaceae1de0d6ca367bb4e028fd58d41491952a75c0435`.
 
 ## Applying this to 2^24 on EC2
 

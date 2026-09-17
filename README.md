@@ -1,302 +1,192 @@
 # Dynamic SNARK system
 
-Rust implementation of the dynamic SNARK compiler from Section 4 of the
-neighboring `dhbs` paper.
+Rust implementation of the amortized dynamic SNARK compiler evaluated in the
+accompanying paper. The system proves an initial computation, then maintains a
+proof as gate assignments change. The experiment compares these updates with
+recomputing a HyperPlonk proof from scratch.
 
-For the current 2^23-gate BN254 experiment on r5.24xlarge, with 16-way WHIR
-interleaving, update sizes through 128 gates and 40 updates per size, including
-prover/verifier time and proof-size means and maxima, see the
-[current EC2 preparation guide](docs/ec2-r5-n23-20260916.md).
+## Implementation
 
-## Instantiation
+The implementation uses the BN254 scalar field and Plonky3 0.6.2. Both the
+dynamic SNARK and the HyperPlonk baseline use the same WHIR polynomial
+commitment backend and field arithmetic.
 
-- BN254 scalar field (`p3-bn254`), with a two-adic subgroup suitable for FFTs.
-- Width-three Poseidon2 with a one-field-element, 32-byte digest and the
-  Plonky3 BN254 128-bit parameter schedule (8 full and 56 partial rounds).
-- The original HyperPlonk PIOP decomposition: a gate ZeroCheck and a wiring
-  PermCheck reduced through ProductCheck and ZeroCheck to Fiat--Shamir
-  sumchecks.
-- Plonky3 WHIR at a configured 127-bit security target, folding factor four
-  (16 field elements per queried leaf), rate-one-half Reed--Solomon codewords,
-  and native BLAKE3 Merkle hashing and Fiat--Shamir for every polynomial
-  commitment and arbitrary-point opening.
-- Position-bound Poseidon2 Merkle vector commitments for the Section 4 dynamic
-  compiler.
-- A digest-only Merkle PIOP for initialization: one digest heap oracle,
-  linked directly to the static proof's assignment commitment.
-- A sparse endpoint PIOP for each transition, with a separate routing product
-  argument. Transitions have no dense Plonkish trace or per-level key.
+- **Relation Merkle trees:** width-three Poseidon2, with 8 full rounds and
+  56 partial rounds, and a one-field-element digest.
+- **WHIR commitments and Fiat–Shamir:** BLAKE3 with 256-bit digests.
+- **WHIR parameters:** folding four variables per round, corresponding to
+  interleaving 16 in every round; Reed–Solomon rate 1/2 throughout; a 127-bit
+  capacity-bound security target and no proof of work.
+- **Parallelism:** Rayon, enabled with `--features parallel`, for the baseline,
+  initialization, and updates.
 
-Both Merkle PIOPs use the same batched hash PIOP. It reduces all 64 Poseidon2
-rounds with degree-six sumchecks, returning one output evaluation and three
-input evaluations for the caller to authenticate. No intermediate hash states
-are committed. Initialization derives the hash inputs from the fixed heap and
-assignment layouts, so it needs no routing sumcheck. Its Merkle oracle has
-`8N` field elements, and the verifier requests five digest evaluations plus one
-evaluation of the existing assignment oracle.
+The initial proof links the circuit assignment to its Poseidon2 Merkle tree.
+Update proofs authenticate the affected paths and gate changes using compact
+node and update tables. The Poseidon2 PIOP batches all 64 rounds and commits
+only hash endpoints. The prover maintains the amortized hierarchy of transition
+proofs and removes superseded levels after merges.
 
-The default `compact-merkle` feature enables `poseidon-gkr` and splits
-transition nodes from update/gate records. Build with
-`--no-default-features --features poseidon-gkr` for the previous combined
-endpoint table, or `--no-default-features` for the legacy scalar trace;
-`experimental-poseidon-gkr` remains a compatibility alias for `poseidon-gkr`.
-The variants have different proof representations and transcripts. Generate and
-verify proofs with the same variant; regenerate legacy proofs for the new default.
+The library entry points are `dynamic::index`, `dynamic::initialize`,
+`dynamic::update`, and `dynamic::verify`. Updates use sorted logical assignment
+indices and include the complete three-wire tuple for every selected gate.
+The default `compact-merkle` feature selects the implementation used in the
+paper. Vendored dependency patches are selected by `Cargo.toml`.
 
-The static prover uses one row per actual gate rather than compiling copy
-constraints or output comparisons into extra rows. Gate correctness is a
-ZeroCheck. Wiring correctness is HyperPlonk's multiset PermCheck: one
-`2N`-evaluation product oracle is constrained by a ZeroCheck and opened at its
-root. Initialization and the ordinary baseline both use four columns: two
-gate inputs, one gate output, and a public-input occurrence or zero. The
-assignment Merkle tree commits directly to this row-major table. The Merkle
-leaf-value claim is therefore one opening of the same main polynomial,
-without a duplicate assignment view. All initial Merkle terminal claims use one WHIR
-opening, alongside the linked assignment opening. Fiat--Shamir queries hash only commitments, public statement data,
-and length-delimited raw sumcheck messages; earlier challenge outputs are
-recomputed rather than reabsorbed.
+## Paper experiment
 
-Both arithmetic relations now have the same padded gate-row count `N` and
-commit `4N` witness fields (`W`) and `4N` preprocessing fields (`P`). Public
-inputs occupy column three, so the baseline adds no public-input rows. `P`
-contains the original wiring conjugated by the logical-to-physical leaf map;
-unused positions are fixed points. Gate selectors, zero-padding masks, and
-identity labels are public formulas, and each preprocessing opening has four
-claims. General gate programs retain committed local selectors/constants.
-The original `2N` HyperPlonk product oracle is retained.
+The reported run used an AWS **i4i.24xlarge** with Intel Xeon Platinum 8375C
+processors, 96 vCPUs (48 physical cores), and 768 GiB RAM. It ran Ubuntu 26.04
+x86-64 and Rust 1.92.0, compiled in release mode with `-C target-cpu=native`.
+The benchmark used **48 Rayon workers**, restricted to one logical CPU per
+physical core across two sockets, with allocations interleaved across both
+NUMA nodes.
 
-The update API still uses logical assignment indices. Assignment and wiring
-trees, sparse transition constraints, and public-input openings all translate
-them to physical leaf addresses. The compact update node table has 14 used
-columns padded to 16; its row count depends on the authentication paths.
-Update/gate records occupy a separate, smaller oracle. The previous combined
-endpoint table used 64 columns for the benchmarked shapes. See the
-[compact-layout comparison](benchmark-results/2026-09-11-compact-update-ab/README.md)
-and the [assignment and preprocessing oracles](docs/aligned-oracles.md).
-This changes the static/transition transcripts and vector-commitment encoding;
-keys, roots, and proofs must be regenerated.
+The circuit contains **2^23 = 8,388,608 gates**, split equally between addition
+and multiplication, with the identity wiring permutation and 256 fixed public
+inputs. The experiment uses seed `20260909` and consists of:
 
-The hash prover materializes all 65 width-three state layers transiently.
-The reduction in committed oracle size does not remove the round-count factor
-from this working memory. Streaming or checkpointing these layers remains an
-engineering optimization.
+1. One full initial dynamic computation.
+2. Forty HyperPlonk baseline proofs, paired with the assignments from the
+   one-gate update sequence and shared as the reference for all update sizes.
+3. A separate sequence of **40 consecutive updates** for each gate count
+   **1, 2, 4, 8, 16, 32, 64, and 128**. Every sequence starts from the same
+   fully proved initial state.
 
-The dynamic prover maintains the paper's `ceil(log2(m + 1))` update tables.
-Each transition privately commits a node table containing a paired old/new
-assignment DAG, an indexed-permutation DAG, and a new-assignment neighbor DAG.
-Its 14 columns are eight hash input/output fields, a row type, a tree identifier,
-a level, a heap address, and two fields reused for boundary digests or a level
-inverse. Three designated roots and authenticated child references imply valid
-node levels and addresses; internal nodes satisfy `level * inverse = 1`.
-The node table has `16R` committed fields. A separate table holds `k = |U|`
-update links, `g` affected gate triples, and their index range witnesses, with
-`S = next_pow2(max(2, k + g))` rows and `O(log N)` columns.
-It uses `17 + max(b(n), b(n0))` fields per row before power-of-two padding,
-where `b` is the range-bit count. Gate-pair and public-input indices share
-one bit block; redundant index copies and the neighbor-value copy are derived.
-For the 65,536-gate benchmark this is 32 columns, down from 45 padded to 64.
-See the [matched one-gate comparison](benchmark-results/2026-09-15-update-table-32-ab/README.md).
-This layout changes the compact transition transcript; update proofs must be
-regenerated, while the indexed keys and Merkle roots are unchanged.
-Two local sumchecks check these tables, and the shared hash PIOP checks both
-hash lanes. After both commitments are fixed, Fiat--Shamir derives routing
-compression challenges, and the prover commits the shared routing product
-table. A further sumcheck binds its factors to both witness oracles and checks
-the product tree. Each of the three commitments has one batched WHIR opening.
-The verifier key retains only
-`(n, n0, m)` and the fixed permutation commitment. Public inputs are checked
-with a final Merkle multiproof.
+Each revision samples distinct gates uniformly without replacement; a gate may
+be selected again in a later revision. Each selected gate contributes all three
+wire positions, so an update of `g` gates has `|U| = 3g`. The left input changes,
+the right input stays at 2, and the output is recomputed. Public inputs remain
+fixed. The experiment runs once, with no warmup runs or discarded samples.
 
-Execution is sequential by default. `--features parallel` enables the same
-Rayon backend for the baseline, full initialization, and updates. Custom
-sumchecks split independent message evaluations and row pairs across the pool,
-with reusable task scratch. Merkle levels, Poseidon trace rows, witness/table
-preparation, product-oracle construction, folding, and independent final WHIR
-openings also use the pool. Task sizes adapt to the worker count; no CPU model
-or fixed eight-thread limit is assumed. Fiat–Shamir rounds and Merkle levels
-retain their required dependency order. Set `RAYON_NUM_THREADS` when launching
-the process; it does not enable parallelism in a binary built without the
-`parallel` feature. The shared Plonky3 scheduling and STIR memory changes are documented in
-[`vendor/p3-sumcheck/LOCAL_CHANGES.md`](vendor/p3-sumcheck/LOCAL_CHANGES.md).
-The degree-six Poseidon messages use the dyadic points
-`{0, 1, -1, 2, -2, 1/2, -1/2}`. Their seven affine values are fused per row
-pair, and all seven fifth powers are derived together. Each folded table is halved in place for the next linear-time sumcheck round.
+All **361 proofs** were verified. The benchmark process completed in
+**42.68 minutes**, with **424.55 GiB peak resident memory**. These resource
+figures exclude dependency installation and compilation. The workload uses
+identity wiring; it does not measure propagation through nontrivial wiring.
 
-`dynamic::index` preprocesses only the initial relation. The compatibility
-functions `preprocess_update_sizes` and `preprocess_all_levels` perform no
-transition setup because sparse tables are derived from each update.
+## Results
 
-## Minimal use
+Each mean and maximum covers 40 proofs, except for the single initial
+computation. Update prover time includes state maintenance and hierarchy
+composition. Verification covers the entire retained dynamic proof.
+Workload generation, circuit indexing, copying each starting state,
+serialization, and file writes are outside the prover and verifier timers.
 
-```rust
-use dynamic_snarks_system::{Field, circuit::Circuit, dynamic};
-use p3_field::PrimeCharacteristicRing;
+Proof size is the **field-and-hash payload**: 32 bytes for each field element
+and each BLAKE3 digest, including commitments, sumcheck messages, evaluations,
+and Merkle authentication data. It excludes indices, dimensions, and
+serialization overhead. Update proof sizes include the initial proof and every
+active transition proof. MiB denotes 2^20 bytes.
 
-let circuit = Circuit::new(1, 1, (0..7).collect())?;
-let assignment = [1, 2, 3, 3, 4, 12, 9]
-    .map(Field::from_u64)
-    .to_vec();
-let (pk, vk) = dynamic::index(circuit)?;
-let state = dynamic::initialize(&pk, assignment)?;
-dynamic::verify(&vk, &[Field::from_u64(9)], state.proof())?;
-# Ok::<(), dynamic::Error>(())
-```
+Prover speedup is the baseline mean prover time divided by the update mean
+prover time, excluding initialization.
 
-Updates are sorted `(position, value)` pairs. Updates touching a gate must
-contain its complete three-wire tuple, as required by Section 4.
+| Phase / gates updated | Prover mean (s) | Prover max (s) | Verifier mean (ms) | Verifier max (ms) | Proof mean (MiB) | Proof max (MiB) | Prover speedup |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| HyperPlonk | 28.413 | 28.716 | 16.926 | 17.366 | 1.715 | 1.715 | 1.00× |
+| Initial dynamic | 716.408 | — | 54.709 | — | 2.740 | — | — |
+| Update 1 | 0.207 | 0.540 | 91.537 | 126.160 | 4.511 | 6.164 | 137.02× |
+| Update 2 | 0.277 | 0.753 | 95.665 | 134.645 | 4.776 | 6.658 | 102.40× |
+| Update 4 | 0.378 | 1.230 | 99.814 | 142.062 | 5.050 | 7.234 | 75.07× |
+| Update 8 | 0.524 | 2.299 | 103.150 | 148.691 | 5.277 | 7.624 | 54.20× |
+| Update 16 | 0.743 | 4.320 | 107.122 | 154.538 | 5.520 | 8.096 | 38.22× |
+| Update 32 | 1.125 | 8.469 | 111.157 | 162.102 | 5.783 | 8.593 | 25.26× |
+| Update 64 | 1.916 | 16.506 | 116.042 | 172.906 | 6.087 | 9.200 | 14.83× |
+| Update 128 | 3.602 | 32.701 | 120.294 | 181.313 | 6.394 | 9.812 | 7.89× |
 
-## Tests
+Including initialization, proving an entire 40-update sequence takes
+12.08–14.34 minutes, depending on update size, compared with 18.94 minutes
+for 40 baseline proofs: a 1.57×–1.32× speedup. The maximum update times occur
+at revision 32, which triggers the largest merge in these sequences. The
+largest retained proofs occur at revision 31, before superseded levels are
+removed. Dynamic proofs are larger and require more verification time than
+one baseline proof.
 
-```text
-cargo test --offline
-cargo check --features parallel --offline
-```
+The [raw samples](benchmark-results/ec2-i4i-n23-20260917/full-n23-u128/samples.csv),
+[timing comparison](benchmark-results/ec2-i4i-n23-20260917/full-n23-u128/comparison.csv), and
+[proof-size measurements](benchmark-results/ec2-i4i-n23-20260917/full-n23-u128/proof-sizes.csv)
+contain the underlying measurements. The
+[complete result archive](benchmark-results/ec2-i4i-n23-20260917/full-n23-u128.tar.gz)
+includes the configuration, sanitized source snapshot, logs, and proof checkpoints.
 
-The test profile enables optimized field arithmetic while retaining debug
-assertions. The end-to-end test performs real Poseidon2-in-circuit and WHIR
-proofs, so it takes substantially longer than ordinary unit tests.
+## Reproduce the experiment
 
-## Benchmark
+Run the following from the repository root on an Ubuntu x86-64 host with
+sufficient RAM. The reported configuration uses 768 GiB; the runner checks a
+conservative memory estimate before proving.
 
-The end-to-end benchmark compares a dynamic update with an ordinary
-from-scratch HyperPlonk-style proof of the updated arithmetic circuit. The
-baseline binds the public inputs in column three and contains no Merkle
-commitment or CAIR proof. Both the dynamic and baseline proving keys are
-preprocessed before the timers. By default the original HyperPlonk circuit has
-exactly `2^14` arithmetic-gate rows. Internally the synthetic benchmark pairs
-half addition rows with half multiplication rows. It uses `2^8` public inputs,
-changes `2^4` arithmetic gates, and reports both the first-update
-latency and the average over ten revisions. Each revision samples a fresh
-uniform gate subset without replacement, using seed `20260909` and identity
-wiring:
-
-```text
-cargo bench --bench dynamic_snark --features parallel
-```
-
-Initial indexing happens before the timers; transitions require no
-update-dependent preprocessing. By default the benchmark starts from a
-trusted base commitment without materializing the initial proof;
-`DYNAMIC_SNARK_TIME_FULL_INITIAL=1` generates, verifies, and separately times
-the complete initial proof. Before allocating a proving key, the benchmark
-prints the exact first-update sparse shape and a conservative bound obtained
-from the final composed hierarchy supports. This also covers earlier
-transitions merged into those supports. Unsafe cases are skipped
-unless `DYNAMIC_SNARK_FORCE=1` is set. The output also prints the original
-trace, the reduced initial relation trace, and the number of Poseidon
-permutations in each sparse transition DAG. Each
-changed arithmetic gate contributes its complete three-position wire tuple,
-including its unchanged right input. Left inputs vary deterministically by
-gate and revision, with outputs recomputed to satisfy the gate. Randomness
-affects the selected positions. `DYNAMIC_SNARK_UPDATE_PATTERN=contiguous`
-restores the old repeated-prefix workload; `random` is the default.
-`DYNAMIC_SNARK_SEED` selects the RNG seed. Workloads are generated outside the
-timers and their position fingerprints are logged; retain `Cargo.lock` when
-reproducing the seeded `StdRng` stream. Environment
-variables `DYNAMIC_SNARK_TRACE_LOG`, `DYNAMIC_SNARK_UPDATE_LOGS`, and
-`DYNAMIC_SNARK_SEQUENCE_LEN` select smaller smoke-test configurations;
-`DYNAMIC_SNARK_PREFLIGHT_ONLY=1` prints resource estimates without proving. The
-benchmark skips a case when a projected RAM peak exceeds 70% of physical
-memory;
-`DYNAMIC_SNARK_FORCE=1` overrides this safety check.
-`DYNAMIC_SNARK_UPDATE_ONLY=1` skips baseline setup/proving and suppresses the
-full initial proof, using the trusted-base transition harness. Each updated
-state is verified outside its timer. Logs include each revision's time,
-cumulative distinct positions, and the actual composed transition's size,
-hierarchy level, and oracle dimensions. Empty baseline CSV fields mean that
-baseline proving was skipped.
+Install the system dependencies and pinned Rust toolchain, fetch the locked
+Cargo dependencies, and build the benchmark without running it:
 
 ```sh
-DYNAMIC_SNARK_UPDATE_ONLY=1 DYNAMIC_SNARK_UPDATE_PATTERN=random \
-DYNAMIC_SNARK_SEED=20260909 RAYON_NUM_THREADS=8 \
-cargo bench --offline --bench dynamic_snark --features parallel
+bash scripts/bootstrap_ec2.sh
+source "$HOME/.cargo/env"
+export RUSTFLAGS='-C target-cpu=native'
+unset DYNAMIC_SNARK_PROFILE DYNAMIC_SNARK_PROFILE_DETAIL
+
+BENCH_RESULTS="$HOME/bench-results/paper-$(date -u +%Y%m%dT%H%M%SZ)"
+mkdir -p "$BENCH_RESULTS"
+python3 scripts/run_experiment.py --threads 48 --initial-interleaving 16 \
+  --build-only --offline --output "$BENCH_RESULTS/build"
 ```
 
-See [the random-update measurements](benchmark-results/random-updates.md) for
-fresh random gate sets and [the aligned-layout benchmark results](benchmark-results/aligned-comparison.md)
-for the previous repeated-contiguous workload and layout comparison.
+Run the full experiment once:
 
-For repeated first updates from an empty hierarchy, use the `first_update`
-example with `DYNAMIC_SNARK_TRACE_LOG=16`, `DYNAMIC_SNARK_FIRST_KIND=leaf`
-(or `gate`), and `DYNAMIC_SNARK_FIRST_SAMPLES=30`. Column-aware PCS evaluation
-and shared-row equality weights reduce the measured single-leaf median from
-122.5 ms to 77.7 ms with eight Rayon threads. See the
-[matched comparison and reproduction commands](benchmark-results/opening-opts.md).
-
-The subsequent shared parallelization improves the baseline, full initialization,
-and first update together. At 65,536 gates and eight workers, their measured
-times are 709 ms, 37.7 s, and 45.5 ms, respectively. See the
-[parallel prover comparison](benchmark-results/parallel-provers.md) for matched
-before/after measurements, one-worker controls, and 96-worker correctness checks.
-The `prover_comparison` example measures all three operations with verified proofs.
-
-Further recurrence-weight hoisting, a tighter local degree bound, and batched
-terminal column evaluations bring the single-leaf first-update median to
-29.7 ms at eight workers. See the [update optimization and current profile](benchmark-results/update-optimization.md).
-The tighter bound shortens update sumcheck messages; update proofs from older
-builds must be regenerated for the new verifier when that bound changes.
-
-The `poseidon-gkr` implementation commits only hash endpoints
-alongside sparse routing data and reduces all 64 Poseidon rounds with sumcheck.
-See the [protocol and reproduction](docs/poseidon-endpoint-experiment.md) and
-[one-gate, eight-thread A/B](benchmark-results/2026-09-09-poseidon-endpoint-ab/README.md).
-Those measurements use the previous combined endpoint layout. Its main oracle
-shrinks 4× in that experiment, while proving takes 1.71× longer;
-the original scalar trace remains available with `--no-default-features`.
-The same unmodified provers reach near parity for a 16-gate update, and the
-endpoint prover takes 19.2% less time at 128 gates; see the
-[larger-update comparison](benchmark-results/2026-09-09-poseidon-endpoint-scaling/README.md)
-for verification time, proof sizes, memory estimates and the single-sample limits.
-The default also selects a [digest-only initial PIOP](docs/initial-endpoint-experiment.md).
-Its Merkle oracle is 64× smaller and the matched full initialization takes
-20.695 s versus 31.633 s, with a 1.36% increase in the complete field/hash proof
-payload; see the [initial-computation A/B](benchmark-results/2026-09-09-initial-endpoint-ab/README.md).
-
-The native hash microbenchmark compares one parameter-reused BN254 Poseidon2
-permutation with SHA3-256 and BLAKE3 over the same prebuilt 72-byte logical
-inputs. Each timed sample averages 100 hashes:
-
-```text
-cargo bench --bench hash_microbench
+```sh
+taskset -c 0-47 python3 scripts/run_experiment.py \
+  --trace-log 23 --threads 48 --initial-interleaving 16 \
+  --update-logs 0,1,2,3,4,5,6,7 --sequence-len 40 --seed 20260909 \
+  --baseline-mode shared --offline --numa-interleave \
+  --output "$BENCH_RESULTS/full-n23-u128"
 ```
 
-The standalone WHIR microbenchmark commits a deterministic random
-`2^18`-entry multilinear polynomial and opens it at one arbitrary point. It
-sweeps folding factors 1, 2, 3, and 4 (Merkle leaf widths 2, 4, 8, and 16),
-comparing fixed rate `1/2` with Plonky3's default WHIR rate reduction at each
-factor. Both start at `1/2` and use the same 127-bit capacity-bound security
-target and zero PoW. The default schedule halves the RS domain each round;
-at factor four its code rates become `1/2, 1/16, 1/128, ...`. Production
-continues to use fixed rate `1/2`.
+CPUs `0-47` selected one logical CPU per physical core on the reported host.
+Check `lscpu -e=CPU,CORE,SOCKET,NODE` and adjust the CPU list on a different
+host. The runner sets the Rayon worker count from `--threads` and reuses the
+release build. Every output directory must be new.
 
-Each arm has one warmup followed by five measured samples with alternating
-arm order. All proofs are verified and their claimed evaluations compared.
-The benchmark reports medians for commitment, point evaluation, proximity
-proof generation, total opening, total prover (commitment plus opening), and
-verification. It also counts the complete cryptographic proof payload:
-32 bytes per BN254 field element or BLAKE3 digest, including every Merkle
-path, intermediate commitment, OOD answer, sumcheck message, stored PoW
-witness, and final-polynomial element. Container lengths and encoding tags
-are excluded; the initial commitment's 32 bytes are reported separately.
+### Results and validation
 
-```text
-WHIR_MICROBENCH_FACTORS=4 RAYON_NUM_THREADS=8 \
-  cargo bench --offline --bench whir_microbench --features parallel
+The runner saves results incrementally in `$BENCH_RESULTS/full-n23-u128/`
+and creates `$BENCH_RESULTS/full-n23-u128.tar.gz` on exit, including if the
+run fails. Check the completion records before treating a run as complete:
+
+```sh
+jq -e '.state == "complete" and .exit_code == 0' \
+  "$BENCH_RESULTS/full-n23-u128/status.json"
+jq -e '.complete and .verified_samples == 361 and .proof_checkpoints == 10' \
+  "$BENCH_RESULTS/full-n23-u128/validation.json"
+(cd "$BENCH_RESULTS/full-n23-u128" && sha256sum -c SHA256SUMS)
 ```
 
-`WHIR_MICROBENCH_LOG_SIZE`, `WHIR_MICROBENCH_FACTORS`,
-`WHIR_MICROBENCH_SAMPLES`, `WHIR_MICROBENCH_WARMUPS`,
-`WHIR_MICROBENCH_CLAIMS`, `WHIR_MICROBENCH_RATE_SCHEDULES` (`fixed,default`),
-and `WHIR_MICROBENCH_FRESH_INSTANCE` override the defaults. Configuration
-and polynomial construction/cloning are excluded from timers. FFT twiddles
-are cached process-wide even when fresh instances are requested.
-`WHIR_MICROBENCH_CSV` writes raw per-sample measurements to the specified
-file. See [the rate-schedule A/B results](benchmark-results/whir-rate-ab.md)
-for measurements and reproduction commands.
+| File | Contents |
+|---|---|
+| `samples.csv` | Per-proof prover time, verifier time, and proof-size measurements |
+| `summary.csv`, `comparison.csv` | Timing aggregates and baseline speedups |
+| `proof-sizes.csv`, `proof-size-comparison.csv` | Proof-size aggregates, including field-and-hash payload bytes |
+| `proof-components.csv`, `proofs/` | Component sizes and ten saved proof checkpoints |
+| `experiment.json`, `metadata.json`, `source.tar.gz` | Parameters, build/hardware metadata, and source snapshot |
+| `run.log`, `resources.json` | Progress log, process duration, and peak resident memory |
+| `status.json`, `validation.json`, `SHA256SUMS` | Completion, sample validation, and file checksums |
 
-## Dependency compatibility
+Copy the result archive to your machine using your SSH host and key. For
+example, from a separate local shell, substitute your connection details and
+the run directory printed by the runner:
 
-Plonky3 0.6.2 uses one unstable `MaybeUninit` helper in `p3-util` on stable
-Rust 1.92. This repository vendors that crate and replaces only that call with
-the equivalent stable `from_raw_parts` operation; all protocol crates remain
-pinned to 0.6.2.
+```sh
+scp -i /path/to/key.pem \
+  ubuntu@YOUR_HOST:/home/ubuntu/bench-results/YOUR_RUN/full-n23-u128.tar.gz .
+```
+
+## Validation and anonymous publication
+
+After fetching dependencies, the implementation and benchmark utilities can
+be checked with:
+
+```sh
+cargo test --locked --offline --features parallel
+python3 -m unittest discover -s scripts -p 'test_*.py'
+```
+
+The source and result archives accompanying the paper have sanitized identity
+metadata. New runs can record local paths, Git metadata, and archive ownership;
+follow [the anonymous-publication notes](ANONYMITY.md) before sharing them.

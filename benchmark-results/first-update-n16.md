@@ -20,7 +20,7 @@ Each row contains 30 samples in one process. The sample standard deviations are 
 - Timed work includes update validation, hierarchy insertion, sparse Merkle maintenance, transition proving, and public-input opening refresh. Setup, trusted base construction, state cloning, verification, and state destruction are outside the timer.
 - The full initial static/CAIR proof is omitted, following the existing transition-only benchmark harness. Both production and benchmark updates call the same transition prover and hierarchy rebuild. This measures the first transition after trusted native initialization; it does not reproduce the cache history of generating a full initial proof.
 - Apple M2 MacBook Air, four performance and four efficiency cores, 16 GB RAM (verified with `system_profiler`). Release profile, `--features parallel`, eight Rayon threads, Rust 1.92.0, `aarch64-apple-darwin`. Fixed WHIR rate one-half, folding factor four, configured 127-bit target, zero PoW, BN254, and BLAKE3 PCS hashing. The assignment and wiring vector commitments use Poseidon2.
-- Source base commit: `92a2215227e7e1675f26e2c8e46e2926cf4d8af9`, plus the pre-existing working-tree implementation. No proving algorithm or cryptographic parameter was changed for this experiment.
+- Source base commit: `anonymous`, plus the pre-existing working-tree implementation. No proving algorithm or cryptographic parameter was changed for this experiment.
 
 ## Where the time goes
 
