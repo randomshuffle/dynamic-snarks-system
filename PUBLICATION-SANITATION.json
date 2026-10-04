@@ -1,0 +1,105 @@
+{
+  "format_version": 1,
+  "written": true,
+  "measurement_values_preserved": true,
+  "original_revision_and_source_hash_provenance_preserved": true,
+  "original_backups": "archive/local-artifacts/private-metadata",
+  "changed_files": [
+    {
+      "path": "archive/results/2026-09-20-dynamic-ligerito-n19/summary.json",
+      "replacements": {
+        "personal macOS home path": 4
+      },
+      "original_sha256": "f57de45a17d9a4e19632c1731eae6ec0b379f29ddd65b5637effd755c2e8c54a",
+      "public_sha256": "5a2266643db9108ac9916b0d117814af5ff55615f05fc5476ef46afa1f0d1ce9"
+    },
+    {
+      "path": "archive/results/2026-09-21-direct-tail-400/summary.json",
+      "replacements": {
+        "personal macOS home path": 12
+      },
+      "original_sha256": "801c126c7fd171316c73492890bba9e3954a457b6dbda8f1b937ecdb7a4e62b9",
+      "public_sha256": "fa6f755ac5bf21e880d60aac0dd85cd08fca65bc77363564794859bc5535719a"
+    },
+    {
+      "path": "archive/results/2026-09-21-direct-tail-matrix/summary.json",
+      "replacements": {
+        "personal macOS home path": 12
+      },
+      "original_sha256": "29118a2096d52811096bdde88bbfd06f64ff817df5a331a6a6c2d56de79cff35",
+      "public_sha256": "14701466f65f23e268ffec42d9ffc84336b758377724c49ea2eb452fb726de38"
+    },
+    {
+      "path": "archive/results/2026-09-21-plaintext-budget/summary.json",
+      "replacements": {
+        "personal macOS home path": 8
+      },
+      "original_sha256": "cf72d7e7c3af88ab65f9c10239f8de1399dabb9a459debd20f5a56c5c6b95abd",
+      "public_sha256": "2977621a54c10970f9510f91b2fe23e6516cb01b673451e97f041942c1ccaaf3"
+    },
+    {
+      "path": "archive/results/2026-09-21-split-oracles/summary.json",
+      "replacements": {
+        "personal macOS home path": 20
+      },
+      "original_sha256": "fa00753216359db5e0e3134c0ec7dc919f81524e6b84b4393e06b0cab4c8ad5e",
+      "public_sha256": "a543c2637fecfcb4bf62e92007a7c3e59cd3805a4783ce8c0a49d798b9428fbc"
+    },
+    {
+      "path": "archive/results/2026-09-22-64-gate-amortization/partial-summary.json",
+      "replacements": {
+        "personal macOS home path": 2
+      },
+      "original_sha256": "f866bce3510ffedcbddd1505a5ca517513857be716702f311f79eae076e6181a",
+      "public_sha256": "a606c4bea0d6a3be09b4cdfd46af61d5e0d488d50123376e1521376f47fc2c87"
+    },
+    {
+      "path": "archive/results/2026-09-22-baseline-comparison/summary.json",
+      "replacements": {
+        "personal macOS home path": 4
+      },
+      "original_sha256": "2e5ceb95ed5af412a606ba8653eaea5e440339c8157eb150e2942323c7b66be3",
+      "public_sha256": "5fc4af9329ca37b0f1de7c1ae3c889fb0b465342bb3a9684ef6243ce7a31bed6"
+    },
+    {
+      "path": "archive/results/2026-09-22-gkr-protocol-ablations/summary.json",
+      "replacements": {
+        "personal macOS home path": 4
+      },
+      "original_sha256": "24b9bf944e432242937ac6cc27e3d9c3827f4cc8f7023fb3b261b780f738e5e9",
+      "public_sha256": "24e1b8ceafb3bcf6d695734931522d8553a51fd17078ba0d0731527bfaf713f1"
+    },
+    {
+      "path": "archive/results/2026-09-22-one-gate-amortization/summary.json",
+      "replacements": {
+        "personal macOS home path": 2
+      },
+      "original_sha256": "52ca0f7f15f51a414af5f84c915fa1e1756d1433815d15737b993740b022f752",
+      "public_sha256": "bda575d68a59f74381b056cbce45a418f30092f32cfed7d4134fca6645cb671d"
+    },
+    {
+      "path": "archive/results/2026-09-23-hierarchy-growth/base4/summary.json",
+      "replacements": {
+        "personal macOS home path": 2
+      },
+      "original_sha256": "097529caaa5370c4e669748c3ac3134cd4d945dc5e76692ea07771385733884e",
+      "public_sha256": "154b8670a404b2f5cf055545b7f5818cabd36e82b1c4e9bc58bc934d68fcdef3"
+    },
+    {
+      "path": "archive/results/2026-09-23-hierarchy-growth/base8/summary.json",
+      "replacements": {
+        "personal macOS home path": 2
+      },
+      "original_sha256": "1fdbaf6dc7b51ef46ea9ab044e5108d23766a50792ce6bab2f007aba4e7c3cfb",
+      "public_sha256": "7515b40beafcf9f5319334b2a2083d46d00993d314d5500b9c061853a5df3e0c"
+    },
+    {
+      "path": "results/paper/environment/kernel.txt",
+      "replacements": {
+        "EC2 internal hostname": 1
+      },
+      "original_sha256": "56ea8d20eb37ea1df39dd9e521e79d17c16d7dbc28cf026b395da209456f36d4",
+      "public_sha256": "44e4a5286692e873dc80bf036f363fd4bb21775c3c50c0c5ac69a49892d22e96"
+    }
+  ]
+}

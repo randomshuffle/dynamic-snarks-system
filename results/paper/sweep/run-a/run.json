@@ -1,0 +1,58 @@
+{
+  "command": [
+    "/home/ubuntu/bench-results/r7a-n23-20260927-retry1/measurements/whole-system",
+    "23",
+    "/home/ubuntu/bench-results/r7a-n23-20260927-retry1/measurements/sweep/run-a",
+    "40",
+    "7",
+    "1"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 2953.5933853859997,
+  "user_seconds": 21957.320726,
+  "system_seconds": 2473.20719,
+  "maximum_rss_bytes": 145680068608,
+  "memory_monitor": {
+    "rss_limit_bytes": 231928233984,
+    "sampling_interval_seconds": 0.1,
+    "samples": 29417,
+    "peak_sampled_rss_bytes": 145684070400,
+    "peak_sampled_phys_footprint_bytes": null,
+    "limit_exceeded": false,
+    "error": null
+  },
+  "binary_sha256": "d45675391706555b49937b05b54133af9a2f58c8670f04fb416cd8e1cf5db693",
+  "threads": 32,
+  "rustflags": "-C target-cpu=native",
+  "sequence_length": 40,
+  "trace_log": 23,
+  "platform": "linux",
+  "detected_memory_bytes": 264576409600,
+  "footprint_limit_bytes": null,
+  "security_profile": "Ligerito Fast (100 bits per round, JohnsonOod, rate 1/2)",
+  "hash_input_bytes": 64,
+  "digest_bytes": 32,
+  "gkr_segments": 2,
+  "gkr_depth": 33,
+  "load_average_start": [
+    5.69091796875,
+    1.76513671875,
+    0.61572265625
+  ],
+  "load_average_end": [
+    9.30224609375,
+    9.04150390625,
+    8.50537109375
+  ],
+  "hash_checkpoints": 1,
+  "initial_hash_checkpoints": 1,
+  "hash_kernel": "factored",
+  "update_logs": "0,1,2,3,4,5,6,7",
+  "small_oracle": "hybrid",
+  "plaintext_cap_kib": 2048,
+  "baseline_every": 1,
+  "baseline_first": false,
+  "hierarchy_base": 2,
+  "tables_per_level": 1,
+  "interrupted_by_signals": []
+}

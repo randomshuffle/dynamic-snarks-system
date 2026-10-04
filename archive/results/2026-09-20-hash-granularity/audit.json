@@ -1,0 +1,157 @@
+{
+  "before-n17": {
+    "verified_measurements": 97,
+    "proofs_identical_to_original": {
+      "update-4-final.bin": "e91d191e23dfd435cff97fdb92375ab7abf0b0d80c7c6ec36f8266b3952661c7",
+      "update-16-final.bin": "9612470a03ab4cb58704d4a534e547d75121f4a88346e505f0a7ddb1ea4faecb",
+      "update-2-final.bin": "cbdb920330bdf565e639d222ea323ae34d2cc95185e7bfa007a5caa55e81869a",
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-8-final.bin": "46879dbf1f87c7512c9d3031d6c30bafcf116d32f5de2adba86f06bbdc151079",
+      "update-32-final.bin": "8753501e05b8b028551d804f7c1bc9d2c1aa185f47af530c3cc00cf4bf39240b",
+      "update-64-final.bin": "2bb6ebc1b06123e4aa16e9fde97337eb1955b2c46f71b7b2d68d5f7a498bec63",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true,
+    "binary_sha256": "536ed4461e000ff1235bbdb78465c5849dc5466a18b044972ca633c0ef39ce16"
+  },
+  "before-n18": {
+    "verified_measurements": 97,
+    "proofs_identical_to_original": {
+      "update-4-final.bin": "7a50890d22bedd6c273a6e788ccd776831e20d67d8565f697a43d843e8101bf8",
+      "update-16-final.bin": "d642dd2d41bd3369508578e4aab17662c7b045d1f7137636c886ea5ead799545",
+      "update-2-final.bin": "658bba661ae5bc0e2d2cf0882e0310946f9e2a8f65f2cd76e340695cc0275e8d",
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-8-final.bin": "be771bf9f7627e470f2387572530f9a2ac4dad4c012fc1517cd789712c50270f",
+      "update-32-final.bin": "ff452d50bc9ebffb2ecf8f60acb57b882247e3874689980a1071bb900378f149",
+      "update-64-final.bin": "0245ecf14e2c57d56f3210be9a0e8816c116f87b15d1f3737deb60a86f685d1c",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true,
+    "binary_sha256": "536ed4461e000ff1235bbdb78465c5849dc5466a18b044972ca633c0ef39ce16"
+  },
+  "paired-after-n17": {
+    "verified_measurements": 97,
+    "proofs_identical_to_original": {
+      "update-4-final.bin": "e91d191e23dfd435cff97fdb92375ab7abf0b0d80c7c6ec36f8266b3952661c7",
+      "update-16-final.bin": "9612470a03ab4cb58704d4a534e547d75121f4a88346e505f0a7ddb1ea4faecb",
+      "update-2-final.bin": "cbdb920330bdf565e639d222ea323ae34d2cc95185e7bfa007a5caa55e81869a",
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-8-final.bin": "46879dbf1f87c7512c9d3031d6c30bafcf116d32f5de2adba86f06bbdc151079",
+      "update-32-final.bin": "8753501e05b8b028551d804f7c1bc9d2c1aa185f47af530c3cc00cf4bf39240b",
+      "update-64-final.bin": "2bb6ebc1b06123e4aa16e9fde97337eb1955b2c46f71b7b2d68d5f7a498bec63",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true,
+    "binary_sha256": "10cdb1bcf4e91bde8208488b7c68072e380f0a48e24e7a2e5ff3c208974ea27a"
+  },
+  "paired-after-n18": {
+    "verified_measurements": 97,
+    "proofs_identical_to_original": {
+      "update-4-final.bin": "7a50890d22bedd6c273a6e788ccd776831e20d67d8565f697a43d843e8101bf8",
+      "update-16-final.bin": "d642dd2d41bd3369508578e4aab17662c7b045d1f7137636c886ea5ead799545",
+      "update-2-final.bin": "658bba661ae5bc0e2d2cf0882e0310946f9e2a8f65f2cd76e340695cc0275e8d",
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-8-final.bin": "be771bf9f7627e470f2387572530f9a2ac4dad4c012fc1517cd789712c50270f",
+      "update-32-final.bin": "ff452d50bc9ebffb2ecf8f60acb57b882247e3874689980a1071bb900378f149",
+      "update-64-final.bin": "0245ecf14e2c57d56f3210be9a0e8816c116f87b15d1f3737deb60a86f685d1c",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true,
+    "binary_sha256": "10cdb1bcf4e91bde8208488b7c68072e380f0a48e24e7a2e5ff3c208974ea27a"
+  },
+  "paired-before-n17": {
+    "verified_measurements": 97,
+    "proofs_identical_to_original": {
+      "update-4-final.bin": "e91d191e23dfd435cff97fdb92375ab7abf0b0d80c7c6ec36f8266b3952661c7",
+      "update-16-final.bin": "9612470a03ab4cb58704d4a534e547d75121f4a88346e505f0a7ddb1ea4faecb",
+      "update-2-final.bin": "cbdb920330bdf565e639d222ea323ae34d2cc95185e7bfa007a5caa55e81869a",
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-8-final.bin": "46879dbf1f87c7512c9d3031d6c30bafcf116d32f5de2adba86f06bbdc151079",
+      "update-32-final.bin": "8753501e05b8b028551d804f7c1bc9d2c1aa185f47af530c3cc00cf4bf39240b",
+      "update-64-final.bin": "2bb6ebc1b06123e4aa16e9fde97337eb1955b2c46f71b7b2d68d5f7a498bec63",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true,
+    "binary_sha256": "536ed4461e000ff1235bbdb78465c5849dc5466a18b044972ca633c0ef39ce16"
+  },
+  "paired-before-n18": {
+    "verified_measurements": 97,
+    "proofs_identical_to_original": {
+      "update-4-final.bin": "7a50890d22bedd6c273a6e788ccd776831e20d67d8565f697a43d843e8101bf8",
+      "update-16-final.bin": "d642dd2d41bd3369508578e4aab17662c7b045d1f7137636c886ea5ead799545",
+      "update-2-final.bin": "658bba661ae5bc0e2d2cf0882e0310946f9e2a8f65f2cd76e340695cc0275e8d",
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-8-final.bin": "be771bf9f7627e470f2387572530f9a2ac4dad4c012fc1517cd789712c50270f",
+      "update-32-final.bin": "ff452d50bc9ebffb2ecf8f60acb57b882247e3874689980a1071bb900378f149",
+      "update-64-final.bin": "0245ecf14e2c57d56f3210be9a0e8816c116f87b15d1f3737deb60a86f685d1c",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true,
+    "binary_sha256": "536ed4461e000ff1235bbdb78465c5849dc5466a18b044972ca633c0ef39ce16"
+  },
+  "profile-after-n17": {
+    "verified_measurements": 25,
+    "proofs_identical_to_original": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true,
+    "binary_sha256": "12dc6b84a20c155dc8d13e44a7735535e60b7284aa5e207d54c957133d3c0ada"
+  },
+  "profile-uninstrumented-n17": {
+    "verified_measurements": 25,
+    "proofs_identical_to_original": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true,
+    "binary_sha256": "10cdb1bcf4e91bde8208488b7c68072e380f0a48e24e7a2e5ff3c208974ea27a"
+  },
+  "repeat-after-n18": {
+    "verified_measurements": 97,
+    "proofs_identical_to_original": {
+      "update-4-final.bin": "7a50890d22bedd6c273a6e788ccd776831e20d67d8565f697a43d843e8101bf8",
+      "update-16-final.bin": "d642dd2d41bd3369508578e4aab17662c7b045d1f7137636c886ea5ead799545",
+      "update-2-final.bin": "658bba661ae5bc0e2d2cf0882e0310946f9e2a8f65f2cd76e340695cc0275e8d",
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-8-final.bin": "be771bf9f7627e470f2387572530f9a2ac4dad4c012fc1517cd789712c50270f",
+      "update-32-final.bin": "ff452d50bc9ebffb2ecf8f60acb57b882247e3874689980a1071bb900378f149",
+      "update-64-final.bin": "0245ecf14e2c57d56f3210be9a0e8816c116f87b15d1f3737deb60a86f685d1c",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true,
+    "binary_sha256": "10cdb1bcf4e91bde8208488b7c68072e380f0a48e24e7a2e5ff3c208974ea27a"
+  },
+  "repeat-before-n18": {
+    "verified_measurements": 97,
+    "proofs_identical_to_original": {
+      "update-4-final.bin": "7a50890d22bedd6c273a6e788ccd776831e20d67d8565f697a43d843e8101bf8",
+      "update-16-final.bin": "d642dd2d41bd3369508578e4aab17662c7b045d1f7137636c886ea5ead799545",
+      "update-2-final.bin": "658bba661ae5bc0e2d2cf0882e0310946f9e2a8f65f2cd76e340695cc0275e8d",
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-8-final.bin": "be771bf9f7627e470f2387572530f9a2ac4dad4c012fc1517cd789712c50270f",
+      "update-32-final.bin": "ff452d50bc9ebffb2ecf8f60acb57b882247e3874689980a1071bb900378f149",
+      "update-64-final.bin": "0245ecf14e2c57d56f3210be9a0e8816c116f87b15d1f3737deb60a86f685d1c",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true,
+    "binary_sha256": "536ed4461e000ff1235bbdb78465c5849dc5466a18b044972ca633c0ef39ce16"
+  },
+  "changed_files_from_prior_manifest": [
+    "experiments/dynamic-ligerito/Cargo.toml",
+    "experiments/dynamic-ligerito/README.md",
+    "experiments/dynamic-ligerito/scripts/run.py",
+    "experiments/dynamic-ligerito/src/hash_gkr.rs"
+  ],
+  "all_other_prior_sources_unchanged": true
+}

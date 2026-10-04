@@ -1,4 +1,0 @@
-phase,update_gates,samples,expected_samples,complete,mean_seconds,median_seconds,min_seconds,max_seconds,sample_stddev_seconds,mean_verify_seconds
-baseline,1,1,1,True,0.009684834,0.009684834,0.009684834,0.009684834,,0.001892
-initial,0,1,1,True,0.256793666,0.256793666,0.256793666,0.256793666,,0.024676792
-update,1,1,1,True,0.049404708,0.049404708,0.049404708,0.049404708,,0.034773958

@@ -1,0 +1,29 @@
+{
+  "description": "Historical macOS footprint measurements used by the allocation planner. Values are preserved here; the original raw calibration run.json files are no longer retained in this publication tree.",
+  "records": [
+    {
+      "trace_log": 18,
+      "peak_macos_footprint_bytes": 4550256512,
+      "original_recorded_path": "benchmark-results/2026-09-20-sumcheck-kernels/control-a-n18-c1-factored/run.json",
+      "source_report": "archive/results/2026-09-20-sumcheck-kernels/EXPERIMENT.md"
+    },
+    {
+      "trace_log": 18,
+      "peak_macos_footprint_bytes": 4573259712,
+      "original_recorded_path": "benchmark-results/2026-09-20-sumcheck-kernels/control-b-n18-c1-factored/run.json",
+      "source_report": "archive/results/2026-09-20-sumcheck-kernels/EXPERIMENT.md"
+    },
+    {
+      "trace_log": 19,
+      "peak_macos_footprint_bytes": 9146026624,
+      "original_recorded_path": "benchmark-results/2026-09-22-one-gate-amortization/run-a/run.json",
+      "source_report": "archive/results/2026-09-22-one-gate-amortization/EXPERIMENT.md"
+    },
+    {
+      "trace_log": 19,
+      "peak_macos_footprint_bytes": 9174681984,
+      "original_recorded_path": "benchmark-results/2026-09-23-hierarchy-growth/base8/run-a/run.json",
+      "source_report": "archive/results/2026-09-23-hierarchy-growth/EXPERIMENT.md"
+    }
+  ]
+}

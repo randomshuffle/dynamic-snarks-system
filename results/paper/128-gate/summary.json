@@ -1,0 +1,502 @@
+{
+  "updates": 1000,
+  "initial_s": 310.060888668,
+  "baseline_mean_s": 7.800590500178218,
+  "baseline_samples": 101,
+  "baseline_revisions": [
+    1,
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100,
+    110,
+    120,
+    130,
+    140,
+    150,
+    160,
+    170,
+    180,
+    190,
+    200,
+    210,
+    220,
+    230,
+    240,
+    250,
+    260,
+    270,
+    280,
+    290,
+    300,
+    310,
+    320,
+    330,
+    340,
+    350,
+    360,
+    370,
+    380,
+    390,
+    400,
+    410,
+    420,
+    430,
+    440,
+    450,
+    460,
+    470,
+    480,
+    490,
+    500,
+    510,
+    520,
+    530,
+    540,
+    550,
+    560,
+    570,
+    580,
+    590,
+    600,
+    610,
+    620,
+    630,
+    640,
+    650,
+    660,
+    670,
+    680,
+    690,
+    700,
+    710,
+    720,
+    730,
+    740,
+    750,
+    760,
+    770,
+    780,
+    790,
+    800,
+    810,
+    820,
+    830,
+    840,
+    850,
+    860,
+    870,
+    880,
+    890,
+    900,
+    910,
+    920,
+    930,
+    940,
+    950,
+    960,
+    970,
+    980,
+    990,
+    1000
+  ],
+  "baseline_stdev_s": 0.23191107713007522,
+  "baseline_total_method": "update count times sampled baseline mean",
+  "formula": "n * mean(sampled baseline) / (initial + sum(update[1:n]))",
+  "first_break_even_update": 41,
+  "sustained_break_even_update": 41,
+  "maximum": {
+    "updates": 1000,
+    "update_prove_s": 0.026599181,
+    "mode": "direct",
+    "cumulative_update_s": 358.1530201009998,
+    "initial_s": 310.060888668,
+    "dynamic_total_s": 668.2139087689998,
+    "baseline_total_s": 7800.590500178218,
+    "amortized_initial_s": 0.310060888668,
+    "average_update_s": 0.3581530201009998,
+    "amortized_dynamic_s": 0.6682139087689998,
+    "speedup": 11.673792475449455,
+    "dynamic_total_with_setup_s": 679.8731742099998,
+    "baseline_total_with_setup_s": 7803.457869632218,
+    "speedup_with_setup": 11.477814047744557
+  },
+  "final": {
+    "updates": 1000,
+    "update_prove_s": 0.026599181,
+    "mode": "direct",
+    "cumulative_update_s": 358.1530201009998,
+    "initial_s": 310.060888668,
+    "dynamic_total_s": 668.2139087689998,
+    "baseline_total_s": 7800.590500178218,
+    "amortized_initial_s": 0.310060888668,
+    "average_update_s": 0.3581530201009998,
+    "amortized_dynamic_s": 0.6682139087689998,
+    "speedup": 11.673792475449455,
+    "dynamic_total_with_setup_s": 679.8731742099998,
+    "baseline_total_with_setup_s": 7803.457869632218,
+    "speedup_with_setup": 11.477814047744557
+  },
+  "promotions": [
+    {
+      "revision": 19,
+      "prove_s": 2.470229216,
+      "polynomial_gates": 2432
+    },
+    {
+      "revision": 38,
+      "prove_s": 4.664078655,
+      "polynomial_gates": 4864
+    },
+    {
+      "revision": 57,
+      "prove_s": 2.439776902,
+      "polynomial_gates": 2431
+    },
+    {
+      "revision": 75,
+      "prove_s": 9.008629373,
+      "polynomial_gates": 9595
+    },
+    {
+      "revision": 94,
+      "prove_s": 2.364822115,
+      "polynomial_gates": 2432
+    },
+    {
+      "revision": 113,
+      "prove_s": 4.591039053,
+      "polynomial_gates": 4860
+    },
+    {
+      "revision": 132,
+      "prove_s": 2.391884441,
+      "polynomial_gates": 2431
+    },
+    {
+      "revision": 151,
+      "prove_s": 18.89158366,
+      "polynomial_gates": 19305
+    },
+    {
+      "revision": 170,
+      "prove_s": 2.288482399,
+      "polynomial_gates": 2432
+    },
+    {
+      "revision": 189,
+      "prove_s": 4.515838226,
+      "polynomial_gates": 4863
+    },
+    {
+      "revision": 208,
+      "prove_s": 2.292927481,
+      "polynomial_gates": 2429
+    },
+    {
+      "revision": 227,
+      "prove_s": 8.778927169,
+      "polynomial_gates": 9718
+    },
+    {
+      "revision": 246,
+      "prove_s": 2.3507032629999998,
+      "polynomial_gates": 2430
+    },
+    {
+      "revision": 265,
+      "prove_s": 4.501471334,
+      "polynomial_gates": 4861
+    },
+    {
+      "revision": 283,
+      "prove_s": 2.297135179,
+      "polynomial_gates": 2304
+    },
+    {
+      "revision": 302,
+      "prove_s": 36.962027614,
+      "polynomial_gates": 38555
+    },
+    {
+      "revision": 321,
+      "prove_s": 2.285497191,
+      "polynomial_gates": 2431
+    },
+    {
+      "revision": 340,
+      "prove_s": 4.637285282,
+      "polynomial_gates": 4862
+    },
+    {
+      "revision": 358,
+      "prove_s": 2.305279883,
+      "polynomial_gates": 2304
+    },
+    {
+      "revision": 377,
+      "prove_s": 9.019490531,
+      "polynomial_gates": 9595
+    },
+    {
+      "revision": 396,
+      "prove_s": 2.362971227,
+      "polynomial_gates": 2432
+    },
+    {
+      "revision": 415,
+      "prove_s": 4.526579571,
+      "polynomial_gates": 4862
+    },
+    {
+      "revision": 434,
+      "prove_s": 2.280677667,
+      "polynomial_gates": 2431
+    },
+    {
+      "revision": 453,
+      "prove_s": 18.969970227,
+      "polynomial_gates": 19302
+    },
+    {
+      "revision": 472,
+      "prove_s": 2.413997543,
+      "polynomial_gates": 2431
+    },
+    {
+      "revision": 491,
+      "prove_s": 4.666908859,
+      "polynomial_gates": 4862
+    },
+    {
+      "revision": 510,
+      "prove_s": 2.371686105,
+      "polynomial_gates": 2432
+    },
+    {
+      "revision": 529,
+      "prove_s": 9.001516143,
+      "polynomial_gates": 9721
+    },
+    {
+      "revision": 548,
+      "prove_s": 2.379641448,
+      "polynomial_gates": 2432
+    },
+    {
+      "revision": 567,
+      "prove_s": 4.767659415,
+      "polynomial_gates": 4864
+    },
+    {
+      "revision": 586,
+      "prove_s": 2.393396966,
+      "polynomial_gates": 2432
+    },
+    {
+      "revision": 605,
+      "prove_s": 44.291071517,
+      "polynomial_gates": 77063
+    },
+    {
+      "revision": 624,
+      "prove_s": 2.001562715,
+      "polynomial_gates": 2432
+    },
+    {
+      "revision": 643,
+      "prove_s": 3.593698157,
+      "polynomial_gates": 4862
+    },
+    {
+      "revision": 662,
+      "prove_s": 1.990211642,
+      "polynomial_gates": 2432
+    },
+    {
+      "revision": 681,
+      "prove_s": 7.624254689,
+      "polynomial_gates": 9723
+    },
+    {
+      "revision": 699,
+      "prove_s": 1.955058019,
+      "polynomial_gates": 2304
+    },
+    {
+      "revision": 717,
+      "prove_s": 3.542269716,
+      "polynomial_gates": 4605
+    },
+    {
+      "revision": 736,
+      "prove_s": 1.993588646,
+      "polynomial_gates": 2432
+    },
+    {
+      "revision": 755,
+      "prove_s": 17.464326525,
+      "polynomial_gates": 19169
+    },
+    {
+      "revision": 774,
+      "prove_s": 1.997717556,
+      "polynomial_gates": 2431
+    },
+    {
+      "revision": 793,
+      "prove_s": 3.556535174,
+      "polynomial_gates": 4861
+    },
+    {
+      "revision": 812,
+      "prove_s": 2.013753042,
+      "polynomial_gates": 2432
+    },
+    {
+      "revision": 831,
+      "prove_s": 7.765158055,
+      "polynomial_gates": 9722
+    },
+    {
+      "revision": 850,
+      "prove_s": 2.020941547,
+      "polynomial_gates": 2430
+    },
+    {
+      "revision": 869,
+      "prove_s": 3.597603144,
+      "polynomial_gates": 4862
+    },
+    {
+      "revision": 888,
+      "prove_s": 2.007140476,
+      "polynomial_gates": 2432
+    },
+    {
+      "revision": 907,
+      "prove_s": 36.225970739,
+      "polynomial_gates": 38563
+    },
+    {
+      "revision": 926,
+      "prove_s": 2.014746311,
+      "polynomial_gates": 2432
+    },
+    {
+      "revision": 945,
+      "prove_s": 3.617144489,
+      "polynomial_gates": 4861
+    },
+    {
+      "revision": 964,
+      "prove_s": 1.994166012,
+      "polynomial_gates": 2432
+    },
+    {
+      "revision": 983,
+      "prove_s": 7.620990984,
+      "polynomial_gates": 9720
+    }
+  ],
+  "maximum_with_setup": {
+    "updates": 1000,
+    "update_prove_s": 0.026599181,
+    "mode": "direct",
+    "cumulative_update_s": 358.1530201009998,
+    "initial_s": 310.060888668,
+    "dynamic_total_s": 668.2139087689998,
+    "baseline_total_s": 7800.590500178218,
+    "amortized_initial_s": 0.310060888668,
+    "average_update_s": 0.3581530201009998,
+    "amortized_dynamic_s": 0.6682139087689998,
+    "speedup": 11.673792475449455,
+    "dynamic_total_with_setup_s": 679.8731742099998,
+    "baseline_total_with_setup_s": 7803.457869632218,
+    "speedup_with_setup": 11.477814047744557
+  },
+  "first_break_even_with_setup": 42,
+  "gates": 8388608,
+  "update_gates": 128,
+  "hierarchy_base": 2,
+  "tables_per_level": 1,
+  "trace_log": 23,
+  "threads": 32,
+  "plaintext_cap_kib": 2048,
+  "run_metadata": {
+    "command": [
+      "/home/ubuntu/bench-results/r7a-n23-20260927-retry1/measurements/whole-system",
+      "23",
+      "/home/ubuntu/bench-results/r7a-n23-20260927-retry1/measurements/128-gate/run-a",
+      "1000",
+      "7",
+      "1"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 1640.7885467300002,
+    "user_seconds": 11365.055949,
+    "system_seconds": 1094.364228,
+    "maximum_rss_bytes": 145698324480,
+    "memory_monitor": {
+      "rss_limit_bytes": 231928233984,
+      "sampling_interval_seconds": 0.1,
+      "samples": 16346,
+      "peak_sampled_rss_bytes": 145702559744,
+      "peak_sampled_phys_footprint_bytes": null,
+      "limit_exceeded": false,
+      "error": null
+    },
+    "binary_sha256": "d45675391706555b49937b05b54133af9a2f58c8670f04fb416cd8e1cf5db693",
+    "threads": 32,
+    "rustflags": "-C target-cpu=native",
+    "sequence_length": 1000,
+    "trace_log": 23,
+    "platform": "linux",
+    "detected_memory_bytes": 264576409600,
+    "footprint_limit_bytes": null,
+    "security_profile": "Ligerito Fast (100 bits per round, JohnsonOod, rate 1/2)",
+    "hash_input_bytes": 64,
+    "digest_bytes": 32,
+    "gkr_segments": 2,
+    "gkr_depth": 33,
+    "load_average_start": [
+      5.18408203125,
+      3.859375,
+      4.275390625
+    ],
+    "load_average_end": [
+      8.04248046875,
+      7.63818359375,
+      6.80517578125
+    ],
+    "hash_checkpoints": 1,
+    "initial_hash_checkpoints": 1,
+    "hash_kernel": "factored",
+    "update_logs": "7",
+    "small_oracle": "hybrid",
+    "plaintext_cap_kib": 2048,
+    "baseline_every": 10,
+    "baseline_first": false,
+    "hierarchy_base": 2,
+    "tables_per_level": 1,
+    "interrupted_by_signals": []
+  },
+  "verified_samples": 1102,
+  "setup": {
+    "baseline_every": 10,
+    "baseline_first": false,
+    "baseline_s": 2.867369454,
+    "dynamic_s": 11.659265441,
+    "hierarchy_base": 2,
+    "hierarchy_levels": 25,
+    "hierarchy_slots": 25,
+    "plaintext_cap_bytes": 2097152,
+    "tables_per_level": 1
+  }
+}

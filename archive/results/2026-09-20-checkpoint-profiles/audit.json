@@ -1,0 +1,350 @@
+{
+  "profile-a-n17-c1": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": true,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "f9d64d8a945cbdae6d6c4a8a2af136d03025a06395f7d1a87da009253a9f2f80"
+  },
+  "profile-b-n17-c1": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": true,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "f9d64d8a945cbdae6d6c4a8a2af136d03025a06395f7d1a87da009253a9f2f80"
+  },
+  "control-n17-c1": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": true,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "644473803017b9f3022fd12d09582f1d45cbacfc1954c9907471d8ecc11be317"
+  },
+  "control-b-n17-c1": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": true,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "644473803017b9f3022fd12d09582f1d45cbacfc1954c9907471d8ecc11be317"
+  },
+  "profile-a-n17-c3": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "63aa9d16146350ea9e9e4aa21d02b45b6b1517249784c14dd3fc0ad1f1deddf4"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "f9d64d8a945cbdae6d6c4a8a2af136d03025a06395f7d1a87da009253a9f2f80"
+  },
+  "profile-b-n17-c3": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "63aa9d16146350ea9e9e4aa21d02b45b6b1517249784c14dd3fc0ad1f1deddf4"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "f9d64d8a945cbdae6d6c4a8a2af136d03025a06395f7d1a87da009253a9f2f80"
+  },
+  "control-n17-c3": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "63aa9d16146350ea9e9e4aa21d02b45b6b1517249784c14dd3fc0ad1f1deddf4"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "644473803017b9f3022fd12d09582f1d45cbacfc1954c9907471d8ecc11be317"
+  },
+  "control-b-n17-c3": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "63aa9d16146350ea9e9e4aa21d02b45b6b1517249784c14dd3fc0ad1f1deddf4"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "644473803017b9f3022fd12d09582f1d45cbacfc1954c9907471d8ecc11be317"
+  },
+  "profile-a-n17-c7": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "dd39ae83deea224defe4f381e35cadff32f54084b2b86c691fd9adbcf10b8308"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "f9d64d8a945cbdae6d6c4a8a2af136d03025a06395f7d1a87da009253a9f2f80"
+  },
+  "profile-b-n17-c7": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "dd39ae83deea224defe4f381e35cadff32f54084b2b86c691fd9adbcf10b8308"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "f9d64d8a945cbdae6d6c4a8a2af136d03025a06395f7d1a87da009253a9f2f80"
+  },
+  "control-n17-c7": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "dd39ae83deea224defe4f381e35cadff32f54084b2b86c691fd9adbcf10b8308"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "644473803017b9f3022fd12d09582f1d45cbacfc1954c9907471d8ecc11be317"
+  },
+  "control-b-n17-c7": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "dd39ae83deea224defe4f381e35cadff32f54084b2b86c691fd9adbcf10b8308"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "644473803017b9f3022fd12d09582f1d45cbacfc1954c9907471d8ecc11be317"
+  },
+  "profile-a-n18-c1": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": true,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "f9d64d8a945cbdae6d6c4a8a2af136d03025a06395f7d1a87da009253a9f2f80"
+  },
+  "profile-b-n18-c1": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": true,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "f9d64d8a945cbdae6d6c4a8a2af136d03025a06395f7d1a87da009253a9f2f80"
+  },
+  "control-n18-c1": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": true,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "644473803017b9f3022fd12d09582f1d45cbacfc1954c9907471d8ecc11be317"
+  },
+  "control-b-n18-c1": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": true,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "644473803017b9f3022fd12d09582f1d45cbacfc1954c9907471d8ecc11be317"
+  },
+  "profile-a-n18-c3": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "d148ecdca57a3e934fdeec9c340e279ee8536f55d6cbb9d37b78fea204ecfdfe"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "f9d64d8a945cbdae6d6c4a8a2af136d03025a06395f7d1a87da009253a9f2f80"
+  },
+  "profile-b-n18-c3": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "d148ecdca57a3e934fdeec9c340e279ee8536f55d6cbb9d37b78fea204ecfdfe"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "f9d64d8a945cbdae6d6c4a8a2af136d03025a06395f7d1a87da009253a9f2f80"
+  },
+  "control-n18-c3": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "d148ecdca57a3e934fdeec9c340e279ee8536f55d6cbb9d37b78fea204ecfdfe"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "644473803017b9f3022fd12d09582f1d45cbacfc1954c9907471d8ecc11be317"
+  },
+  "control-b-n18-c3": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "d148ecdca57a3e934fdeec9c340e279ee8536f55d6cbb9d37b78fea204ecfdfe"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "644473803017b9f3022fd12d09582f1d45cbacfc1954c9907471d8ecc11be317"
+  },
+  "profile-a-n18-c7": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "39543746da20c47f7b0bcdc30ba07cc6b19c72f3880fb07db991c804958f84e2"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "f9d64d8a945cbdae6d6c4a8a2af136d03025a06395f7d1a87da009253a9f2f80"
+  },
+  "profile-b-n18-c7": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "39543746da20c47f7b0bcdc30ba07cc6b19c72f3880fb07db991c804958f84e2"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "f9d64d8a945cbdae6d6c4a8a2af136d03025a06395f7d1a87da009253a9f2f80"
+  },
+  "control-n18-c7": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "39543746da20c47f7b0bcdc30ba07cc6b19c72f3880fb07db991c804958f84e2"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "644473803017b9f3022fd12d09582f1d45cbacfc1954c9907471d8ecc11be317"
+  },
+  "control-b-n18-c7": {
+    "verified_measurements": 25,
+    "saved_proofs": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "39543746da20c47f7b0bcdc30ba07cc6b19c72f3880fb07db991c804958f84e2"
+    },
+    "repeat_proofs_identical": true,
+    "common_initial_and_baseline_identical_to_prior": true,
+    "one_checkpoint_proofs_identical_to_prior": false,
+    "workloads_match_prior": true,
+    "unchanged_noncheckpoint_polynomials": true,
+    "binary_sha256": "644473803017b9f3022fd12d09582f1d45cbacfc1954c9907471d8ecc11be317"
+  },
+  "changed_files_from_prior_manifest": [
+    "experiments/dynamic-ligerito/README.md",
+    "experiments/dynamic-ligerito/scripts/run.py",
+    "experiments/dynamic-ligerito/src/bin/whole_system.rs",
+    "experiments/dynamic-ligerito/src/dynamic.rs",
+    "experiments/dynamic-ligerito/src/endpoint_gkr.rs",
+    "experiments/dynamic-ligerito/src/hash_gkr.rs",
+    "experiments/dynamic-ligerito/src/transition_cair/packed.rs",
+    "experiments/dynamic-ligerito/tests/full_system.rs",
+    "scripts/prepare_ligerito_update_profile.py"
+  ],
+  "all_other_prior_sources_unchanged": true
+}

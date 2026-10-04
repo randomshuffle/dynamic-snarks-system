@@ -1,0 +1,279 @@
+{
+  "all_verified_proofs": 1350,
+  "measured_proofs": 1200,
+  "saved_proofs_identical_across_thread_counts": true,
+  "results": {
+    "gkr_1_middle": {
+      "1": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 0.8700205,
+          "lincheck_ms": 0.0,
+          "open_ms": 0.8528955,
+          "piop_ms": 10.1743955,
+          "total_ms": 14.8504585,
+          "witness_ms": 2.8459585,
+          "zerocheck_ms": 0.0
+        },
+        "mean_total_ms": 14.829986462499999,
+        "run_median_total_ms": {
+          "a": 14.692437,
+          "b": 14.971104500000001
+        }
+      },
+      "4": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 0.675979,
+          "lincheck_ms": 0.0,
+          "open_ms": 0.8349584999999999,
+          "piop_ms": 7.5484165,
+          "total_ms": 10.4950625,
+          "witness_ms": 1.334479,
+          "zerocheck_ms": 0.0
+        },
+        "mean_total_ms": 10.55740215,
+        "run_median_total_ms": {
+          "a": 10.456125,
+          "b": 10.622499999999999
+        }
+      },
+      "8": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 0.6487915,
+          "lincheck_ms": 0.0,
+          "open_ms": 0.8307495,
+          "piop_ms": 8.5697295,
+          "total_ms": 11.3875,
+          "witness_ms": 1.2875215,
+          "zerocheck_ms": 0.0
+        },
+        "mean_total_ms": 11.4593610125,
+        "run_median_total_ms": {
+          "a": 11.229854499999998,
+          "b": 11.605604499999998
+        }
+      }
+    },
+    "gkr_3_middle": {
+      "1": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 1.833104,
+          "lincheck_ms": 0.0,
+          "open_ms": 1.510896,
+          "piop_ms": 10.160312999999999,
+          "total_ms": 16.4580415,
+          "witness_ms": 2.8710830000000005,
+          "zerocheck_ms": 0.0
+        },
+        "mean_total_ms": 16.4472386125,
+        "run_median_total_ms": {
+          "a": 16.3275625,
+          "b": 16.519979499999998
+        }
+      },
+      "4": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 1.4225625,
+          "lincheck_ms": 0.0,
+          "open_ms": 1.1601045,
+          "piop_ms": 6.130561999999999,
+          "total_ms": 10.1090835,
+          "witness_ms": 1.3643334999999999,
+          "zerocheck_ms": 0.0
+        },
+        "mean_total_ms": 10.23390365,
+        "run_median_total_ms": {
+          "a": 10.1000835,
+          "b": 10.113812499999998
+        }
+      },
+      "8": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 1.3781665,
+          "lincheck_ms": 0.0,
+          "open_ms": 1.2067294999999998,
+          "piop_ms": 7.1369795,
+          "total_ms": 11.124604000000001,
+          "witness_ms": 1.3289585000000002,
+          "zerocheck_ms": 0.0
+        },
+        "mean_total_ms": 11.0885359375,
+        "run_median_total_ms": {
+          "a": 11.111396000000001,
+          "b": 11.145958
+        }
+      }
+    },
+    "gkr_7_middle": {
+      "1": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 3.7417705,
+          "lincheck_ms": 0.0,
+          "open_ms": 2.822479,
+          "piop_ms": 10.334958,
+          "total_ms": 19.8269375,
+          "witness_ms": 2.9069585,
+          "zerocheck_ms": 0.0
+        },
+        "mean_total_ms": 19.8699551875,
+        "run_median_total_ms": {
+          "a": 19.631146,
+          "b": 20.085479
+        }
+      },
+      "4": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 1.8335625000000002,
+          "lincheck_ms": 0.0,
+          "open_ms": 2.0075209999999997,
+          "piop_ms": 5.192646,
+          "total_ms": 10.493958,
+          "witness_ms": 1.4184375,
+          "zerocheck_ms": 0.0
+        },
+        "mean_total_ms": 10.6015541625,
+        "run_median_total_ms": {
+          "a": 10.5255835,
+          "b": 10.418061999999999
+        }
+      },
+      "8": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 1.433896,
+          "lincheck_ms": 0.0,
+          "open_ms": 2.189959,
+          "piop_ms": 5.996458500000001,
+          "total_ms": 11.0750835,
+          "witness_ms": 1.352854,
+          "zerocheck_ms": 0.0
+        },
+        "mean_total_ms": 11.051309400000001,
+        "run_median_total_ms": {
+          "a": 11.051729,
+          "b": 11.087125
+        }
+      }
+    },
+    "flock_native_x7": {
+      "1": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 7.7831875,
+          "lincheck_ms": 0.23783349999999998,
+          "open_ms": 6.2796875,
+          "piop_ms": 7.425062500000001,
+          "total_ms": 23.658146000000002,
+          "witness_ms": 2.088729,
+          "zerocheck_ms": 6.9698329999999995
+        },
+        "mean_total_ms": 23.7378640625,
+        "run_median_total_ms": {
+          "a": 23.2055,
+          "b": 23.778021000000003
+        }
+      },
+      "4": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 3.5127505,
+          "lincheck_ms": 0.124375,
+          "open_ms": 4.760625,
+          "piop_ms": 3.3124165000000003,
+          "total_ms": 12.406478499999999,
+          "witness_ms": 0.905541,
+          "zerocheck_ms": 2.916667
+        },
+        "mean_total_ms": 12.6054603875,
+        "run_median_total_ms": {
+          "a": 12.35525,
+          "b": 12.4461665
+        }
+      },
+      "8": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 2.6059375,
+          "lincheck_ms": 0.12316650000000001,
+          "open_ms": 5.2566875,
+          "piop_ms": 3.3976875,
+          "total_ms": 12.133750500000001,
+          "witness_ms": 0.858354,
+          "zerocheck_ms": 3.025729
+        },
+        "mean_total_ms": 12.43445785,
+        "run_median_total_ms": {
+          "a": 11.994583500000001,
+          "b": 12.212458
+        }
+      }
+    },
+    "flock_native_r1cs": {
+      "1": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 33.2621665,
+          "lincheck_ms": 0.8642085,
+          "open_ms": 26.5571045,
+          "piop_ms": 19.758958,
+          "total_ms": 89.58722900000001,
+          "witness_ms": 9.5740835,
+          "zerocheck_ms": 18.444917000000004
+        },
+        "mean_total_ms": 90.3399834125,
+        "run_median_total_ms": {
+          "a": 88.61110400000001,
+          "b": 90.43656250000001
+        }
+      },
+      "4": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 12.18075,
+          "lincheck_ms": 0.433583,
+          "open_ms": 19.6729785,
+          "piop_ms": 11.138042,
+          "total_ms": 46.746229,
+          "witness_ms": 3.770479,
+          "zerocheck_ms": 10.268375500000001
+        },
+        "mean_total_ms": 47.5673271,
+        "run_median_total_ms": {
+          "a": 46.542521,
+          "b": 48.262666
+        }
+      },
+      "8": {
+        "n": 80,
+        "medians": {
+          "commit_ms": 10.743375,
+          "lincheck_ms": 0.44518749999999996,
+          "open_ms": 19.5017085,
+          "piop_ms": 10.943396,
+          "total_ms": 44.593375,
+          "witness_ms": 3.2854165,
+          "zerocheck_ms": 10.102937500000001
+        },
+        "mean_total_ms": 45.0310541375,
+        "run_median_total_ms": {
+          "a": 44.593375,
+          "b": 44.4776455
+        }
+      }
+    }
+  },
+  "saved_proof_sha256": {
+    "gkr_1_middle": "57675057f686516b0aabef311c8a4992301e02c22345f0073563db151a10396c",
+    "gkr_3_middle": "9893d096d9583f1c3a5842c76a83efab4955003ec4738350475d07e90196a004",
+    "gkr_7_middle": "d03013039f12365f87a54d0a5563ef67e8beef36f5cb231c334586a5981bf037",
+    "flock_native_x7": "053f6f1c7da21485a659be2de62e67ebab90727e093821d9cbb891af3d2fbdb7",
+    "flock_native_r1cs": "c74575b11e4ba2a5e88fc94e4b68c4809469e329050d97c55c19b4d23558c073"
+  }
+}

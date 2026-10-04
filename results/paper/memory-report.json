@@ -1,0 +1,41 @@
+{
+  "trace_log": 23,
+  "gates": 8388608,
+  "instance": "r7a.8xlarge",
+  "threads": 32,
+  "verified_samples": 11845,
+  "experiments": [
+    {
+      "experiment": "sweep",
+      "peak_rss_bytes": 145684070400,
+      "peak_rss_gib": 135.67886352539062,
+      "kernel_peak_rss_bytes": 145680068608,
+      "sampled_peak_rss_bytes": 145684070400,
+      "wall_seconds": 2953.5933853859997,
+      "threads": 32,
+      "binary_sha256": "d45675391706555b49937b05b54133af9a2f58c8670f04fb416cd8e1cf5db693"
+    },
+    {
+      "experiment": "one-gate",
+      "peak_rss_bytes": 145702572032,
+      "peak_rss_gib": 135.69609451293945,
+      "kernel_peak_rss_bytes": 145697009664,
+      "sampled_peak_rss_bytes": 145702572032,
+      "wall_seconds": 2710.288946022,
+      "threads": 32,
+      "binary_sha256": "d45675391706555b49937b05b54133af9a2f58c8670f04fb416cd8e1cf5db693"
+    },
+    {
+      "experiment": "128-gate",
+      "peak_rss_bytes": 145702559744,
+      "peak_rss_gib": 135.69608306884766,
+      "kernel_peak_rss_bytes": 145698324480,
+      "sampled_peak_rss_bytes": 145702559744,
+      "wall_seconds": 1640.7885467300002,
+      "threads": 32,
+      "binary_sha256": "d45675391706555b49937b05b54133af9a2f58c8670f04fb416cd8e1cf5db693"
+    }
+  ],
+  "maximum_peak_rss_gib": 135.69609451293945,
+  "measurement": "Linux benchmark-process RSS high-water mark, max of wait4 rusage and 100 ms samples; excludes compilation and other processes"
+}

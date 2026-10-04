@@ -1,0 +1,1281 @@
+{
+  "verified_main_proofs": 288,
+  "measured_proofs": 256,
+  "measured_per_backend": 32,
+  "warmup_proofs": 32,
+  "pilot_excluded": true,
+  "results": {
+    "packed_6_middle_standard": {
+      "prover_ms": {
+        "n": 32,
+        "median": 242.4730215,
+        "mean": 249.53678525,
+        "min": 214.22912499999998,
+        "max": 488.537167,
+        "p95_nearest_rank": 274.74625000000003
+      },
+      "compute_then_prove_ms": {
+        "n": 32,
+        "median": 270.883417,
+        "mean": 278.00151565625,
+        "min": 250.705791,
+        "max": 520.536708,
+        "p95_nearest_rank": 305.385792
+      },
+      "hash_compute_ms": {
+        "n": 32,
+        "median": 26.918999499999998,
+        "mean": 28.46463546875,
+        "min": 24.093875,
+        "max": 37.048291,
+        "p95_nearest_rank": 36.476584
+      },
+      "verify_ms": {
+        "n": 32,
+        "median": 0.7509165,
+        "mean": 0.770147125,
+        "min": 0.7202919999999999,
+        "max": 1.354792,
+        "p95_nearest_rank": 0.790584
+      },
+      "proof_bytes": {
+        "n": 32,
+        "median": 385292.0,
+        "mean": 385412,
+        "min": 383324,
+        "max": 387292,
+        "p95_nearest_rank": 387292
+      },
+      "piop_bytes": {
+        "n": 32,
+        "median": 28148.0,
+        "mean": 28148,
+        "min": 28148,
+        "max": 28148,
+        "p95_nearest_rank": 28148
+      },
+      "pcs_bytes": {
+        "n": 32,
+        "median": 357096.0,
+        "mean": 357216,
+        "min": 355128,
+        "max": 359096,
+        "p95_nearest_rank": 359096
+      },
+      "stages": {
+        "witness_ms": {
+          "n": 32,
+          "median": 20.8740625,
+          "mean": 22.2128371875,
+          "min": 19.303207999999998,
+          "max": 30.412708,
+          "p95_nearest_rank": 26.905708
+        },
+        "commit_ms": {
+          "n": 32,
+          "median": 25.3325415,
+          "mean": 27.92628775,
+          "min": 23.756249999999998,
+          "max": 63.359625,
+          "p95_nearest_rank": 32.603291999999996
+        },
+        "piop_ms": {
+          "n": 32,
+          "median": 164.5881245,
+          "mean": 168.34429559375002,
+          "min": 132.263125,
+          "max": 311.898542,
+          "p95_nearest_rank": 186.64225000000002
+        },
+        "open_ms": {
+          "n": 32,
+          "median": 29.0266875,
+          "mean": 31.040432312500002,
+          "min": 24.116083,
+          "max": 91.016833,
+          "p95_nearest_rank": 37.589791999999996
+        },
+        "total_ms": {
+          "n": 32,
+          "median": 242.46966700000002,
+          "mean": 249.533311125,
+          "min": 214.225833,
+          "max": 488.529541,
+          "p95_nearest_rank": 274.74233300000003
+        }
+      }
+    },
+    "packed_6_middle_frobenius": {
+      "prover_ms": {
+        "n": 32,
+        "median": 295.097854,
+        "mean": 298.74904171875,
+        "min": 285.00120899999996,
+        "max": 335.45345799999996,
+        "p95_nearest_rank": 325.177666
+      },
+      "compute_then_prove_ms": {
+        "n": 32,
+        "median": 325.0151455,
+        "mean": 328.64959375,
+        "min": 311.57095899999996,
+        "max": 374.955333,
+        "p95_nearest_rank": 351.556625
+      },
+      "hash_compute_ms": {
+        "n": 32,
+        "median": 30.1061875,
+        "mean": 29.900330687500002,
+        "min": 24.919667,
+        "max": 39.501833,
+        "p95_nearest_rank": 34.696
+      },
+      "verify_ms": {
+        "n": 32,
+        "median": 0.9797710000000001,
+        "mean": 0.9858398125,
+        "min": 0.955916,
+        "max": 1.051375,
+        "p95_nearest_rank": 1.025125
+      },
+      "proof_bytes": {
+        "n": 32,
+        "median": 383676.0,
+        "mean": 383720,
+        "min": 381372,
+        "max": 385244,
+        "p95_nearest_rank": 385244
+      },
+      "piop_bytes": {
+        "n": 32,
+        "median": 27028.0,
+        "mean": 27028,
+        "min": 27028,
+        "max": 27028,
+        "p95_nearest_rank": 27028
+      },
+      "pcs_bytes": {
+        "n": 32,
+        "median": 356600.0,
+        "mean": 356644,
+        "min": 354296,
+        "max": 358168,
+        "p95_nearest_rank": 358168
+      },
+      "stages": {
+        "witness_ms": {
+          "n": 32,
+          "median": 23.2328955,
+          "mean": 23.88279171875,
+          "min": 18.749624999999998,
+          "max": 30.763665999999997,
+          "p95_nearest_rank": 30.197917
+        },
+        "commit_ms": {
+          "n": 32,
+          "median": 26.1782915,
+          "mean": 28.49959746875,
+          "min": 24.331875,
+          "max": 57.421166,
+          "p95_nearest_rank": 45.045041
+        },
+        "piop_ms": {
+          "n": 32,
+          "median": 210.91139600000002,
+          "mean": 211.8681303125,
+          "min": 190.620334,
+          "max": 234.885167,
+          "p95_nearest_rank": 231.939125
+        },
+        "open_ms": {
+          "n": 32,
+          "median": 34.5506455,
+          "mean": 34.47878890625,
+          "min": 27.131458000000002,
+          "max": 44.889666,
+          "p95_nearest_rank": 44.283417
+        },
+        "total_ms": {
+          "n": 32,
+          "median": 295.0921875,
+          "mean": 298.74399209374997,
+          "min": 284.996666,
+          "max": 335.448041,
+          "p95_nearest_rank": 325.17204100000004
+        }
+      }
+    },
+    "split_1_middle_standard": {
+      "prover_ms": {
+        "n": 32,
+        "median": 232.16566699999998,
+        "mean": 242.61250128125,
+        "min": 221.879875,
+        "max": 510.60204099999993,
+        "p95_nearest_rank": 297.45745800000003
+      },
+      "compute_then_prove_ms": {
+        "n": 32,
+        "median": 260.0644375,
+        "mean": 271.02679303125,
+        "min": 248.283375,
+        "max": 542.021875,
+        "p95_nearest_rank": 323.567
+      },
+      "hash_compute_ms": {
+        "n": 32,
+        "median": 26.6028335,
+        "mean": 28.4141861875,
+        "min": 23.502875,
+        "max": 36.875166,
+        "p95_nearest_rank": 35.428167
+      },
+      "verify_ms": {
+        "n": 32,
+        "median": 1.256208,
+        "mean": 1.30222909375,
+        "min": 1.2137499999999999,
+        "max": 2.587542,
+        "p95_nearest_rank": 1.387583
+      },
+      "proof_bytes": {
+        "n": 32,
+        "median": 708324.0,
+        "mean": 708354,
+        "min": 706724,
+        "max": 710500,
+        "p95_nearest_rank": 710500
+      },
+      "piop_bytes": {
+        "n": 32,
+        "median": 80932.0,
+        "mean": 80932,
+        "min": 80932,
+        "max": 80932,
+        "p95_nearest_rank": 80932
+      },
+      "pcs_bytes": {
+        "n": 32,
+        "median": 627312.0,
+        "mean": 627342,
+        "min": 625712,
+        "max": 629488,
+        "p95_nearest_rank": 629488
+      },
+      "stages": {
+        "witness_ms": {
+          "n": 32,
+          "median": 19.2396875,
+          "mean": 20.4876080625,
+          "min": 16.298125,
+          "max": 27.5015,
+          "p95_nearest_rank": 26.514375
+        },
+        "commit_ms": {
+          "n": 32,
+          "median": 9.544854,
+          "mean": 10.7123803125,
+          "min": 8.421875,
+          "max": 15.445667,
+          "p95_nearest_rank": 14.230333
+        },
+        "piop_ms": {
+          "n": 32,
+          "median": 186.5716875,
+          "mean": 193.8224375,
+          "min": 169.847791,
+          "max": 416.103834,
+          "p95_nearest_rank": 250.632792
+        },
+        "open_ms": {
+          "n": 32,
+          "median": 16.083416500000002,
+          "mean": 17.58261325,
+          "min": 12.684333,
+          "max": 54.721875000000004,
+          "p95_nearest_rank": 21.068582999999997
+        },
+        "total_ms": {
+          "n": 32,
+          "median": 232.1641665,
+          "mean": 242.61040746875,
+          "min": 221.878041,
+          "max": 510.59829199999996,
+          "p95_nearest_rank": 297.453041
+        }
+      }
+    },
+    "split_3_middle_standard": {
+      "prover_ms": {
+        "n": 32,
+        "median": 238.2742915,
+        "mean": 237.18904815625,
+        "min": 214.867333,
+        "max": 253.06250000000003,
+        "p95_nearest_rank": 250.854958
+      },
+      "compute_then_prove_ms": {
+        "n": 32,
+        "median": 265.018146,
+        "mean": 266.0147709375,
+        "min": 248.078667,
+        "max": 281.30083299999995,
+        "p95_nearest_rank": 279.58191700000003
+      },
+      "hash_compute_ms": {
+        "n": 32,
+        "median": 26.7951665,
+        "mean": 28.825627625,
+        "min": 23.987542,
+        "max": 37.372292,
+        "p95_nearest_rank": 34.989167
+      },
+      "verify_ms": {
+        "n": 32,
+        "median": 1.56925,
+        "mean": 1.568502625,
+        "min": 1.5167920000000001,
+        "max": 1.616959,
+        "p95_nearest_rank": 1.611166
+      },
+      "proof_bytes": {
+        "n": 32,
+        "median": 699460.0,
+        "mean": 699338,
+        "min": 697268,
+        "max": 700820,
+        "p95_nearest_rank": 700820
+      },
+      "piop_bytes": {
+        "n": 32,
+        "median": 44068.0,
+        "mean": 44068,
+        "min": 44068,
+        "max": 44068,
+        "p95_nearest_rank": 44068
+      },
+      "pcs_bytes": {
+        "n": 32,
+        "median": 655312.0,
+        "mean": 655190,
+        "min": 653120,
+        "max": 656672,
+        "p95_nearest_rank": 656672
+      },
+      "stages": {
+        "witness_ms": {
+          "n": 32,
+          "median": 20.447229,
+          "mean": 21.19685275,
+          "min": 17.846500000000002,
+          "max": 29.596042,
+          "p95_nearest_rank": 26.092291
+        },
+        "commit_ms": {
+          "n": 32,
+          "median": 21.902666500000002,
+          "mean": 22.1729895625,
+          "min": 18.188291999999997,
+          "max": 26.590292,
+          "p95_nearest_rank": 26.167208000000002
+        },
+        "piop_ms": {
+          "n": 32,
+          "median": 169.44685400000003,
+          "mean": 169.698270875,
+          "min": 146.210875,
+          "max": 194.021208,
+          "p95_nearest_rank": 185.35625
+        },
+        "open_ms": {
+          "n": 32,
+          "median": 24.288604,
+          "mean": 24.110552062500002,
+          "min": 20.175792,
+          "max": 28.563499999999998,
+          "p95_nearest_rank": 28.304959
+        },
+        "total_ms": {
+          "n": 32,
+          "median": 238.268875,
+          "mean": 237.1859765625,
+          "min": 214.864416,
+          "max": 253.059584,
+          "p95_nearest_rank": 250.85216599999998
+        }
+      }
+    },
+    "split_4_middle_standard": {
+      "prover_ms": {
+        "n": 32,
+        "median": 239.71756299999998,
+        "mean": 244.07046234375,
+        "min": 214.59783399999998,
+        "max": 333.325,
+        "p95_nearest_rank": 307.54833399999995
+      },
+      "compute_then_prove_ms": {
+        "n": 32,
+        "median": 267.264229,
+        "mean": 272.98256371875,
+        "min": 248.915416,
+        "max": 364.7065,
+        "p95_nearest_rank": 340.773125
+      },
+      "hash_compute_ms": {
+        "n": 32,
+        "median": 26.369188,
+        "mean": 28.9120143125,
+        "min": 24.829916,
+        "max": 39.294416,
+        "p95_nearest_rank": 38.75425
+      },
+      "verify_ms": {
+        "n": 32,
+        "median": 1.5598955,
+        "mean": 1.95004284375,
+        "min": 1.515625,
+        "max": 14.090333,
+        "p95_nearest_rank": 1.623542
+      },
+      "proof_bytes": {
+        "n": 32,
+        "median": 692500.0,
+        "mean": 692584,
+        "min": 690820,
+        "max": 693988,
+        "p95_nearest_rank": 693988
+      },
+      "piop_bytes": {
+        "n": 32,
+        "median": 37300.0,
+        "mean": 37300,
+        "min": 37300,
+        "max": 37300,
+        "p95_nearest_rank": 37300
+      },
+      "pcs_bytes": {
+        "n": 32,
+        "median": 655120.0,
+        "mean": 655204,
+        "min": 653440,
+        "max": 656608,
+        "p95_nearest_rank": 656608
+      },
+      "stages": {
+        "witness_ms": {
+          "n": 32,
+          "median": 20.020229,
+          "mean": 21.34812515625,
+          "min": 17.155167,
+          "max": 28.276042,
+          "p95_nearest_rank": 26.828375
+        },
+        "commit_ms": {
+          "n": 32,
+          "median": 20.298603999999997,
+          "mean": 22.28035021875,
+          "min": 18.394583,
+          "max": 41.722875,
+          "p95_nearest_rank": 28.604833
+        },
+        "piop_ms": {
+          "n": 32,
+          "median": 174.53331300000002,
+          "mean": 174.11042968750002,
+          "min": 140.61237500000001,
+          "max": 217.075334,
+          "p95_nearest_rank": 211.961875
+        },
+        "open_ms": {
+          "n": 32,
+          "median": 24.582729,
+          "mean": 26.3201015625,
+          "min": 18.371375,
+          "max": 66.05541600000001,
+          "p95_nearest_rank": 29.894292
+        },
+        "total_ms": {
+          "n": 32,
+          "median": 239.7148125,
+          "mean": 244.067004,
+          "min": 214.594875,
+          "max": 333.31770900000004,
+          "p95_nearest_rank": 307.544292
+        }
+      }
+    },
+    "split_6_middle_standard": {
+      "prover_ms": {
+        "n": 32,
+        "median": 255.31177100000002,
+        "mean": 269.68945825000003,
+        "min": 239.599875,
+        "max": 525.452458,
+        "p95_nearest_rank": 445.61595900000003
+      },
+      "compute_then_prove_ms": {
+        "n": 32,
+        "median": 284.260917,
+        "mean": 298.83536196875,
+        "min": 273.748708,
+        "max": 549.893042,
+        "p95_nearest_rank": 471.12725
+      },
+      "hash_compute_ms": {
+        "n": 32,
+        "median": 28.7739585,
+        "mean": 29.1457981875,
+        "min": 23.761833,
+        "max": 40.035792,
+        "p95_nearest_rank": 35.237625
+      },
+      "verify_ms": {
+        "n": 32,
+        "median": 1.3298955000000001,
+        "mean": 1.3314296875,
+        "min": 1.291375,
+        "max": 1.412875,
+        "p95_nearest_rank": 1.373042
+      },
+      "proof_bytes": {
+        "n": 32,
+        "median": 705924.0,
+        "mean": 705704,
+        "min": 703508,
+        "max": 707572,
+        "p95_nearest_rank": 707572
+      },
+      "piop_bytes": {
+        "n": 32,
+        "median": 28148.0,
+        "mean": 28148,
+        "min": 28148,
+        "max": 28148,
+        "p95_nearest_rank": 28148
+      },
+      "pcs_bytes": {
+        "n": 32,
+        "median": 677696.0,
+        "mean": 677476,
+        "min": 675280,
+        "max": 679344,
+        "p95_nearest_rank": 679344
+      },
+      "stages": {
+        "witness_ms": {
+          "n": 32,
+          "median": 22.568292,
+          "mean": 23.56357171875,
+          "min": 20.036375,
+          "max": 32.961166999999996,
+          "p95_nearest_rank": 31.367832999999997
+        },
+        "commit_ms": {
+          "n": 32,
+          "median": 31.6717085,
+          "mean": 33.96813546875,
+          "min": 28.653458,
+          "max": 47.577334,
+          "p95_nearest_rank": 43.7325
+        },
+        "piop_ms": {
+          "n": 32,
+          "median": 162.35325,
+          "mean": 172.5732305,
+          "min": 138.68329200000002,
+          "max": 349.66700000000003,
+          "p95_nearest_rank": 343.77745799999997
+        },
+        "open_ms": {
+          "n": 32,
+          "median": 36.562625,
+          "mean": 39.5708398125,
+          "min": 31.581791,
+          "max": 106.257417,
+          "p95_nearest_rank": 44.389832999999996
+        },
+        "total_ms": {
+          "n": 32,
+          "median": 255.30820799999998,
+          "mean": 269.68567315625,
+          "min": 239.59566600000002,
+          "max": 525.447542,
+          "p95_nearest_rank": 445.612417
+        }
+      }
+    },
+    "split_7_middle_standard": {
+      "prover_ms": {
+        "n": 32,
+        "median": 261.3418755,
+        "mean": 259.7874205625,
+        "min": 243.856,
+        "max": 274.1355,
+        "p95_nearest_rank": 273.242292
+      },
+      "compute_then_prove_ms": {
+        "n": 32,
+        "median": 291.931125,
+        "mean": 289.89354168750003,
+        "min": 270.207666,
+        "max": 302.91729200000003,
+        "p95_nearest_rank": 302.285791
+      },
+      "hash_compute_ms": {
+        "n": 32,
+        "median": 31.357875,
+        "mean": 30.10602865625,
+        "min": 25.073917,
+        "max": 37.785042,
+        "p95_nearest_rank": 37.652084
+      },
+      "verify_ms": {
+        "n": 32,
+        "median": 1.3452914999999999,
+        "mean": 1.34152353125,
+        "min": 1.287625,
+        "max": 1.4536250000000002,
+        "p95_nearest_rank": 1.3932090000000001
+      },
+      "proof_bytes": {
+        "n": 32,
+        "median": 703716.0,
+        "mean": 703564,
+        "min": 700676,
+        "max": 706276,
+        "p95_nearest_rank": 706276
+      },
+      "piop_bytes": {
+        "n": 32,
+        "median": 26020.0,
+        "mean": 26020,
+        "min": 26020,
+        "max": 26020,
+        "p95_nearest_rank": 26020
+      },
+      "pcs_bytes": {
+        "n": 32,
+        "median": 677616.0,
+        "mean": 677464,
+        "min": 674576,
+        "max": 680176,
+        "p95_nearest_rank": 680176
+      },
+      "stages": {
+        "witness_ms": {
+          "n": 32,
+          "median": 22.795645999999998,
+          "mean": 22.81818484375,
+          "min": 18.767,
+          "max": 28.550625,
+          "p95_nearest_rank": 27.502041000000002
+        },
+        "commit_ms": {
+          "n": 32,
+          "median": 34.3143125,
+          "mean": 34.23069778125,
+          "min": 29.644292,
+          "max": 40.484625,
+          "p95_nearest_rank": 39.583166000000006
+        },
+        "piop_ms": {
+          "n": 32,
+          "median": 162.510979,
+          "mean": 163.92579296875,
+          "min": 143.201584,
+          "max": 183.484833,
+          "p95_nearest_rank": 179.560541
+        },
+        "open_ms": {
+          "n": 32,
+          "median": 37.94954150000001,
+          "mean": 38.7976848125,
+          "min": 32.965,
+          "max": 50.039958000000006,
+          "p95_nearest_rank": 45.581916
+        },
+        "total_ms": {
+          "n": 32,
+          "median": 261.3374585,
+          "mean": 259.78339059375,
+          "min": 243.852541,
+          "max": 274.129625,
+          "p95_nearest_rank": 273.23766700000004
+        }
+      }
+    },
+    "split_8_middle_standard": {
+      "prover_ms": {
+        "n": 32,
+        "median": 262.01443800000004,
+        "mean": 264.94243103125,
+        "min": 249.81525,
+        "max": 287.972125,
+        "p95_nearest_rank": 283.221833
+      },
+      "compute_then_prove_ms": {
+        "n": 32,
+        "median": 290.098562,
+        "mean": 293.2336940625,
+        "min": 279.54325,
+        "max": 314.073167,
+        "p95_nearest_rank": 313.745542
+      },
+      "hash_compute_ms": {
+        "n": 32,
+        "median": 26.545583,
+        "mean": 28.29116015625,
+        "min": 23.252499999999998,
+        "max": 38.773,
+        "p95_nearest_rank": 37.646458
+      },
+      "verify_ms": {
+        "n": 32,
+        "median": 1.3342710000000002,
+        "mean": 1.36838025,
+        "min": 1.2811249999999998,
+        "max": 2.579916,
+        "p95_nearest_rank": 1.400458
+      },
+      "proof_bytes": {
+        "n": 32,
+        "median": 701764.0,
+        "mean": 701612,
+        "min": 699028,
+        "max": 703188,
+        "p95_nearest_rank": 703188
+      },
+      "piop_bytes": {
+        "n": 32,
+        "median": 23764.0,
+        "mean": 23764,
+        "min": 23764,
+        "max": 23764,
+        "p95_nearest_rank": 23764
+      },
+      "pcs_bytes": {
+        "n": 32,
+        "median": 677920.0,
+        "mean": 677768,
+        "min": 675184,
+        "max": 679344,
+        "p95_nearest_rank": 679344
+      },
+      "stages": {
+        "witness_ms": {
+          "n": 32,
+          "median": 20.549167,
+          "mean": 22.17919015625,
+          "min": 18.412000000000003,
+          "max": 30.84025,
+          "p95_nearest_rank": 30.617834
+        },
+        "commit_ms": {
+          "n": 32,
+          "median": 33.165771,
+          "mean": 34.337914125,
+          "min": 29.746708,
+          "max": 45.335874999999994,
+          "p95_nearest_rank": 42.477958
+        },
+        "piop_ms": {
+          "n": 32,
+          "median": 170.98899949999998,
+          "mean": 168.91253121875,
+          "min": 142.459375,
+          "max": 184.44770799999998,
+          "p95_nearest_rank": 181.866084
+        },
+        "open_ms": {
+          "n": 32,
+          "median": 38.635833,
+          "mean": 39.49715896875,
+          "min": 32.632,
+          "max": 57.278625,
+          "p95_nearest_rank": 52.216959
+        },
+        "total_ms": {
+          "n": 32,
+          "median": 262.0105415,
+          "mean": 264.93791028124997,
+          "min": 249.81175,
+          "max": 287.962042,
+          "p95_nearest_rank": 283.21641600000004
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "packed_6_middle_standard__vs__packed_6_middle_frobenius": {
+      "control": "packed_6_middle_standard",
+      "candidate": "packed_6_middle_frobenius",
+      "prover_ms": {
+        "ratio_of_pooled_medians": 1.217033763898554,
+        "paired_ratio": {
+          "n": 32,
+          "median": 1.2117406575253282,
+          "mean": 1.2161663480919627,
+          "min": 0.6656149991552229,
+          "max": 1.388161294891647,
+          "p95_nearest_rank": 1.3701563078677237
+        },
+        "paired_delta_ms": {
+          "n": 32,
+          "median": 51.463020499999985,
+          "mean": 49.21225646875,
+          "min": -163.35950100000002,
+          "max": 93.80037399999998,
+          "p95_nearest_rank": 87.00366700000001
+        },
+        "candidate_faster_pairs": 1,
+        "per_run_ratios_of_medians": {
+          "run-a": 1.267228097264656,
+          "run-b": 1.1985746254890306
+        }
+      },
+      "compute_then_prove_ms": {
+        "ratio_of_pooled_medians": 1.1998340433663386,
+        "paired_ratio": {
+          "n": 32,
+          "median": 1.2097851022996895,
+          "mean": 1.1982235654934805,
+          "min": 0.6730204990653609,
+          "max": 1.3731779369938377,
+          "p95_nearest_rank": 1.320898858886253
+        },
+        "paired_delta_ms": {
+          "n": 32,
+          "median": 56.138374999999996,
+          "mean": 50.64807809375001,
+          "min": -170.20483299999995,
+          "max": 101.898708,
+          "p95_nearest_rank": 85.407084
+        },
+        "candidate_faster_pairs": 1,
+        "per_run_ratios_of_medians": {
+          "run-a": 1.2408138187752735,
+          "run-b": 1.1905246014935333
+        }
+      }
+    },
+    "split_3_middle_standard__vs__split_4_middle_standard": {
+      "control": "split_3_middle_standard",
+      "candidate": "split_4_middle_standard",
+      "prover_ms": {
+        "ratio_of_pooled_medians": 1.0060571851495779,
+        "paired_ratio": {
+          "n": 32,
+          "median": 1.0123613764059631,
+          "mean": 1.0296443106126163,
+          "min": 0.8997556514030006,
+          "max": 1.3910443369951753,
+          "p95_nearest_rank": 1.2742311889343247
+        },
+        "paired_delta_ms": {
+          "n": 32,
+          "median": 2.8842285000000203,
+          "mean": 6.8814141875,
+          "min": -23.908958000000013,
+          "max": 93.702875,
+          "p95_nearest_rank": 66.18841699999996
+        },
+        "candidate_faster_pairs": 13,
+        "per_run_ratios_of_medians": {
+          "run-a": 1.0108848612860901,
+          "run-b": 1.0055519643432653
+        }
+      },
+      "compute_then_prove_ms": {
+        "ratio_of_pooled_medians": 1.0084752045620302,
+        "paired_ratio": {
+          "n": 32,
+          "median": 1.0112810126143694,
+          "mean": 1.027007339317458,
+          "min": 0.9175393065308378,
+          "max": 1.3701964382973877,
+          "p95_nearest_rank": 1.271195053622736
+        },
+        "paired_delta_ms": {
+          "n": 32,
+          "median": 2.918395499999974,
+          "mean": 6.967792781250002,
+          "min": -22.37041800000003,
+          "max": 98.53554100000002,
+          "p95_nearest_rank": 72.700083
+        },
+        "candidate_faster_pairs": 14,
+        "per_run_ratios_of_medians": {
+          "run-a": 1.0117592751462352,
+          "run-b": 1.001931320215618
+        }
+      }
+    },
+    "split_7_middle_standard__vs__split_8_middle_standard": {
+      "control": "split_7_middle_standard",
+      "candidate": "split_8_middle_standard",
+      "prover_ms": {
+        "ratio_of_pooled_medians": 1.0025734968753601,
+        "paired_ratio": {
+          "n": 32,
+          "median": 1.0191190314518825,
+          "mean": 1.0206187781131484,
+          "min": 0.9417248984243409,
+          "max": 1.121411976377792,
+          "p95_nearest_rank": 1.0948230387511728
+        },
+        "paired_delta_ms": {
+          "n": 32,
+          "median": 4.858666500000012,
+          "mean": 5.155010468750008,
+          "min": -15.685624999999959,
+          "max": 30.31987399999997,
+          "p95_nearest_rank": 24.94137500000005
+        },
+        "candidate_faster_pairs": 10,
+        "per_run_ratios_of_medians": {
+          "run-a": 0.9976928153471206,
+          "run-b": 1.0256810691631737
+        }
+      },
+      "compute_then_prove_ms": {
+        "ratio_of_pooled_medians": 0.9937226186484912,
+        "paired_ratio": {
+          "n": 32,
+          "median": 1.01340166763945,
+          "mean": 1.0123756517639981,
+          "min": 0.9359413264755307,
+          "max": 1.1135170002126535,
+          "p95_nearest_rank": 1.1017264379239198
+        },
+        "paired_delta_ms": {
+          "n": 32,
+          "median": 3.7994580000000155,
+          "mean": 3.3401523749999953,
+          "min": -19.132790999999997,
+          "max": 31.914457999999968,
+          "p95_nearest_rank": 28.626625000000047
+        },
+        "candidate_faster_pairs": 12,
+        "per_run_ratios_of_medians": {
+          "run-a": 0.9878434436907753,
+          "run-b": 0.997390156933291
+        }
+      }
+    },
+    "packed_6_middle_standard__vs__split_6_middle_standard": {
+      "control": "packed_6_middle_standard",
+      "candidate": "split_6_middle_standard",
+      "prover_ms": {
+        "ratio_of_pooled_medians": 1.0529491875862158,
+        "paired_ratio": {
+          "n": 32,
+          "median": 1.0537604100100717,
+          "mean": 1.1009761955243333,
+          "min": 0.5448846781395447,
+          "max": 2.2025408345262223,
+          "p95_nearest_rank": 1.9255044222858146
+        },
+        "paired_delta_ms": {
+          "n": 32,
+          "median": 13.10283299999999,
+          "mean": 20.152673,
+          "min": -222.34075,
+          "max": 286.88595799999996,
+          "p95_nearest_rank": 214.18779200000003
+        },
+        "candidate_faster_pairs": 4,
+        "per_run_ratios_of_medians": {
+          "run-a": 1.0716717665939293,
+          "run-b": 1.0370957613629994
+        }
+      },
+      "compute_then_prove_ms": {
+        "ratio_of_pooled_medians": 1.0493847137198509,
+        "paired_ratio": {
+          "n": 32,
+          "median": 1.0508649037013948,
+          "mean": 1.0916250889277346,
+          "min": 0.5638221483507749,
+          "max": 2.045487318337067,
+          "p95_nearest_rank": 1.8021240002658467
+        },
+        "paired_delta_ms": {
+          "n": 32,
+          "median": 13.636875000000003,
+          "mean": 20.833846312500004,
+          "min": -227.046583,
+          "max": 281.06075100000004,
+          "p95_nearest_rank": 209.698375
+        },
+        "candidate_faster_pairs": 3,
+        "per_run_ratios_of_medians": {
+          "run-a": 1.05133246540276,
+          "run-b": 1.0421364964350606
+        }
+      }
+    },
+    "packed_6_middle_standard__vs__split_4_middle_standard": {
+      "control": "packed_6_middle_standard",
+      "candidate": "split_4_middle_standard",
+      "prover_ms": {
+        "ratio_of_pooled_medians": 0.988636020275765,
+        "paired_ratio": {
+          "n": 32,
+          "median": 0.9845349366766739,
+          "mean": 0.9951188425670323,
+          "min": 0.5043113393253864,
+          "max": 1.4402957268377794,
+          "p95_nearest_rank": 1.2523573459119146
+        },
+        "paired_delta_ms": {
+          "n": 32,
+          "median": -3.7220624999999785,
+          "mean": -5.466322906250003,
+          "min": -242.16233400000002,
+          "max": 101.89683299999999,
+          "p95_nearest_rank": 61.97279199999994
+        },
+        "candidate_faster_pairs": 19,
+        "per_run_ratios_of_medians": {
+          "run-a": 1.0057833675163788,
+          "run-b": 0.9746976906979844
+        }
+      },
+      "compute_then_prove_ms": {
+        "ratio_of_pooled_medians": 0.986639315023112,
+        "paired_ratio": {
+          "n": 32,
+          "median": 0.9870648936659825,
+          "mean": 0.9961638198716555,
+          "min": 0.5355510086331894,
+          "max": 1.3950505658565833,
+          "p95_nearest_rank": 1.250756628882359
+        },
+        "paired_delta_ms": {
+          "n": 32,
+          "median": -3.417250499999966,
+          "mean": -5.018951937499998,
+          "min": -241.76274899999999,
+          "max": 103.277625,
+          "p95_nearest_rank": 68.31954200000001
+        },
+        "candidate_faster_pairs": 18,
+        "per_run_ratios_of_medians": {
+          "run-a": 0.9950716716930127,
+          "run-b": 0.9757353998369948
+        }
+      }
+    },
+    "split_1_middle_standard__vs__split_4_middle_standard": {
+      "control": "split_1_middle_standard",
+      "candidate": "split_4_middle_standard",
+      "prover_ms": {
+        "ratio_of_pooled_medians": 1.0325280481717394,
+        "paired_ratio": {
+          "n": 32,
+          "median": 1.0345139462378525,
+          "mean": 1.0284265573076823,
+          "min": 0.4621313450644825,
+          "max": 1.4448853704260634,
+          "p95_nearest_rank": 1.2858532047228992
+        },
+        "paired_delta_ms": {
+          "n": 32,
+          "median": 7.890020500000006,
+          "mean": 1.4579610625000008,
+          "min": -274.6368329999999,
+          "max": 102.631959,
+          "p95_nearest_rank": 68.36991699999996
+        },
+        "candidate_faster_pairs": 9,
+        "per_run_ratios_of_medians": {
+          "run-a": 1.0308214892699525,
+          "run-b": 1.0338104825195908
+        }
+      },
+      "compute_then_prove_ms": {
+        "ratio_of_pooled_medians": 1.0276846445027688,
+        "paired_ratio": {
+          "n": 32,
+          "median": 1.0331345183011993,
+          "mean": 1.026508403148105,
+          "min": 0.4833103682392892,
+          "max": 1.425918186682894,
+          "p95_nearest_rank": 1.2409501227437612
+        },
+        "paired_delta_ms": {
+          "n": 32,
+          "median": 8.481749500000006,
+          "mean": 1.9557706874999958,
+          "min": -280.05708300000003,
+          "max": 108.936917,
+          "p95_nearest_rank": 66.16649999999998
+        },
+        "candidate_faster_pairs": 10,
+        "per_run_ratios_of_medians": {
+          "run-a": 1.028729152887426,
+          "run-b": 1.0305658805905695
+        }
+      }
+    }
+  },
+  "runs": {
+    "run-a": {
+      "execution": {
+        "command": [
+          "/path/to/Desktop/Research/research-git/dynamic-snarks-system/benchmark-results/2026-09-22-gkr-protocol-ablations/hash-protocol-bench",
+          "--rows",
+          "65536",
+          "--threads",
+          "8",
+          "--reps",
+          "16",
+          "--warmup",
+          "2",
+          "--out",
+          "/path/to/Desktop/Research/research-git/dynamic-snarks-system/benchmark-results/2026-09-22-gkr-protocol-ablations/run-a"
+        ],
+        "binary_sha256": "bcd0d84f341e298858568133f57b67457dac23105656f94c0e324486075c50ed",
+        "exit_code": 0,
+        "timeout": false,
+        "elapsed_seconds": 43.464973125141114,
+        "memory": {
+          "rss_limit_bytes": 4294967296,
+          "sampling_interval_seconds": 0.1,
+          "samples": 406,
+          "peak_sampled_rss_bytes": 1073217536,
+          "peak_sampled_phys_footprint_bytes": 322406208,
+          "limit_exceeded": false,
+          "error": null
+        }
+      },
+      "verified_proofs": 144,
+      "vm_page_size": 16384,
+      "system_vm_delta_bytes": {
+        "Compressions": 2940108800,
+        "Decompressions": 1602256896,
+        "Swapins": 185368576,
+        "Swapouts": 168722432,
+        "Pageouts": 22609920
+      },
+      "medians_ms": {
+        "packed_6_middle_standard": {
+          "prover_ms": 240.196563,
+          "compute_then_prove_ms": 270.836563
+        },
+        "packed_6_middle_frobenius": {
+          "prover_ms": 304.38383350000004,
+          "compute_then_prove_ms": 336.05774999999994
+        },
+        "split_1_middle_standard": {
+          "prover_ms": 234.3623125,
+          "compute_then_prove_ms": 261.97545849999995
+        },
+        "split_3_middle_standard": {
+          "prover_ms": 238.984396,
+          "compute_then_prove_ms": 266.3694795
+        },
+        "split_4_middle_standard": {
+          "prover_ms": 241.585708,
+          "compute_then_prove_ms": 269.50179149999997
+        },
+        "split_6_middle_standard": {
+          "prover_ms": 257.411875,
+          "compute_then_prove_ms": 284.7392715
+        },
+        "split_7_middle_standard": {
+          "prover_ms": 263.163375,
+          "compute_then_prove_ms": 294.8683335
+        },
+        "split_8_middle_standard": {
+          "prover_ms": 262.5562085,
+          "compute_then_prove_ms": 291.28375
+        }
+      }
+    },
+    "run-b": {
+      "execution": {
+        "command": [
+          "/path/to/Desktop/Research/research-git/dynamic-snarks-system/benchmark-results/2026-09-22-gkr-protocol-ablations/hash-protocol-bench",
+          "--rows",
+          "65536",
+          "--threads",
+          "8",
+          "--reps",
+          "16",
+          "--warmup",
+          "2",
+          "--out",
+          "/path/to/Desktop/Research/research-git/dynamic-snarks-system/benchmark-results/2026-09-22-gkr-protocol-ablations/run-b"
+        ],
+        "binary_sha256": "bcd0d84f341e298858568133f57b67457dac23105656f94c0e324486075c50ed",
+        "exit_code": 0,
+        "timeout": false,
+        "elapsed_seconds": 42.63223491702229,
+        "memory": {
+          "rss_limit_bytes": 4294967296,
+          "sampling_interval_seconds": 0.1,
+          "samples": 397,
+          "peak_sampled_rss_bytes": 1073397760,
+          "peak_sampled_phys_footprint_bytes": 391417280,
+          "limit_exceeded": false,
+          "error": null
+        }
+      },
+      "verified_proofs": 144,
+      "vm_page_size": 16384,
+      "system_vm_delta_bytes": {
+        "Compressions": 1419788288,
+        "Decompressions": 1081999360,
+        "Swapins": 1769472,
+        "Swapouts": 0,
+        "Pageouts": 21577728
+      },
+      "medians_ms": {
+        "packed_6_middle_standard": {
+          "prover_ms": 244.28106250000002,
+          "compute_then_prove_ms": 271.035313
+        },
+        "packed_6_middle_frobenius": {
+          "prover_ms": 292.789083,
+          "compute_then_prove_ms": 322.674208
+        },
+        "split_1_middle_standard": {
+          "prover_ms": 230.3131875,
+          "compute_then_prove_ms": 256.61508349999997
+        },
+        "split_3_middle_standard": {
+          "prover_ms": 236.78556249999997,
+          "compute_then_prove_ms": 263.94897949999995
+        },
+        "split_4_middle_standard": {
+          "prover_ms": 238.1001875,
+          "compute_then_prove_ms": 264.4587495
+        },
+        "split_6_middle_standard": {
+          "prover_ms": 253.3428545,
+          "compute_then_prove_ms": 282.4557915
+        },
+        "split_7_middle_standard": {
+          "prover_ms": 255.4541035,
+          "compute_then_prove_ms": 289.9998125
+        },
+        "split_8_middle_standard": {
+          "prover_ms": 262.01443800000004,
+          "compute_then_prove_ms": 289.2429585
+        }
+      }
+    }
+  },
+  "saved_proof_sha256": {
+    "packed_6_middle_standard": "fa817d28e7308fe5300cb517684b3250bc4d4f92bce6e9d4b9470df2f0447fb4",
+    "packed_6_middle_frobenius": "620761a598f12ad8e4591b1fa9e5ddd3281c9375537e9c9a4c84e0be8b253b8f",
+    "split_1_middle_standard": "1b53098476aa96c4b14f21b62cdc66d503f4d3c2f70acfae0371c9122caaa4f8",
+    "split_3_middle_standard": "af69aeee8a51738a1249ed13eb401e29077b0899e270ba7b6760e401a7ac194d",
+    "split_4_middle_standard": "b66511d372c9f6757c96594dccf1a3b8f1f5bc832db1d985309af7c26ce22c2b",
+    "split_6_middle_standard": "1a758339542632dbec46542379d6e3470abae99d763278a7e60f65b31abb88cb",
+    "split_7_middle_standard": "ca616b7c793a3d92427df5597c49a563465d2e08bef951b49cb745eaed94ab2f",
+    "split_8_middle_standard": "46c6b253d70316defce258540cb3583da983fd6b2b00a47b4a550bdc04f795cc"
+  }
+}

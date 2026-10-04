@@ -1,5 +1,0 @@
-arithmetic_gates,public_inputs,updated_gates,updated_positions,transition_poseidon_hashes,initial_trace_rows,baseline_trace_rows,assignment_merkle_leaves,sparse_transition_rows,update_main_width,update_main_evaluations,update_product_evaluations,full_initial_ms,first_update_ms,first_baseline_ms,first_update_speedup,update_sequence_total_ms,update_sequence_mean_ms,baseline_sequence_total_ms,baseline_sequence_mean_ms,update_sequence_speedup,sequence_length,source_log
-16384,256,16,48,726,16384,16384,65536,512,128,131072,16384,15805.123,421.527,658.133,1.561,4006.005,400.6,6681.342,668.134,1.668,10,aligned-comparison-n14.log
-16384,256,256,768,10782,16384,16384,65536,8192,128,2097152,524288,13434.094,5961.589,645.627,0.108,63333.405,6333.341,6816.099,681.61,0.108,10,aligned-comparison-n14.log
-65536,256,16,48,738,65536,65536,262144,1024,128,262144,65536,70884.759,924.471,2915.411,3.154,7838.335,783.833,25757.273,2575.727,3.286,10,aligned-comparison-n16.log
-65536,256,256,768,10794,65536,65536,262144,8192,128,2097152,524288,69886.527,7065.241,3079.948,0.436,64498.141,6449.814,26905.757,2690.576,0.417,10,aligned-comparison-n16.log

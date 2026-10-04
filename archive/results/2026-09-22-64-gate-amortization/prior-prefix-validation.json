@@ -1,0 +1,12 @@
+{
+  "compared_run": "benchmark-results/2026-09-22-baseline-comparison/run-a",
+  "matching_first_updates": 400,
+  "byte_identical_saved_proofs": [
+    "initial.bin",
+    "update-64-revision-1.bin",
+    "update-64-revision-51.bin",
+    "baseline-64-revision-1.bin",
+    "baseline-64-revision-100.bin",
+    "baseline-64-revision-400.bin"
+  ]
+}

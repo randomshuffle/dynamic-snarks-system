@@ -1,2 +1,0 @@
-update_gates,revisions,baseline_mean_payload_bytes,baseline_mean_serialized_bytes,initial_payload_bytes,initial_serialized_bytes,dynamic_final_payload_bytes,dynamic_final_serialized_bytes,final_over_baseline_payload,final_over_baseline_serialized,increment_over_initial_payload_bytes,initial_proof_file,baseline_proof_file,dynamic_final_proof_file
-1,1,367616,422794,856544,985648,1606144,1851917,4.36908077994429,4.380187514486961,749600,proofs/initial-g0-r0.cbor,proofs/baseline-g1-r1.cbor,proofs/update-g1-r1.cbor

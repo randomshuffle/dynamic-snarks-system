@@ -1,0 +1,38 @@
+{
+  "complete": true,
+  "verified_samples": 11845,
+  "experiments": [
+    {
+      "experiment": "sweep",
+      "verified_samples": 641,
+      "modes": {
+        "direct": 319,
+        "polynomial": 1
+      },
+      "peak_rss_bytes": 9130921984,
+      "wall_seconds": 215.194997795
+    },
+    {
+      "experiment": "one-gate",
+      "verified_samples": 10102,
+      "modes": {
+        "direct": 9998,
+        "polynomial": 2
+      },
+      "peak_rss_bytes": 9131065344,
+      "wall_seconds": 1723.8157693430003
+    },
+    {
+      "experiment": "128-gate",
+      "verified_samples": 1102,
+      "modes": {
+        "direct": 963,
+        "polynomial": 37
+      },
+      "peak_rss_bytes": 29521915904,
+      "wall_seconds": 441.45763837999993
+    }
+  ],
+  "prior_one_gate_workload_matches": true,
+  "source_tree_sha256": "a92422f12b6b8bb3c379897a6b7f726de6aa5effeefd85666bff12b283253bed"
+}

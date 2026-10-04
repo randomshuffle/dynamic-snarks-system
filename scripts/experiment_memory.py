@@ -4,11 +4,57 @@ import csv
 import ctypes
 import errno
 import os
+import re
+import subprocess
 import signal
 import sys
 import threading
 import time
 from pathlib import Path
+
+
+def _capture(command):
+    try:
+        result = subprocess.run(command, text=True, capture_output=True, check=False)
+        return result.stdout.strip() if result.returncode == 0 else None
+    except OSError:
+        return None
+
+
+def memory_limit():
+    candidates = []
+    if sys.platform == "darwin":
+        value = _capture(["sysctl", "-n", "hw.memsize"])
+        if value and value.isdigit():
+            candidates.append(int(value))
+        else:
+            pressure = _capture(["/usr/bin/memory_pressure"]) or ""
+            match = re.search(r"The system has (\d+)", pressure)
+            if match:
+                candidates.append(int(match.group(1)))
+    elif sys.platform.startswith("linux"):
+        text = Path("/proc/meminfo").read_text()
+        candidates.append(int(re.search(r"MemTotal:\s+(\d+)", text).group(1)) * 1024)
+        paths = [Path("/sys/fs/cgroup/memory.max"), Path("/sys/fs/cgroup/memory/memory.limit_in_bytes")]
+        for line in Path("/proc/self/cgroup").read_text().splitlines():
+            if line.startswith("0::"):
+                current = Path("/sys/fs/cgroup") / line[3:].lstrip("/")
+                while current.is_relative_to("/sys/fs/cgroup"):
+                    paths.append(current / "memory.max")
+                    if current == Path("/sys/fs/cgroup"):
+                        break
+                    current = current.parent
+        for path in paths:
+            try:
+                value = path.read_text().strip()
+                if value.isdigit() and int(value) > 0:
+                    candidates.append(int(value))
+            except OSError:
+                pass
+    if not candidates:
+        raise RuntimeError("Cannot determine physical/cgroup RAM; refusing an unguarded run")
+    return min(candidates)
+
 
 
 def memory_reader():

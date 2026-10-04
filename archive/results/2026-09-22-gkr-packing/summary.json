@@ -1,0 +1,1750 @@
+{
+  "all_verified_proofs": 1080,
+  "measured_proofs": 960,
+  "saved_proofs_identical_across_runs": true,
+  "byte_identical_to_previous_benchmark": [
+    "gkr_1_middle",
+    "gkr_3_middle",
+    "gkr_7_middle",
+    "flock_native_x7"
+  ],
+  "backends": {
+    "gkr_1_middle": {
+      "shape": {
+        "field_elements": 32768,
+        "gates": null,
+        "gkr_layers": 33,
+        "identity_slots": 0,
+        "matrix_nonzero_entries": null,
+        "name": "gkr_1_middle",
+        "padded_columns": 16,
+        "params": {
+          "log_batch_size": 6,
+          "log_inv_rate": 1,
+          "m": 22,
+          "merkle_hash": "sha256",
+          "profile": "fast"
+        },
+        "polynomials": 1,
+        "raw_bytes": 524288,
+        "security": {
+          "analysis_version": "johnson_ood_row_union_over_bchks25_thm_4_6",
+          "field": "f128",
+          "final_block": {
+            "yr_log_n": 3
+          },
+          "grinding_step": "post_commit_pre_queries",
+          "hash": "sha256",
+          "initial_k": 6,
+          "levels": [
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 118.9,
+              "expected_eps_pg_bits": 91.0,
+              "expected_eps_query_bits": 100.2,
+              "fold_grinding_bits": 9,
+              "grinding_bits": 0,
+              "k_recursive": 6,
+              "log_inv_rate": 1,
+              "log_msg_cols": 9,
+              "log_num_interleaved": 6,
+              "ood_samples": 0,
+              "proximity_loss": null,
+              "queries": 218,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 114.5,
+              "expected_eps_pg_bits": 96.8,
+              "expected_eps_query_bits": 100.0,
+              "fold_grinding_bits": 4,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 2,
+              "log_msg_cols": 6,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 106,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 113.1,
+              "expected_eps_pg_bits": 99.1,
+              "expected_eps_query_bits": 100.1,
+              "fold_grinding_bits": 1,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 4,
+              "log_msg_cols": 3,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 53,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            }
+          ],
+          "log_n": 15,
+          "m": 22,
+          "target_security_bits": 100
+        },
+        "segments": 2,
+        "used_columns": 10,
+        "variables": 15
+      },
+      "threads": {
+        "4": {
+          "n": 80,
+          "times": {
+            "commit_ms": {
+              "median": 0.6724375,
+              "mean": 0.67674575,
+              "min": 0.62275,
+              "max": 0.809333,
+              "p95": 0.76809105
+            },
+            "lincheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            },
+            "open_ms": {
+              "median": 0.7882294999999999,
+              "mean": 0.810153625,
+              "min": 0.6242920000000001,
+              "max": 1.1775419999999999,
+              "p95": 1.0342333000000001
+            },
+            "piop_ms": {
+              "median": 7.587958499999999,
+              "mean": 7.6410301875,
+              "min": 6.694959000000001,
+              "max": 8.346124999999999,
+              "p95": 8.2428208
+            },
+            "total_ms": {
+              "median": 10.3639375,
+              "mean": 10.3840031625,
+              "min": 9.491209000000001,
+              "max": 11.725458,
+              "p95": 10.992385749999999
+            },
+            "witness_ms": {
+              "median": 1.242042,
+              "mean": 1.2536244875,
+              "min": 1.142292,
+              "max": 1.651375,
+              "p95": 1.4351687499999999
+            },
+            "zerocheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            }
+          },
+          "verify_ms": {
+            "median": 0.484396,
+            "mean": 0.4842718625,
+            "min": 0.457375,
+            "max": 0.5225409999999999,
+            "p95": 0.508275
+          },
+          "proof_bytes": {
+            "median": 321588.0,
+            "mean": 321511.2,
+            "min": 320820,
+            "max": 322132,
+            "p95": 322034.4
+          },
+          "piop_bytes": {
+            "median": 57172.0,
+            "mean": 57172,
+            "min": 57172,
+            "max": 57172,
+            "p95": 57172.0
+          },
+          "pcs_bytes": {
+            "median": 264376.0,
+            "mean": 264299.2,
+            "min": 263608,
+            "max": 264920,
+            "p95": 264822.4
+          },
+          "pcs_total_ms": {
+            "median": 1.4624375,
+            "mean": 1.486899375,
+            "min": 1.28675,
+            "max": 1.9157919999999997,
+            "p95": 1.7114587
+          },
+          "run_medians": {
+            "a": 10.386167,
+            "b": 10.3639375
+          }
+        },
+        "8": {
+          "n": 80,
+          "times": {
+            "commit_ms": {
+              "median": 0.656979,
+              "mean": 0.659000525,
+              "min": 0.601542,
+              "max": 0.755916,
+              "p95": 0.74320595
+            },
+            "lincheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            },
+            "open_ms": {
+              "median": 0.8337705,
+              "mean": 0.858544775,
+              "min": 0.58825,
+              "max": 1.508958,
+              "p95": 1.2069410500000002
+            },
+            "piop_ms": {
+              "median": 8.189396,
+              "mean": 8.46694485,
+              "min": 7.550292,
+              "max": 10.31975,
+              "p95": 9.7123298
+            },
+            "total_ms": {
+              "median": 11.131332999999998,
+              "mean": 11.226217675,
+              "min": 10.208041,
+              "max": 12.99175,
+              "p95": 12.325120199999999
+            },
+            "witness_ms": {
+              "median": 1.2193960000000001,
+              "mean": 1.2391973625,
+              "min": 1.1253330000000001,
+              "max": 1.792833,
+              "p95": 1.3612190999999998
+            },
+            "zerocheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            }
+          },
+          "verify_ms": {
+            "median": 0.4771875,
+            "mean": 0.4796979125,
+            "min": 0.457959,
+            "max": 0.514292,
+            "p95": 0.50934855
+          },
+          "proof_bytes": {
+            "median": 321588.0,
+            "mean": 321511.2,
+            "min": 320820,
+            "max": 322132,
+            "p95": 322034.4
+          },
+          "piop_bytes": {
+            "median": 57172.0,
+            "mean": 57172,
+            "min": 57172,
+            "max": 57172,
+            "p95": 57172.0
+          },
+          "pcs_bytes": {
+            "median": 264376.0,
+            "mean": 264299.2,
+            "min": 263608,
+            "max": 264920,
+            "p95": 264822.4
+          },
+          "pcs_total_ms": {
+            "median": 1.4747705,
+            "mean": 1.5175452999999999,
+            "min": 1.2225830000000002,
+            "max": 2.1105,
+            "p95": 1.83264905
+          },
+          "run_medians": {
+            "a": 11.354979,
+            "b": 10.800062500000001
+          }
+        }
+      }
+    },
+    "gkr_2_middle": {
+      "shape": {
+        "field_elements": 32768,
+        "gates": null,
+        "gkr_layers": 22,
+        "identity_slots": 0,
+        "matrix_nonzero_entries": null,
+        "name": "gkr_2_middle",
+        "padded_columns": 16,
+        "params": {
+          "log_batch_size": 6,
+          "log_inv_rate": 1,
+          "m": 22,
+          "merkle_hash": "sha256",
+          "profile": "fast"
+        },
+        "polynomials": 1,
+        "raw_bytes": 524288,
+        "security": {
+          "analysis_version": "johnson_ood_row_union_over_bchks25_thm_4_6",
+          "field": "f128",
+          "final_block": {
+            "yr_log_n": 3
+          },
+          "grinding_step": "post_commit_pre_queries",
+          "hash": "sha256",
+          "initial_k": 6,
+          "levels": [
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 118.9,
+              "expected_eps_pg_bits": 91.0,
+              "expected_eps_query_bits": 100.2,
+              "fold_grinding_bits": 9,
+              "grinding_bits": 0,
+              "k_recursive": 6,
+              "log_inv_rate": 1,
+              "log_msg_cols": 9,
+              "log_num_interleaved": 6,
+              "ood_samples": 0,
+              "proximity_loss": null,
+              "queries": 218,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 114.5,
+              "expected_eps_pg_bits": 96.8,
+              "expected_eps_query_bits": 100.0,
+              "fold_grinding_bits": 4,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 2,
+              "log_msg_cols": 6,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 106,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 113.1,
+              "expected_eps_pg_bits": 99.1,
+              "expected_eps_query_bits": 100.1,
+              "fold_grinding_bits": 1,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 4,
+              "log_msg_cols": 3,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 53,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            }
+          ],
+          "log_n": 15,
+          "m": 22,
+          "target_security_bits": 100
+        },
+        "segments": 3,
+        "used_columns": 14,
+        "variables": 15
+      },
+      "threads": {
+        "4": {
+          "n": 80,
+          "times": {
+            "commit_ms": {
+              "median": 0.6778124999999999,
+              "mean": 0.6819641,
+              "min": 0.6229579999999999,
+              "max": 0.896167,
+              "p95": 0.746034
+            },
+            "lincheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            },
+            "open_ms": {
+              "median": 0.7964375,
+              "mean": 0.8088010875,
+              "min": 0.607042,
+              "max": 1.248834,
+              "p95": 1.0576184
+            },
+            "piop_ms": {
+              "median": 7.0156670000000005,
+              "mean": 7.0375151625,
+              "min": 6.355124999999999,
+              "max": 8.041334,
+              "p95": 7.3902375000000005
+            },
+            "total_ms": {
+              "median": 9.736666999999999,
+              "mean": 9.775934925,
+              "min": 9.198833,
+              "max": 11.341958,
+              "p95": 10.30773365
+            },
+            "witness_ms": {
+              "median": 1.2263335,
+              "mean": 1.2444828125,
+              "min": 1.131167,
+              "max": 1.6190410000000002,
+              "p95": 1.3832020999999997
+            },
+            "zerocheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            }
+          },
+          "verify_ms": {
+            "median": 0.45775,
+            "mean": 0.461140625,
+            "min": 0.4335,
+            "max": 0.514167,
+            "p95": 0.49261665
+          },
+          "proof_bytes": {
+            "median": 303876.0,
+            "mean": 303917.6,
+            "min": 303188,
+            "max": 304724,
+            "p95": 304528.8
+          },
+          "piop_bytes": {
+            "median": 39636.0,
+            "mean": 39636,
+            "min": 39636,
+            "max": 39636,
+            "p95": 39636.0
+          },
+          "pcs_bytes": {
+            "median": 264200.0,
+            "mean": 264241.6,
+            "min": 263512,
+            "max": 265048,
+            "p95": 264852.8
+          },
+          "pcs_total_ms": {
+            "median": 1.4805830000000002,
+            "mean": 1.4907651875,
+            "min": 1.282084,
+            "max": 1.946334,
+            "p95": 1.73406665
+          },
+          "run_medians": {
+            "a": 9.752771,
+            "b": 9.7343125
+          }
+        },
+        "8": {
+          "n": 80,
+          "times": {
+            "commit_ms": {
+              "median": 0.6623125000000001,
+              "mean": 0.6630328375,
+              "min": 0.599125,
+              "max": 0.7697080000000001,
+              "p95": 0.71033815
+            },
+            "lincheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            },
+            "open_ms": {
+              "median": 0.8566455,
+              "mean": 0.862469275,
+              "min": 0.57925,
+              "max": 1.490459,
+              "p95": 1.1269875
+            },
+            "piop_ms": {
+              "median": 7.6781875,
+              "mean": 7.764037,
+              "min": 6.964334,
+              "max": 16.268041,
+              "p95": 8.237311850000001
+            },
+            "total_ms": {
+              "median": 10.441458,
+              "mean": 10.52911985,
+              "min": 9.571416,
+              "max": 19.095167,
+              "p95": 11.247144399999998
+            },
+            "witness_ms": {
+              "median": 1.2167295,
+              "mean": 1.23633085,
+              "min": 1.113625,
+              "max": 1.558625,
+              "p95": 1.4509916999999999
+            },
+            "zerocheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            }
+          },
+          "verify_ms": {
+            "median": 0.4485,
+            "mean": 0.4541786375,
+            "min": 0.43391700000000005,
+            "max": 0.489083,
+            "p95": 0.48391425
+          },
+          "proof_bytes": {
+            "median": 303876.0,
+            "mean": 303917.6,
+            "min": 303188,
+            "max": 304724,
+            "p95": 304528.8
+          },
+          "piop_bytes": {
+            "median": 39636.0,
+            "mean": 39636,
+            "min": 39636,
+            "max": 39636,
+            "p95": 39636.0
+          },
+          "pcs_bytes": {
+            "median": 264200.0,
+            "mean": 264241.6,
+            "min": 263512,
+            "max": 265048,
+            "p95": 264852.8
+          },
+          "pcs_total_ms": {
+            "median": 1.5028335,
+            "mean": 1.5255021125000001,
+            "min": 1.250958,
+            "max": 2.162125,
+            "p95": 1.7767304000000002
+          },
+          "run_medians": {
+            "a": 10.494687,
+            "b": 10.3585
+          }
+        }
+      }
+    },
+    "gkr_3_middle": {
+      "shape": {
+        "field_elements": 65536,
+        "gates": null,
+        "gkr_layers": 17,
+        "identity_slots": 2,
+        "matrix_nonzero_entries": null,
+        "name": "gkr_3_middle",
+        "padded_columns": 32,
+        "params": {
+          "log_batch_size": 6,
+          "log_inv_rate": 1,
+          "m": 23,
+          "merkle_hash": "sha256",
+          "profile": "fast"
+        },
+        "polynomials": 1,
+        "raw_bytes": 1048576,
+        "security": {
+          "analysis_version": "johnson_ood_row_union_over_bchks25_thm_4_6",
+          "field": "f128",
+          "final_block": {
+            "yr_log_n": 4
+          },
+          "grinding_step": "post_commit_pre_queries",
+          "hash": "sha256",
+          "initial_k": 6,
+          "levels": [
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 118.9,
+              "expected_eps_pg_bits": 90.0,
+              "expected_eps_query_bits": 100.2,
+              "fold_grinding_bits": 10,
+              "grinding_bits": 0,
+              "k_recursive": 6,
+              "log_inv_rate": 1,
+              "log_msg_cols": 10,
+              "log_num_interleaved": 6,
+              "ood_samples": 0,
+              "proximity_loss": null,
+              "queries": 218,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 114.4,
+              "expected_eps_pg_bits": 95.8,
+              "expected_eps_query_bits": 100.0,
+              "fold_grinding_bits": 5,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 2,
+              "log_msg_cols": 7,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 106,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 113.9,
+              "expected_eps_pg_bits": 98.8,
+              "expected_eps_query_bits": 100.9,
+              "fold_grinding_bits": 2,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 3,
+              "log_msg_cols": 4,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 71,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            }
+          ],
+          "log_n": 16,
+          "m": 23,
+          "target_security_bits": 100
+        },
+        "segments": 4,
+        "used_columns": 18,
+        "variables": 16
+      },
+      "threads": {
+        "4": {
+          "n": 80,
+          "times": {
+            "commit_ms": {
+              "median": 1.4036045,
+              "mean": 1.3972380625,
+              "min": 1.314625,
+              "max": 1.51025,
+              "p95": 1.4683582999999998
+            },
+            "lincheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            },
+            "open_ms": {
+              "median": 1.118271,
+              "mean": 1.1239506,
+              "min": 0.874,
+              "max": 1.636209,
+              "p95": 1.2893232500000003
+            },
+            "piop_ms": {
+              "median": 6.1317705,
+              "mean": 6.1327224375,
+              "min": 5.499833,
+              "max": 7.203167,
+              "p95": 6.4917798
+            },
+            "total_ms": {
+              "median": 9.903750500000001,
+              "mean": 9.9196807,
+              "min": 9.302584,
+              "max": 11.339583000000001,
+              "p95": 10.548153849999998
+            },
+            "witness_ms": {
+              "median": 1.250771,
+              "mean": 1.26176145,
+              "min": 1.149125,
+              "max": 1.772834,
+              "p95": 1.4787104500000001
+            },
+            "zerocheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            }
+          },
+          "verify_ms": {
+            "median": 0.5487500000000001,
+            "mean": 0.5500176875,
+            "min": 0.521792,
+            "max": 0.589083,
+            "p95": 0.5833934500000001
+          },
+          "proof_bytes": {
+            "median": 307180.0,
+            "mean": 307187.2,
+            "min": 306316,
+            "max": 308268,
+            "p95": 308104.8
+          },
+          "piop_bytes": {
+            "median": 31828.0,
+            "mean": 31828,
+            "min": 31828,
+            "max": 31828,
+            "p95": 31828.0
+          },
+          "pcs_bytes": {
+            "median": 275312.0,
+            "mean": 275319.2,
+            "min": 274448,
+            "max": 276400,
+            "p95": 276236.8
+          },
+          "pcs_total_ms": {
+            "median": 2.5132085,
+            "mean": 2.5211886625,
+            "min": 2.268084,
+            "max": 2.991416,
+            "p95": 2.7314816000000004
+          },
+          "run_medians": {
+            "a": 9.910583,
+            "b": 9.8925
+          }
+        },
+        "8": {
+          "n": 80,
+          "times": {
+            "commit_ms": {
+              "median": 1.3506455,
+              "mean": 1.3523385,
+              "min": 1.249542,
+              "max": 1.5322090000000002,
+              "p95": 1.45874025
+            },
+            "lincheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            },
+            "open_ms": {
+              "median": 1.1400204999999999,
+              "mean": 1.13668755,
+              "min": 0.883333,
+              "max": 1.442667,
+              "p95": 1.3576276999999999
+            },
+            "piop_ms": {
+              "median": 6.932563,
+              "mean": 6.8915193,
+              "min": 5.7895,
+              "max": 10.205416999999999,
+              "p95": 7.6211082999999995
+            },
+            "total_ms": {
+              "median": 10.757979,
+              "mean": 10.627020312500001,
+              "min": 9.315292,
+              "max": 13.918458999999999,
+              "p95": 11.44895835
+            },
+            "witness_ms": {
+              "median": 1.220437,
+              "mean": 1.24214695,
+              "min": 1.110167,
+              "max": 1.7111669999999999,
+              "p95": 1.3987645999999998
+            },
+            "zerocheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            }
+          },
+          "verify_ms": {
+            "median": 0.542438,
+            "mean": 0.5482303125,
+            "min": 0.526333,
+            "max": 0.5951249999999999,
+            "p95": 0.5816726
+          },
+          "proof_bytes": {
+            "median": 307180.0,
+            "mean": 307187.2,
+            "min": 306316,
+            "max": 308268,
+            "p95": 308104.8
+          },
+          "piop_bytes": {
+            "median": 31828.0,
+            "mean": 31828,
+            "min": 31828,
+            "max": 31828,
+            "p95": 31828.0
+          },
+          "pcs_bytes": {
+            "median": 275312.0,
+            "mean": 275319.2,
+            "min": 274448,
+            "max": 276400,
+            "p95": 276236.8
+          },
+          "pcs_total_ms": {
+            "median": 2.4863334999999998,
+            "mean": 2.48902605,
+            "min": 2.2575410000000002,
+            "max": 2.7821249999999997,
+            "p95": 2.7427205
+          },
+          "run_medians": {
+            "a": 10.790771,
+            "b": 10.6395625
+          }
+        }
+      }
+    },
+    "gkr_6_middle": {
+      "shape": {
+        "field_elements": 65536,
+        "gates": null,
+        "gkr_layers": 10,
+        "identity_slots": 4,
+        "matrix_nonzero_entries": null,
+        "name": "gkr_6_middle",
+        "padded_columns": 32,
+        "params": {
+          "log_batch_size": 6,
+          "log_inv_rate": 1,
+          "m": 23,
+          "merkle_hash": "sha256",
+          "profile": "fast"
+        },
+        "polynomials": 1,
+        "raw_bytes": 1048576,
+        "security": {
+          "analysis_version": "johnson_ood_row_union_over_bchks25_thm_4_6",
+          "field": "f128",
+          "final_block": {
+            "yr_log_n": 4
+          },
+          "grinding_step": "post_commit_pre_queries",
+          "hash": "sha256",
+          "initial_k": 6,
+          "levels": [
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 118.9,
+              "expected_eps_pg_bits": 90.0,
+              "expected_eps_query_bits": 100.2,
+              "fold_grinding_bits": 10,
+              "grinding_bits": 0,
+              "k_recursive": 6,
+              "log_inv_rate": 1,
+              "log_msg_cols": 10,
+              "log_num_interleaved": 6,
+              "ood_samples": 0,
+              "proximity_loss": null,
+              "queries": 218,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 114.4,
+              "expected_eps_pg_bits": 95.8,
+              "expected_eps_query_bits": 100.0,
+              "fold_grinding_bits": 5,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 2,
+              "log_msg_cols": 7,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 106,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 113.9,
+              "expected_eps_pg_bits": 98.8,
+              "expected_eps_query_bits": 100.9,
+              "fold_grinding_bits": 2,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 3,
+              "log_msg_cols": 4,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 71,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            }
+          ],
+          "log_n": 16,
+          "m": 23,
+          "target_security_bits": 100
+        },
+        "segments": 7,
+        "used_columns": 30,
+        "variables": 16
+      },
+      "threads": {
+        "4": {
+          "n": 80,
+          "times": {
+            "commit_ms": {
+              "median": 1.415667,
+              "mean": 1.418097925,
+              "min": 1.322875,
+              "max": 1.526833,
+              "p95": 1.49786075
+            },
+            "lincheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            },
+            "open_ms": {
+              "median": 1.115354,
+              "mean": 1.14702235,
+              "min": 0.9659169999999999,
+              "max": 1.679208,
+              "p95": 1.40757085
+            },
+            "piop_ms": {
+              "median": 5.413396,
+              "mean": 5.57092865,
+              "min": 5.054875,
+              "max": 16.350791,
+              "p95": 5.802514599999999
+            },
+            "total_ms": {
+              "median": 9.2159585,
+              "mean": 9.43607085,
+              "min": 8.940583,
+              "max": 20.8125,
+              "p95": 10.20201525
+            },
+            "witness_ms": {
+              "median": 1.2688964999999999,
+              "mean": 1.293743775,
+              "min": 1.159667,
+              "max": 1.724041,
+              "p95": 1.5651624999999998
+            },
+            "zerocheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            }
+          },
+          "verify_ms": {
+            "median": 0.5479375,
+            "mean": 0.5498323375,
+            "min": 0.517917,
+            "max": 0.60525,
+            "p95": 0.58544435
+          },
+          "proof_bytes": {
+            "median": 296156.0,
+            "mean": 296208,
+            "min": 295148,
+            "max": 297324,
+            "p95": 297130.4
+          },
+          "piop_bytes": {
+            "median": 20948.0,
+            "mean": 20948,
+            "min": 20948,
+            "max": 20948,
+            "p95": 20948.0
+          },
+          "pcs_bytes": {
+            "median": 275168.0,
+            "mean": 275220,
+            "min": 274160,
+            "max": 276336,
+            "p95": 276142.4
+          },
+          "pcs_total_ms": {
+            "median": 2.5254165,
+            "mean": 2.565120275,
+            "min": 2.368542,
+            "max": 3.159,
+            "p95": 2.82904935
+          },
+          "run_medians": {
+            "a": 9.168729,
+            "b": 9.2501875
+          }
+        },
+        "8": {
+          "n": 80,
+          "times": {
+            "commit_ms": {
+              "median": 1.383709,
+              "mean": 1.383313025,
+              "min": 1.263167,
+              "max": 1.54375,
+              "p95": 1.4503892500000004
+            },
+            "lincheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            },
+            "open_ms": {
+              "median": 1.2343125000000001,
+              "mean": 1.237665125,
+              "min": 0.949083,
+              "max": 1.60175,
+              "p95": 1.4862869
+            },
+            "piop_ms": {
+              "median": 6.0253125,
+              "mean": 6.016942225,
+              "min": 5.510542,
+              "max": 7.422667,
+              "p95": 6.5862423
+            },
+            "total_ms": {
+              "median": 9.878604,
+              "mean": 9.9012698125,
+              "min": 9.241584000000001,
+              "max": 11.50075,
+              "p95": 10.485608349999998
+            },
+            "witness_ms": {
+              "median": 1.243583,
+              "mean": 1.256855725,
+              "min": 1.123416,
+              "max": 1.5290830000000002,
+              "p95": 1.4443603999999999
+            },
+            "zerocheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            }
+          },
+          "verify_ms": {
+            "median": 0.5436665,
+            "mean": 0.5455478875,
+            "min": 0.52425,
+            "max": 0.590916,
+            "p95": 0.56887435
+          },
+          "proof_bytes": {
+            "median": 296156.0,
+            "mean": 296208,
+            "min": 295148,
+            "max": 297324,
+            "p95": 297130.4
+          },
+          "piop_bytes": {
+            "median": 20948.0,
+            "mean": 20948,
+            "min": 20948,
+            "max": 20948,
+            "p95": 20948.0
+          },
+          "pcs_bytes": {
+            "median": 275168.0,
+            "mean": 275220,
+            "min": 274160,
+            "max": 276336,
+            "p95": 276142.4
+          },
+          "pcs_total_ms": {
+            "median": 2.6129585000000004,
+            "mean": 2.62097815,
+            "min": 2.317707,
+            "max": 3.1455,
+            "p95": 2.8913458000000003
+          },
+          "run_medians": {
+            "a": 9.963083000000001,
+            "b": 9.808229
+          }
+        }
+      }
+    },
+    "gkr_7_middle": {
+      "shape": {
+        "field_elements": 131072,
+        "gates": null,
+        "gkr_layers": 9,
+        "identity_slots": 6,
+        "matrix_nonzero_entries": null,
+        "name": "gkr_7_middle",
+        "padded_columns": 64,
+        "params": {
+          "log_batch_size": 6,
+          "log_inv_rate": 1,
+          "m": 24,
+          "merkle_hash": "sha256",
+          "profile": "fast"
+        },
+        "polynomials": 1,
+        "raw_bytes": 2097152,
+        "security": {
+          "analysis_version": "johnson_ood_row_union_over_bchks25_thm_4_6",
+          "field": "f128",
+          "final_block": {
+            "yr_log_n": 5
+          },
+          "grinding_step": "post_commit_pre_queries",
+          "hash": "sha256",
+          "initial_k": 6,
+          "levels": [
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 118.8,
+              "expected_eps_pg_bits": 89.0,
+              "expected_eps_query_bits": 100.2,
+              "fold_grinding_bits": 11,
+              "grinding_bits": 0,
+              "k_recursive": 6,
+              "log_inv_rate": 1,
+              "log_msg_cols": 11,
+              "log_num_interleaved": 6,
+              "ood_samples": 0,
+              "proximity_loss": null,
+              "queries": 218,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 114.3,
+              "expected_eps_pg_bits": 94.8,
+              "expected_eps_query_bits": 100.0,
+              "fold_grinding_bits": 6,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 2,
+              "log_msg_cols": 8,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 106,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 113.7,
+              "expected_eps_pg_bits": 97.8,
+              "expected_eps_query_bits": 100.9,
+              "fold_grinding_bits": 3,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 3,
+              "log_msg_cols": 5,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 71,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            }
+          ],
+          "log_n": 17,
+          "m": 24,
+          "target_security_bits": 100
+        },
+        "segments": 8,
+        "used_columns": 34,
+        "variables": 17
+      },
+      "threads": {
+        "4": {
+          "n": 80,
+          "times": {
+            "commit_ms": {
+              "median": 1.8827915000000002,
+              "mean": 1.816608825,
+              "min": 1.3621670000000001,
+              "max": 3.001208,
+              "p95": 2.0462098
+            },
+            "lincheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            },
+            "open_ms": {
+              "median": 1.796375,
+              "mean": 1.8516130125,
+              "min": 1.551375,
+              "max": 2.56075,
+              "p95": 2.2921809500000005
+            },
+            "piop_ms": {
+              "median": 5.146354499999999,
+              "mean": 5.4259786375,
+              "min": 4.953166,
+              "max": 23.720417,
+              "p95": 5.4759729
+            },
+            "total_ms": {
+              "median": 10.0799995,
+              "mean": 10.4331379875,
+              "min": 9.4995,
+              "max": 33.251166999999995,
+              "p95": 10.893814599999999
+            },
+            "witness_ms": {
+              "median": 1.2943539999999998,
+              "mean": 1.33172815,
+              "min": 1.181709,
+              "max": 4.539833,
+              "p95": 1.3984812500000001
+            },
+            "zerocheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            }
+          },
+          "verify_ms": {
+            "median": 0.759979,
+            "mean": 0.760416125,
+            "min": 0.7295,
+            "max": 0.817667,
+            "p95": 0.7910979
+          },
+          "proof_bytes": {
+            "median": 306372.0,
+            "mean": 306347.2,
+            "min": 304788,
+            "max": 307796,
+            "p95": 307154.4
+          },
+          "piop_bytes": {
+            "median": 19540.0,
+            "mean": 19540,
+            "min": 19540,
+            "max": 19540,
+            "p95": 19540.0
+          },
+          "pcs_bytes": {
+            "median": 286792.0,
+            "mean": 286767.2,
+            "min": 285208,
+            "max": 288216,
+            "p95": 287574.4
+          },
+          "pcs_total_ms": {
+            "median": 3.6518955,
+            "mean": 3.6682218375,
+            "min": 3.049917,
+            "max": 4.979083,
+            "p95": 4.3964667
+          },
+          "run_medians": {
+            "a": 10.113875,
+            "b": 10.066458
+          }
+        },
+        "8": {
+          "n": 80,
+          "times": {
+            "commit_ms": {
+              "median": 1.4508955000000001,
+              "mean": 1.4562385,
+              "min": 1.295,
+              "max": 1.675333,
+              "p95": 1.60712085
+            },
+            "lincheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            },
+            "open_ms": {
+              "median": 1.9454375000000002,
+              "mean": 2.087043775,
+              "min": 1.661375,
+              "max": 10.284082999999999,
+              "p95": 2.35516185
+            },
+            "piop_ms": {
+              "median": 5.850020499999999,
+              "mean": 5.8659442375,
+              "min": 5.042667,
+              "max": 6.544375,
+              "p95": 6.41191425
+            },
+            "total_ms": {
+              "median": 10.593104,
+              "mean": 10.69074485,
+              "min": 9.795667,
+              "max": 18.497375,
+              "p95": 11.25301665
+            },
+            "witness_ms": {
+              "median": 1.2530830000000002,
+              "mean": 1.27403555,
+              "min": 1.120625,
+              "max": 1.7149999999999999,
+              "p95": 1.4494874999999998
+            },
+            "zerocheck_ms": {
+              "median": 0.0,
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "p95": 0.0
+            }
+          },
+          "verify_ms": {
+            "median": 0.7602915000000001,
+            "mean": 0.7611531625,
+            "min": 0.7341249999999999,
+            "max": 0.8254999999999999,
+            "p95": 0.78499165
+          },
+          "proof_bytes": {
+            "median": 306372.0,
+            "mean": 306347.2,
+            "min": 304788,
+            "max": 307796,
+            "p95": 307154.4
+          },
+          "piop_bytes": {
+            "median": 19540.0,
+            "mean": 19540,
+            "min": 19540,
+            "max": 19540,
+            "p95": 19540.0
+          },
+          "pcs_bytes": {
+            "median": 286792.0,
+            "mean": 286767.2,
+            "min": 285208,
+            "max": 288216,
+            "p95": 287574.4
+          },
+          "pcs_total_ms": {
+            "median": 3.4015205,
+            "mean": 3.543282275,
+            "min": 3.089125,
+            "max": 11.695082999999999,
+            "p95": 3.8811705
+          },
+          "run_medians": {
+            "a": 10.534062500000001,
+            "b": 10.619104
+          }
+        }
+      }
+    },
+    "flock_native_x7": {
+      "shape": {
+        "field_elements": 262144,
+        "gates": 90,
+        "gkr_layers": null,
+        "identity_slots": null,
+        "matrix_nonzero_entries": 2333,
+        "name": "flock_native_x7",
+        "padded_columns": 128,
+        "params": {
+          "log_batch_size": 6,
+          "log_inv_rate": 1,
+          "m": 25,
+          "merkle_hash": "sha256",
+          "profile": "fast"
+        },
+        "polynomials": 1,
+        "raw_bytes": 4194304,
+        "security": {
+          "analysis_version": "johnson_ood_row_union_over_bchks25_thm_4_6",
+          "field": "f128",
+          "final_block": {
+            "yr_log_n": 3
+          },
+          "grinding_step": "post_commit_pre_queries",
+          "hash": "sha256",
+          "initial_k": 6,
+          "levels": [
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 118.7,
+              "expected_eps_pg_bits": 88.0,
+              "expected_eps_query_bits": 100.2,
+              "fold_grinding_bits": 12,
+              "grinding_bits": 0,
+              "k_recursive": 6,
+              "log_inv_rate": 1,
+              "log_msg_cols": 12,
+              "log_num_interleaved": 6,
+              "ood_samples": 0,
+              "proximity_loss": null,
+              "queries": 218,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 114.1,
+              "expected_eps_pg_bits": 93.8,
+              "expected_eps_query_bits": 100.0,
+              "fold_grinding_bits": 7,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 2,
+              "log_msg_cols": 9,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 106,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 113.5,
+              "expected_eps_pg_bits": 96.8,
+              "expected_eps_query_bits": 100.9,
+              "fold_grinding_bits": 4,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 3,
+              "log_msg_cols": 6,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 71,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 113.1,
+              "expected_eps_pg_bits": 99.1,
+              "expected_eps_query_bits": 100.1,
+              "fold_grinding_bits": 1,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 4,
+              "log_msg_cols": 3,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 53,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            }
+          ],
+          "log_n": 18,
+          "m": 25,
+          "target_security_bits": 100
+        },
+        "segments": null,
+        "used_columns": 95,
+        "variables": 18
+      },
+      "threads": {
+        "4": {
+          "n": 80,
+          "times": {
+            "commit_ms": {
+              "median": 3.359,
+              "mean": 3.216882825,
+              "min": 2.6336250000000003,
+              "max": 3.989375,
+              "p95": 3.7659586499999995
+            },
+            "lincheck_ms": {
+              "median": 0.119146,
+              "mean": 0.1184755,
+              "min": 0.09787499999999999,
+              "max": 0.131209,
+              "p95": 0.12745415000000002
+            },
+            "open_ms": {
+              "median": 4.4401875,
+              "mean": 4.4917969,
+              "min": 3.992958,
+              "max": 7.602209,
+              "p95": 4.959586849999999
+            },
+            "piop_ms": {
+              "median": 3.083583,
+              "mean": 3.17636665,
+              "min": 2.907542,
+              "max": 7.343083,
+              "p95": 3.3531267499999995
+            },
+            "total_ms": {
+              "median": 11.6018955,
+              "mean": 11.7373655875,
+              "min": 10.679333,
+              "max": 15.341667,
+              "p95": 12.541416350000002
+            },
+            "witness_ms": {
+              "median": 0.8289789999999999,
+              "mean": 0.8512394625,
+              "min": 0.762875,
+              "max": 1.288583,
+              "p95": 0.9982270999999998
+            },
+            "zerocheck_ms": {
+              "median": 2.8076665,
+              "mean": 2.8975812375,
+              "min": 2.6987080000000003,
+              "max": 7.01,
+              "p95": 3.0858785000000006
+            }
+          },
+          "verify_ms": {
+            "median": 0.49279150000000005,
+            "mean": 0.4957333,
+            "min": 0.465458,
+            "max": 0.577083,
+            "p95": 0.5158877999999999
+          },
+          "proof_bytes": {
+            "median": 310524.0,
+            "mean": 310534.4,
+            "min": 309180,
+            "max": 311772,
+            "p95": 311420.0
+          },
+          "piop_bytes": {
+            "median": 3620.0,
+            "mean": 3620,
+            "min": 3620,
+            "max": 3620,
+            "p95": 3620.0
+          },
+          "pcs_bytes": {
+            "median": 306864.0,
+            "mean": 306874.4,
+            "min": 305520,
+            "max": 308112,
+            "p95": 307760.0
+          },
+          "pcs_total_ms": {
+            "median": 7.7429785,
+            "mean": 7.708679725,
+            "min": 6.704416,
+            "max": 11.217376,
+            "p95": 8.31945385
+          },
+          "run_medians": {
+            "a": 11.548479,
+            "b": 11.716583499999999
+          }
+        },
+        "8": {
+          "n": 80,
+          "times": {
+            "commit_ms": {
+              "median": 2.6013124999999997,
+              "mean": 2.6162125125,
+              "min": 2.3912500000000003,
+              "max": 2.998792,
+              "p95": 2.89797295
+            },
+            "lincheck_ms": {
+              "median": 0.1100835,
+              "mean": 0.1163890125,
+              "min": 0.088125,
+              "max": 0.181958,
+              "p95": 0.156034
+            },
+            "open_ms": {
+              "median": 5.018042,
+              "mean": 5.015144275,
+              "min": 4.4643749999999995,
+              "max": 6.182041999999999,
+              "p95": 5.5149351000000015
+            },
+            "piop_ms": {
+              "median": 3.2140625,
+              "mean": 3.2410359125,
+              "min": 2.812167,
+              "max": 3.91675,
+              "p95": 3.61395415
+            },
+            "total_ms": {
+              "median": 11.655895999999998,
+              "mean": 11.7335551875,
+              "min": 10.929167,
+              "max": 13.103667,
+              "p95": 12.515976799999999
+            },
+            "witness_ms": {
+              "median": 0.8448125,
+              "mean": 0.8604156375,
+              "min": 0.733208,
+              "max": 1.22525,
+              "p95": 1.0010604000000003
+            },
+            "zerocheck_ms": {
+              "median": 2.934667,
+              "mean": 2.9633099125,
+              "min": 2.5887089999999997,
+              "max": 3.556666,
+              "p95": 3.3198646000000003
+            }
+          },
+          "verify_ms": {
+            "median": 0.4910414999999999,
+            "mean": 0.49341355,
+            "min": 0.474541,
+            "max": 0.533666,
+            "p95": 0.52434345
+          },
+          "proof_bytes": {
+            "median": 310524.0,
+            "mean": 310534.4,
+            "min": 309180,
+            "max": 311772,
+            "p95": 311420.0
+          },
+          "piop_bytes": {
+            "median": 3620.0,
+            "mean": 3620,
+            "min": 3620,
+            "max": 3620,
+            "p95": 3620.0
+          },
+          "pcs_bytes": {
+            "median": 306864.0,
+            "mean": 306874.4,
+            "min": 305520,
+            "max": 308112,
+            "p95": 307760.0
+          },
+          "pcs_total_ms": {
+            "median": 7.578145,
+            "mean": 7.6313567875,
+            "min": 6.981333,
+            "max": 8.889916999999999,
+            "p95": 8.239850300000002
+          },
+          "run_medians": {
+            "a": 11.609729,
+            "b": 11.759187
+          }
+        }
+      }
+    }
+  },
+  "paired_ratios": {
+    "gkr_2_middle_over_gkr_3_middle_t4": {
+      "median": 0.986938918627319,
+      "mean": 0.986014827322192,
+      "min": 0.8792929396723741,
+      "max": 1.0636798416621591,
+      "p95": 1.0442860652261505
+    },
+    "gkr_2_middle_over_gkr_3_middle_t8": {
+      "median": 0.9809698233895433,
+      "mean": 0.9939681245255753,
+      "min": 0.7643985587772324,
+      "max": 1.889262109846546,
+      "p95": 1.0878098402051877
+    },
+    "gkr_6_middle_over_gkr_7_middle_t4": {
+      "median": 0.9183235823056631,
+      "mean": 0.9138118434103528,
+      "min": 0.6259178813182709,
+      "max": 1.0472963845542829,
+      "p95": 1.004155277226342
+    },
+    "gkr_6_middle_over_gkr_7_middle_t8": {
+      "median": 0.9311638186934846,
+      "mean": 0.9307198325254493,
+      "min": 0.5224570513383655,
+      "max": 1.0851897674976851,
+      "p95": 0.9977844614462996
+    },
+    "gkr_6_middle_over_gkr_3_middle_t4": {
+      "median": 0.9324467609188701,
+      "mean": 0.9514168205686052,
+      "min": 0.8408965303221466,
+      "max": 2.0477607164668297,
+      "p95": 0.995890151744526
+    },
+    "gkr_6_middle_over_gkr_3_middle_t8": {
+      "median": 0.9306144433632615,
+      "mean": 0.9343433320732132,
+      "min": 0.6913331425555085,
+      "max": 1.1317733199969926,
+      "p95": 1.0136426279390351
+    },
+    "gkr_6_middle_over_flock_native_x7_t4": {
+      "median": 0.794283886199121,
+      "mean": 0.8067301593993956,
+      "min": 0.602484947549328,
+      "max": 1.694921051493595,
+      "p95": 0.9020267933034215
+    },
+    "gkr_6_middle_over_flock_native_x7_t8": {
+      "median": 0.8438165424708015,
+      "mean": 0.8447888883908551,
+      "min": 0.7385120784154511,
+      "max": 0.9415493190668168,
+      "p95": 0.9205295479487474
+    }
+  }
+}

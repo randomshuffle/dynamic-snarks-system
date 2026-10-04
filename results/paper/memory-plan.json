@@ -1,0 +1,43 @@
+{
+  "trace_log": 23,
+  "gates": 8388608,
+  "initialization_extrapolated_gib": [
+    135.60821151733398,
+    136.71341514587402
+  ],
+  "initialization_with_25_percent_margin_gib": 170.89176893234253,
+  "initial_round_states_alone_gib": 88.0,
+  "updates": {
+    "sweep_worst_case": {
+      "max_distinct_gates": 5120,
+      "padded_hash_rows_bound": 524288,
+      "padded_boundary_rows_bound": 262144,
+      "auxiliary_fields_bound": 2097152,
+      "transition_allocation_estimate_gib": 3.5,
+      "retained_state_reserve_gib": 32.0,
+      "overlay_reserve_gib": 0.09521484375,
+      "planning_peak_gib": 44.4940185546875
+    },
+    "one_gate_10000": {
+      "max_distinct_gates": 10000,
+      "padded_hash_rows_bound": 1048576,
+      "padded_boundary_rows_bound": 524288,
+      "auxiliary_fields_bound": 4194304,
+      "transition_allocation_estimate_gib": 7.0,
+      "retained_state_reserve_gib": 32.0,
+      "overlay_reserve_gib": 0.18596649169921875,
+      "planning_peak_gib": 48.98245811462402
+    },
+    "128_gate_1000": {
+      "max_distinct_gates": 128000,
+      "padded_hash_rows_bound": 8388608,
+      "padded_boundary_rows_bound": 4194304,
+      "auxiliary_fields_bound": 33554432,
+      "transition_allocation_estimate_gib": 56.0,
+      "retained_state_reserve_gib": 32.0,
+      "overlay_reserve_gib": 2.38037109375,
+      "planning_peak_gib": 112.9754638671875
+    }
+  },
+  "suite_planning_peak_gib": 170.89176893234253
+}

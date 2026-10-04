@@ -1,4 +1,0 @@
-phase,update_gates,samples,expected_samples,complete,mean_field_elements,mean_blake3_hashes,mean_poseidon_hashes,mean_payload_bytes,min_payload_bytes,max_payload_bytes,mean_serialized_bytes,min_serialized_bytes,max_serialized_bytes
-baseline,1,40,40,True,7266,3220,0,335552,335552,335552,462123.925,461572,462515
-initial,0,1,1,True,16114,4615,525,663328,663328,663328,870200,870200,870200
-update,1,40,40,True,49604.45,15910.175,525,2096468,1053600,3345248,2763460.575,1373003,4401149

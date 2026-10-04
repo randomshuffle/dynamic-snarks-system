@@ -1,0 +1,466 @@
+{
+  "confirm-a-n18-c1-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "confirm-a-n18-c1-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "confirm-a-n18-c1-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "confirm-b-n18-c1-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "confirm-b-n18-c1-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "confirm-b-n18-c1-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n17-c1-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n17-c1-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n17-c1-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n17-c3-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "63aa9d16146350ea9e9e4aa21d02b45b6b1517249784c14dd3fc0ad1f1deddf4"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n17-c3-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "63aa9d16146350ea9e9e4aa21d02b45b6b1517249784c14dd3fc0ad1f1deddf4"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n17-c3-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "63aa9d16146350ea9e9e4aa21d02b45b6b1517249784c14dd3fc0ad1f1deddf4"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n17-c7-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "dd39ae83deea224defe4f381e35cadff32f54084b2b86c691fd9adbcf10b8308"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n17-c7-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "dd39ae83deea224defe4f381e35cadff32f54084b2b86c691fd9adbcf10b8308"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n17-c7-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "dd39ae83deea224defe4f381e35cadff32f54084b2b86c691fd9adbcf10b8308"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n18-c1-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n18-c1-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n18-c1-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n18-c3-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "d148ecdca57a3e934fdeec9c340e279ee8536f55d6cbb9d37b78fea204ecfdfe"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n18-c3-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "d148ecdca57a3e934fdeec9c340e279ee8536f55d6cbb9d37b78fea204ecfdfe"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n18-c3-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "d148ecdca57a3e934fdeec9c340e279ee8536f55d6cbb9d37b78fea204ecfdfe"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n18-c7-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "39543746da20c47f7b0bcdc30ba07cc6b19c72f3880fb07db991c804958f84e2"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n18-c7-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "39543746da20c47f7b0bcdc30ba07cc6b19c72f3880fb07db991c804958f84e2"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-a-n18-c7-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "39543746da20c47f7b0bcdc30ba07cc6b19c72f3880fb07db991c804958f84e2"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n17-c1-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n17-c1-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n17-c1-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n17-c3-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "63aa9d16146350ea9e9e4aa21d02b45b6b1517249784c14dd3fc0ad1f1deddf4"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n17-c3-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "63aa9d16146350ea9e9e4aa21d02b45b6b1517249784c14dd3fc0ad1f1deddf4"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n17-c3-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "63aa9d16146350ea9e9e4aa21d02b45b6b1517249784c14dd3fc0ad1f1deddf4"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n17-c7-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "dd39ae83deea224defe4f381e35cadff32f54084b2b86c691fd9adbcf10b8308"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n17-c7-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "dd39ae83deea224defe4f381e35cadff32f54084b2b86c691fd9adbcf10b8308"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n17-c7-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "dd39ae83deea224defe4f381e35cadff32f54084b2b86c691fd9adbcf10b8308"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n18-c1-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n18-c1-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n18-c1-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n18-c3-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "d148ecdca57a3e934fdeec9c340e279ee8536f55d6cbb9d37b78fea204ecfdfe"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n18-c3-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "d148ecdca57a3e934fdeec9c340e279ee8536f55d6cbb9d37b78fea204ecfdfe"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n18-c3-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "d148ecdca57a3e934fdeec9c340e279ee8536f55d6cbb9d37b78fea204ecfdfe"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n18-c7-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "39543746da20c47f7b0bcdc30ba07cc6b19c72f3880fb07db991c804958f84e2"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n18-c7-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "39543746da20c47f7b0bcdc30ba07cc6b19c72f3880fb07db991c804958f84e2"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "control-b-n18-c7-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "39543746da20c47f7b0bcdc30ba07cc6b19c72f3880fb07db991c804958f84e2"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "prior-n17-c1-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "prior-n18-c1-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "profile-n17-c1-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "profile-n17-c1-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "profile-n17-c1-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+      "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+      "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "profile-n18-c1-coefficients": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "profile-n18-c1-evaluations": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "profile-n18-c1-factored": {
+    "verified_measurements": 25,
+    "proofs_identical_to_prior": {
+      "baseline-final.bin": "4b22e4c420d849082545423bcc3f21036308c0a0972adda2fc68ac5ca37a9cb7",
+      "initial.bin": "695f004d0d16410688583e4ccd7933998394c8dd55769cdb98d251e2623255c4",
+      "update-1-final.bin": "22df815f46d4108ca44a7365f6f846b6cc2710088c864690cddddd00376c7641"
+    },
+    "workloads_arities_and_proof_sizes_identical": true
+  },
+  "changed_prior_sources": [
+    "experiments/dynamic-ligerito/Cargo.toml",
+    "experiments/dynamic-ligerito/README.md",
+    "experiments/dynamic-ligerito/scripts/run.py",
+    "experiments/dynamic-ligerito/src/bin/whole_system.rs",
+    "experiments/dynamic-ligerito/src/hash_gkr.rs",
+    "experiments/dynamic-ligerito/src/hash_gkr/scheduling.rs"
+  ],
+  "new_source_files": [
+    "experiments/dynamic-ligerito/src/hash_gkr/message.rs",
+    "experiments/dynamic-ligerito/src/bin/hash_message_bench.rs"
+  ],
+  "unchanged_field_hash_pcs_and_verifier": true,
+  "microbench_verified_and_identical_proofs": 432
+}

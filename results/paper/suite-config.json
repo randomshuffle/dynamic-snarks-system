@@ -1,0 +1,16 @@
+{
+  "trace_log": 23,
+  "threads": 32,
+  "memory_limit_gib": 216.0,
+  "hierarchy_base": 2,
+  "plaintext_kib": 2048,
+  "sweep_revisions": 40,
+  "one_gate_revisions": 10000,
+  "large_gate_revisions": 1000,
+  "one_gate_baseline_every": 100,
+  "large_gate_baseline_every": 10,
+  "smoke": false,
+  "seed": 20260909,
+  "no_plot": false,
+  "binary_sha256": "d45675391706555b49937b05b54133af9a2f58c8670f04fb416cd8e1cf5db693"
+}

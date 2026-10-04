@@ -1,0 +1,6 @@
+{
+  "reason": "User explicitly stopped current benchmark and reduced the requested batch to 2^16.",
+  "terminated_runner_session_exit": 143,
+  "no_benchmark_processes_remaining_verified": true,
+  "results_incomplete": true
+}

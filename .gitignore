@@ -1,2 +1,15 @@
-/target/
+# Local build products and Python environments.
+target/
 __pycache__/
+*.pyc
+.venv/
+.DS_Store
+
+# Generated benchmark outputs and publication snapshots.
+/output/
+/tmp/
+/ec2-build/
+/SOURCE-MANIFEST.json
+
+# Original bulk artifacts and unsanitized publication backups remain local.
+/archive/local-artifacts/

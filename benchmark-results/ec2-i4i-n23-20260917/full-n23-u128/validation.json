@@ -1,9 +1,0 @@
-{
-  "complete": true,
-  "expected_samples": 361,
-  "ignored_incomplete_tail": false,
-  "missing_samples": [],
-  "proof_checkpoints": 10,
-  "proof_size_samples": 361,
-  "verified_samples": 361
-}

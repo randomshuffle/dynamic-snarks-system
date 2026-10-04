@@ -1,8 +1,0 @@
-config,variant=scalar-trace,gates=65536,seed=20260909,gate_index=36706,positions=3,samples=1,threads=8,parallel=true,rows=128,main_width=128,main_fields=32768,product_fields=4096,hash_slots=256,active_hashes=132,outer_sumcheck_rounds=54,workload_fingerprint=42870fd8c258cad74cb75c40d187dccbed499b7748a0cf3d21de443ec4260692
-timing_scope=update_including_tree_maintenance_and_public_opening; excludes_indexing_trusted_base_cloning_serialization_destruction; WHIR=fixed_half_rate_factor4_security127_pow0
-variant,update_ms,verify_ms,serialized_bytes,field_elements,blake3_hashes,payload_bytes
-scalar-trace,32.979167,17.374209,586194,8669,4202,411872
-component,commitments,serialized_bytes=932,field_elements=19,blake3_hashes=0
-component,transition_proofs,serialized_bytes=555257,field_elements=8130,blake3_hashes=4202
-component,public_input_opening,serialized_bytes=29953,field_elements=520,blake3_hashes=0
-component,outer_framing,serialized_bytes=52,field_elements=0,blake3_hashes=0

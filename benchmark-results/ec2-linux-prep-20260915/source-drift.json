@@ -1,7 +1,0 @@
-{
-  "checked_files": 125,
-  "changed_since_packaging": [
-    "docs/ec2-prep-20260915.md"
-  ],
-  "reason": "The local EC2 guide gained explicit large-run commands while the rehearsal ran. Benchmark implementation and configuration are unchanged."
-}

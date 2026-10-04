@@ -1,0 +1,39 @@
+{
+  "status": "passed",
+  "sources_matching_frozen_build": 171,
+  "results": [
+    {
+      "base": 2,
+      "decimal_peak_revision": 1337,
+      "decimal_peak_speedup": "26.19345481306048630569201970869393070322",
+      "decimal_setup_peak_revision": 1338,
+      "decimal_setup_peak_speedup": "24.56661559289636629311145882873936767703",
+      "decimal_final_speedup": "10.71384383543331973062743554419716237396",
+      "initialization_plus_updates_s": "463.179305158",
+      "proofs_verified": 10102,
+      "saved_proof_sizes_checked": 107
+    },
+    {
+      "base": 4,
+      "decimal_peak_revision": 1367,
+      "decimal_peak_speedup": "27.03023459654520635440132209439143793454",
+      "decimal_setup_peak_revision": 1393,
+      "decimal_setup_peak_speedup": "25.41489387416058380298861397664268279051",
+      "decimal_final_speedup": "11.92439391134514168196297975076213302489",
+      "initialization_plus_updates_s": "435.031468702",
+      "proofs_verified": 10102,
+      "saved_proof_sizes_checked": 107
+    },
+    {
+      "base": 8,
+      "decimal_peak_revision": 1304,
+      "decimal_peak_speedup": "26.54134232794362250891756423846601497449",
+      "decimal_setup_peak_revision": 1350,
+      "decimal_setup_peak_speedup": "24.88436349912033542973293972270330177871",
+      "decimal_final_speedup": "10.89705476754518518903545012318413580433",
+      "initialization_plus_updates_s": "436.857584477",
+      "proofs_verified": 10102,
+      "saved_proof_sizes_checked": 107
+    }
+  ]
+}

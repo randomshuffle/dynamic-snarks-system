@@ -1,0 +1,297 @@
+{
+  "updates": 1723,
+  "initial_s": 17.383678958,
+  "baseline_mean_s": 0.5155799745555556,
+  "baseline_samples": 18,
+  "baseline_revisions": [
+    1,
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900,
+    1000,
+    1100,
+    1200,
+    1300,
+    1400,
+    1500,
+    1600,
+    1700
+  ],
+  "baseline_stdev_s": 0.03989347665251687,
+  "baseline_total_method": "update count times sampled baseline mean",
+  "formula": "n * mean(sampled baseline) / (initial + sum(update[1:n]))",
+  "first_break_even_update": 35,
+  "sustained_break_even_update": 35,
+  "maximum": {
+    "updates": 428,
+    "update_prove_s": 0.014686083,
+    "mode": "direct",
+    "cumulative_update_s": 27.920158701000013,
+    "initial_s": 17.383678958,
+    "dynamic_total_s": 45.30383765900001,
+    "baseline_total_s": 220.6682291097778,
+    "amortized_initial_s": 0.0406160723317757,
+    "average_update_s": 0.06523401565654209,
+    "amortized_dynamic_s": 0.10585008798831778,
+    "speedup": 4.8708506941671885,
+    "speedup_with_setup": 4.690793309503245
+  },
+  "final": {
+    "updates": 1723,
+    "update_prove_s": 0.019538417,
+    "mode": "direct",
+    "cumulative_update_s": 174.61800509499994,
+    "initial_s": 17.383678958,
+    "dynamic_total_s": 192.00168405299993,
+    "baseline_total_s": 888.3442961592223,
+    "amortized_initial_s": 0.010089192662797447,
+    "average_update_s": 0.10134533087347646,
+    "amortized_dynamic_s": 0.11143452353627391,
+    "speedup": 4.626752627409272,
+    "speedup_with_setup": 4.585239343960047
+  },
+  "promotions": [
+    {
+      "revision": 51,
+      "prove_s": 2.186639875,
+      "polynomial_gates": 3253
+    },
+    {
+      "revision": 105,
+      "prove_s": 3.981023667,
+      "polynomial_gates": 6678
+    },
+    {
+      "revision": 159,
+      "prove_s": 2.116866292,
+      "polynomial_gates": 3444
+    },
+    {
+      "revision": 213,
+      "prove_s": 8.073853042,
+      "polynomial_gates": 13445
+    },
+    {
+      "revision": 267,
+      "prove_s": 2.112630584,
+      "polynomial_gates": 3444
+    },
+    {
+      "revision": 321,
+      "prove_s": 4.072342416,
+      "polynomial_gates": 6863
+    },
+    {
+      "revision": 375,
+      "prove_s": 2.172176792,
+      "polynomial_gates": 3442
+    },
+    {
+      "revision": 429,
+      "prove_s": 17.151637084,
+      "polynomial_gates": 26754
+    },
+    {
+      "revision": 483,
+      "prove_s": 2.253195417,
+      "polynomial_gates": 3445
+    },
+    {
+      "revision": 537,
+      "prove_s": 4.177063,
+      "polynomial_gates": 6863
+    },
+    {
+      "revision": 591,
+      "prove_s": 2.10537525,
+      "polynomial_gates": 3443
+    },
+    {
+      "revision": 645,
+      "prove_s": 8.241661375,
+      "polynomial_gates": 13643
+    },
+    {
+      "revision": 699,
+      "prove_s": 2.161456833,
+      "polynomial_gates": 3442
+    },
+    {
+      "revision": 753,
+      "prove_s": 4.199574125,
+      "polynomial_gates": 6874
+    },
+    {
+      "revision": 806,
+      "prove_s": 2.098770292,
+      "polynomial_gates": 3385
+    },
+    {
+      "revision": 860,
+      "prove_s": 22.943021209,
+      "polynomial_gates": 52144
+    },
+    {
+      "revision": 914,
+      "prove_s": 2.154077041,
+      "polynomial_gates": 3440
+    },
+    {
+      "revision": 968,
+      "prove_s": 4.095750916,
+      "polynomial_gates": 6861
+    },
+    {
+      "revision": 1022,
+      "prove_s": 2.154088834,
+      "polynomial_gates": 3434
+    },
+    {
+      "revision": 1076,
+      "prove_s": 8.190366375,
+      "polynomial_gates": 13651
+    },
+    {
+      "revision": 1130,
+      "prove_s": 2.366459167,
+      "polynomial_gates": 3440
+    },
+    {
+      "revision": 1184,
+      "prove_s": 4.729360041,
+      "polynomial_gates": 6871
+    },
+    {
+      "revision": 1238,
+      "prove_s": 2.156609583,
+      "polynomial_gates": 3447
+    },
+    {
+      "revision": 1292,
+      "prove_s": 17.501010875,
+      "polynomial_gates": 26945
+    },
+    {
+      "revision": 1346,
+      "prove_s": 2.181157083,
+      "polynomial_gates": 3441
+    },
+    {
+      "revision": 1400,
+      "prove_s": 4.216050667,
+      "polynomial_gates": 6862
+    },
+    {
+      "revision": 1454,
+      "prove_s": 2.126489583,
+      "polynomial_gates": 3444
+    },
+    {
+      "revision": 1508,
+      "prove_s": 8.378242667,
+      "polynomial_gates": 13643
+    },
+    {
+      "revision": 1562,
+      "prove_s": 2.235355834,
+      "polynomial_gates": 3443
+    },
+    {
+      "revision": 1616,
+      "prove_s": 4.214767875,
+      "polynomial_gates": 6868
+    },
+    {
+      "revision": 1670,
+      "prove_s": 2.157959042,
+      "polynomial_gates": 3443
+    }
+  ],
+  "complete": false,
+  "requested_updates": 10000,
+  "completed_updates": 1723,
+  "failed_revision": 1724,
+  "report_scope_updates": 1723,
+  "user_requested_stop": true,
+  "update_gates": 64,
+  "maximum_scope": "completed prefix only",
+  "maximum_with_setup": {
+    "updates": 859,
+    "update_prove_s": 0.016914583,
+    "mode": "direct",
+    "cumulative_update_s": 74.192637384,
+    "initial_s": 17.383678958,
+    "dynamic_total_s": 91.576316342,
+    "baseline_total_s": 442.8831981432223,
+    "amortized_initial_s": 0.020237111708963914,
+    "average_update_s": 0.08637093991152502,
+    "amortized_dynamic_s": 0.10660805162048893,
+    "speedup": 4.836219841921083,
+    "speedup_with_setup": 4.746075829316337
+  },
+  "setup": {
+    "baseline_every": 100,
+    "baseline_first": false,
+    "baseline_s": 0.138288708,
+    "dynamic_s": 1.768481083,
+    "plaintext_cap_bytes": 2097152
+  },
+  "run_metadata": {
+    "command": [
+      "/path/to/Desktop/Research/research-git/dynamic-snarks-system/benchmark-results/2026-09-22-64-gate-amortization/whole-system",
+      "19",
+      "/path/to/Desktop/Research/research-git/dynamic-snarks-system/benchmark-results/2026-09-22-64-gate-amortization/run-a",
+      "10000",
+      "6",
+      "1"
+    ],
+    "exit_code": -9,
+    "wall_seconds": 385.9819844579324,
+    "user_seconds": 1177.464517,
+    "system_seconds": 104.306831,
+    "maximum_rss_bytes": 5240209408,
+    "memory_monitor": {
+      "rss_limit_bytes": 8589934592,
+      "sampling_interval_seconds": 0.1,
+      "samples": 3635,
+      "peak_sampled_rss_bytes": 5222809600,
+      "peak_sampled_phys_footprint_bytes": 12816003200,
+      "limit_exceeded": false,
+      "error": "physical footprint exceeded 12 GiB"
+    },
+    "binary_sha256": "622b1f9bf8b5f8387ab676a7d79694d2141b2df54834164b24b189b2db8a1755",
+    "threads": 8,
+    "rustflags": "-C target-cpu=native",
+    "sequence_length": 10000,
+    "security_profile": "Ligerito Fast (100 bits per round, JohnsonOod, rate 1/2)",
+    "hash_input_bytes": 64,
+    "digest_bytes": 32,
+    "gkr_segments": 2,
+    "gkr_depth": 33,
+    "load_average_start": [
+      2.67724609375,
+      2.76904296875,
+      2.6474609375
+    ],
+    "load_average_end": [
+      5.28857421875,
+      4.78076171875,
+      3.74755859375
+    ],
+    "hash_checkpoints": 1,
+    "initial_hash_checkpoints": 1,
+    "hash_kernel": "factored",
+    "update_logs": "6",
+    "small_oracle": "hybrid",
+    "plaintext_cap_kib": 2048,
+    "baseline_every": 100,
+    "baseline_first": false
+  },
+  "verified_samples": 1742
+}

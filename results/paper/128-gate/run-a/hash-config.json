@@ -1,0 +1,13 @@
+{
+  "boundaries": [
+    0,
+    33,
+    66
+  ],
+  "checkpoint_width": 4,
+  "gkr_depth": 33,
+  "hash_kernel": "factored",
+  "initial_checkpoints": 1,
+  "segments": 2,
+  "update_checkpoints": 1
+}

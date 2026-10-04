@@ -1,0 +1,11 @@
+{
+  "baseline_every": 10,
+  "baseline_first": false,
+  "baseline_s": 2.867369454,
+  "dynamic_s": 11.659265441,
+  "hierarchy_base": 2,
+  "hierarchy_levels": 25,
+  "hierarchy_slots": 25,
+  "plaintext_cap_bytes": 2097152,
+  "tables_per_level": 1
+}

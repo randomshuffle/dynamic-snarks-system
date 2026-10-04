@@ -1,0 +1,1058 @@
+{
+  "measured_verified_proofs": 400,
+  "total_verified_proofs": 450,
+  "backends": {
+    "gkr_1_middle": {
+      "shape": {
+        "field_elements": 32768,
+        "gates": null,
+        "gkr_layers": 33,
+        "matrix_nonzero_entries": null,
+        "name": "gkr_1_middle",
+        "params": {
+          "log_batch_size": 6,
+          "log_inv_rate": 1,
+          "m": 22,
+          "merkle_hash": "sha256",
+          "profile": "fast"
+        },
+        "polynomials": 1,
+        "raw_bytes": 524288,
+        "security": {
+          "analysis_version": "johnson_ood_row_union_over_bchks25_thm_4_6",
+          "field": "f128",
+          "final_block": {
+            "yr_log_n": 3
+          },
+          "grinding_step": "post_commit_pre_queries",
+          "hash": "sha256",
+          "initial_k": 6,
+          "levels": [
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 118.9,
+              "expected_eps_pg_bits": 91.0,
+              "expected_eps_query_bits": 100.2,
+              "fold_grinding_bits": 9,
+              "grinding_bits": 0,
+              "k_recursive": 6,
+              "log_inv_rate": 1,
+              "log_msg_cols": 9,
+              "log_num_interleaved": 6,
+              "ood_samples": 0,
+              "proximity_loss": null,
+              "queries": 218,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 114.5,
+              "expected_eps_pg_bits": 96.8,
+              "expected_eps_query_bits": 100.0,
+              "fold_grinding_bits": 4,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 2,
+              "log_msg_cols": 6,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 106,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 113.1,
+              "expected_eps_pg_bits": 99.1,
+              "expected_eps_query_bits": 100.1,
+              "fold_grinding_bits": 1,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 4,
+              "log_msg_cols": 3,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 53,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            }
+          ],
+          "log_n": 15,
+          "m": 22,
+          "target_security_bits": 100
+        },
+        "used_columns": 10,
+        "variables": 15
+      },
+      "times": {
+        "commit_ms": {
+          "n": 80,
+          "median": 0.6424165000000001,
+          "mean": 0.6503062625,
+          "min": 0.592666,
+          "max": 0.96325,
+          "p95": 0.75233925
+        },
+        "lincheck_ms": {
+          "n": 80,
+          "median": 0.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "p95": 0.0
+        },
+        "open_ms": {
+          "n": 80,
+          "median": 0.80775,
+          "mean": 0.8158073,
+          "min": 0.586375,
+          "max": 1.327834,
+          "p95": 1.0580295
+        },
+        "piop_ms": {
+          "n": 80,
+          "median": 8.964146,
+          "mean": 8.7369900875,
+          "min": 7.369,
+          "max": 9.761959000000001,
+          "p95": 9.61596665
+        },
+        "total_ms": {
+          "n": 80,
+          "median": 11.582667,
+          "mean": 11.4064021625,
+          "min": 9.877709,
+          "max": 12.880959,
+          "p95": 12.389781900000001
+        },
+        "witness_ms": {
+          "n": 80,
+          "median": 1.1791255,
+          "mean": 1.200520875,
+          "min": 1.091583,
+          "max": 1.8952909999999998,
+          "p95": 1.3538110500000002
+        },
+        "zerocheck_ms": {
+          "n": 80,
+          "median": 0.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "p95": 0.0
+        }
+      },
+      "pcs_total_ms": {
+        "n": 80,
+        "median": 1.4534165,
+        "mean": 1.4661135625,
+        "min": 1.198,
+        "max": 1.999543,
+        "p95": 1.7168570999999997
+      },
+      "verify_ms": {
+        "n": 80,
+        "median": 0.4725005,
+        "mean": 0.473379125,
+        "min": 0.45,
+        "max": 0.530417,
+        "p95": 0.4975916500000001
+      },
+      "proof_bytes": {
+        "n": 80,
+        "median": 321588.0,
+        "mean": 321511.2,
+        "min": 320820,
+        "max": 322132,
+        "p95": 322034.4
+      },
+      "piop_bytes": {
+        "n": 80,
+        "median": 57172.0,
+        "mean": 57172,
+        "min": 57172,
+        "max": 57172,
+        "p95": 57172.0
+      },
+      "pcs_bytes": {
+        "n": 80,
+        "median": 264376.0,
+        "mean": 264299.2,
+        "min": 263608,
+        "max": 264920,
+        "p95": 264822.4
+      },
+      "runs": {
+        "run-1": {
+          "n": 40,
+          "median": 11.204917,
+          "mean": 11.190456275,
+          "min": 9.877709,
+          "max": 12.509833,
+          "p95": 12.1843628
+        },
+        "run-2": {
+          "n": 40,
+          "median": 11.771875,
+          "mean": 11.62234805,
+          "min": 10.359667,
+          "max": 12.880959,
+          "p95": 12.502631599999999
+        }
+      }
+    },
+    "gkr_3_middle": {
+      "shape": {
+        "field_elements": 65536,
+        "gates": null,
+        "gkr_layers": 17,
+        "matrix_nonzero_entries": null,
+        "name": "gkr_3_middle",
+        "params": {
+          "log_batch_size": 6,
+          "log_inv_rate": 1,
+          "m": 23,
+          "merkle_hash": "sha256",
+          "profile": "fast"
+        },
+        "polynomials": 1,
+        "raw_bytes": 1048576,
+        "security": {
+          "analysis_version": "johnson_ood_row_union_over_bchks25_thm_4_6",
+          "field": "f128",
+          "final_block": {
+            "yr_log_n": 4
+          },
+          "grinding_step": "post_commit_pre_queries",
+          "hash": "sha256",
+          "initial_k": 6,
+          "levels": [
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 118.9,
+              "expected_eps_pg_bits": 90.0,
+              "expected_eps_query_bits": 100.2,
+              "fold_grinding_bits": 10,
+              "grinding_bits": 0,
+              "k_recursive": 6,
+              "log_inv_rate": 1,
+              "log_msg_cols": 10,
+              "log_num_interleaved": 6,
+              "ood_samples": 0,
+              "proximity_loss": null,
+              "queries": 218,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 114.4,
+              "expected_eps_pg_bits": 95.8,
+              "expected_eps_query_bits": 100.0,
+              "fold_grinding_bits": 5,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 2,
+              "log_msg_cols": 7,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 106,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 113.9,
+              "expected_eps_pg_bits": 98.8,
+              "expected_eps_query_bits": 100.9,
+              "fold_grinding_bits": 2,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 3,
+              "log_msg_cols": 4,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 71,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            }
+          ],
+          "log_n": 16,
+          "m": 23,
+          "target_security_bits": 100
+        },
+        "used_columns": 18,
+        "variables": 16
+      },
+      "times": {
+        "commit_ms": {
+          "n": 80,
+          "median": 1.3377705,
+          "mean": 1.3441082875,
+          "min": 1.250708,
+          "max": 1.611167,
+          "p95": 1.4527476000000001
+        },
+        "lincheck_ms": {
+          "n": 80,
+          "median": 0.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "p95": 0.0
+        },
+        "open_ms": {
+          "n": 80,
+          "median": 1.191646,
+          "mean": 1.2092026125,
+          "min": 0.8858750000000001,
+          "max": 1.642625,
+          "p95": 1.5389982
+        },
+        "piop_ms": {
+          "n": 80,
+          "median": 7.1535625000000005,
+          "mean": 7.0467515875,
+          "min": 5.975333,
+          "max": 8.028833,
+          "p95": 7.858190199999999
+        },
+        "total_ms": {
+          "n": 80,
+          "median": 10.9575005,
+          "mean": 10.8277598875,
+          "min": 9.430458,
+          "max": 12.228458,
+          "p95": 11.69790385
+        },
+        "witness_ms": {
+          "n": 80,
+          "median": 1.209854,
+          "mean": 1.2232239375,
+          "min": 1.1061249999999998,
+          "max": 1.697625,
+          "p95": 1.3635107
+        },
+        "zerocheck_ms": {
+          "n": 80,
+          "median": 0.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "p95": 0.0
+        }
+      },
+      "pcs_total_ms": {
+        "n": 80,
+        "median": 2.5284785000000003,
+        "mean": 2.5533109,
+        "min": 2.183583,
+        "max": 3.131333,
+        "p95": 2.9273264500000007
+      },
+      "verify_ms": {
+        "n": 80,
+        "median": 0.539271,
+        "mean": 0.543453675,
+        "min": 0.512833,
+        "max": 0.619625,
+        "p95": 0.5787381
+      },
+      "proof_bytes": {
+        "n": 80,
+        "median": 307180.0,
+        "mean": 307187.2,
+        "min": 306316,
+        "max": 308268,
+        "p95": 308104.8
+      },
+      "piop_bytes": {
+        "n": 80,
+        "median": 31828.0,
+        "mean": 31828,
+        "min": 31828,
+        "max": 31828,
+        "p95": 31828.0
+      },
+      "pcs_bytes": {
+        "n": 80,
+        "median": 275312.0,
+        "mean": 275319.2,
+        "min": 274448,
+        "max": 276400,
+        "p95": 276236.8
+      },
+      "runs": {
+        "run-1": {
+          "n": 40,
+          "median": 10.586916500000001,
+          "mean": 10.617534299999999,
+          "min": 9.430458,
+          "max": 12.097291,
+          "p95": 11.69790385
+        },
+        "run-2": {
+          "n": 40,
+          "median": 11.035708,
+          "mean": 11.037985475,
+          "min": 9.836167,
+          "max": 12.228458,
+          "p95": 11.786125349999999
+        }
+      }
+    },
+    "gkr_7_middle": {
+      "shape": {
+        "field_elements": 131072,
+        "gates": null,
+        "gkr_layers": 9,
+        "matrix_nonzero_entries": null,
+        "name": "gkr_7_middle",
+        "params": {
+          "log_batch_size": 6,
+          "log_inv_rate": 1,
+          "m": 24,
+          "merkle_hash": "sha256",
+          "profile": "fast"
+        },
+        "polynomials": 1,
+        "raw_bytes": 2097152,
+        "security": {
+          "analysis_version": "johnson_ood_row_union_over_bchks25_thm_4_6",
+          "field": "f128",
+          "final_block": {
+            "yr_log_n": 5
+          },
+          "grinding_step": "post_commit_pre_queries",
+          "hash": "sha256",
+          "initial_k": 6,
+          "levels": [
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 118.8,
+              "expected_eps_pg_bits": 89.0,
+              "expected_eps_query_bits": 100.2,
+              "fold_grinding_bits": 11,
+              "grinding_bits": 0,
+              "k_recursive": 6,
+              "log_inv_rate": 1,
+              "log_msg_cols": 11,
+              "log_num_interleaved": 6,
+              "ood_samples": 0,
+              "proximity_loss": null,
+              "queries": 218,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 114.3,
+              "expected_eps_pg_bits": 94.8,
+              "expected_eps_query_bits": 100.0,
+              "fold_grinding_bits": 6,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 2,
+              "log_msg_cols": 8,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 106,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 113.7,
+              "expected_eps_pg_bits": 97.8,
+              "expected_eps_query_bits": 100.9,
+              "fold_grinding_bits": 3,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 3,
+              "log_msg_cols": 5,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 71,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            }
+          ],
+          "log_n": 17,
+          "m": 24,
+          "target_security_bits": 100
+        },
+        "used_columns": 34,
+        "variables": 17
+      },
+      "times": {
+        "commit_ms": {
+          "n": 80,
+          "median": 1.4517705,
+          "mean": 1.4677807999999999,
+          "min": 1.278125,
+          "max": 2.139916,
+          "p95": 1.6711896
+        },
+        "lincheck_ms": {
+          "n": 80,
+          "median": 0.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "p95": 0.0
+        },
+        "open_ms": {
+          "n": 80,
+          "median": 1.9702915,
+          "mean": 2.0064714375,
+          "min": 1.524875,
+          "max": 2.8922079999999997,
+          "p95": 2.4344628000000004
+        },
+        "piop_ms": {
+          "n": 80,
+          "median": 6.02,
+          "mean": 5.9675843875000005,
+          "min": 5.187334,
+          "max": 7.753834,
+          "p95": 6.39539405
+        },
+        "total_ms": {
+          "n": 80,
+          "median": 10.600896,
+          "mean": 10.7211261125,
+          "min": 9.714417,
+          "max": 14.936417,
+          "p95": 11.674850649999998
+        },
+        "witness_ms": {
+          "n": 80,
+          "median": 1.2221250000000001,
+          "mean": 1.271629175,
+          "min": 1.123916,
+          "max": 2.1415420000000003,
+          "p95": 1.6296940500000003
+        },
+        "zerocheck_ms": {
+          "n": 80,
+          "median": 0.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "p95": 0.0
+        }
+      },
+      "pcs_total_ms": {
+        "n": 80,
+        "median": 3.4290215,
+        "mean": 3.4742522375,
+        "min": 3.001834,
+        "max": 5.032124,
+        "p95": 4.04259825
+      },
+      "verify_ms": {
+        "n": 80,
+        "median": 0.752042,
+        "mean": 0.7527874125,
+        "min": 0.7250829999999999,
+        "max": 0.8524160000000001,
+        "p95": 0.7899693500000001
+      },
+      "proof_bytes": {
+        "n": 80,
+        "median": 306372.0,
+        "mean": 306347.2,
+        "min": 304788,
+        "max": 307796,
+        "p95": 307154.4
+      },
+      "piop_bytes": {
+        "n": 80,
+        "median": 19540.0,
+        "mean": 19540,
+        "min": 19540,
+        "max": 19540,
+        "p95": 19540.0
+      },
+      "pcs_bytes": {
+        "n": 80,
+        "median": 286792.0,
+        "mean": 286767.2,
+        "min": 285208,
+        "max": 288216,
+        "p95": 287574.4
+      },
+      "runs": {
+        "run-1": {
+          "n": 40,
+          "median": 10.562292,
+          "mean": 10.6670636,
+          "min": 9.714417,
+          "max": 13.406166,
+          "p95": 11.99874795
+        },
+        "run-2": {
+          "n": 40,
+          "median": 10.6218755,
+          "mean": 10.775188625,
+          "min": 9.987834,
+          "max": 14.936417,
+          "p95": 11.602689899999998
+        }
+      }
+    },
+    "flock_native_x7": {
+      "shape": {
+        "field_elements": 262144,
+        "gates": 90,
+        "gkr_layers": null,
+        "matrix_nonzero_entries": 2333,
+        "name": "flock_native_x7",
+        "params": {
+          "log_batch_size": 6,
+          "log_inv_rate": 1,
+          "m": 25,
+          "merkle_hash": "sha256",
+          "profile": "fast"
+        },
+        "polynomials": 1,
+        "raw_bytes": 4194304,
+        "security": {
+          "analysis_version": "johnson_ood_row_union_over_bchks25_thm_4_6",
+          "field": "f128",
+          "final_block": {
+            "yr_log_n": 3
+          },
+          "grinding_step": "post_commit_pre_queries",
+          "hash": "sha256",
+          "initial_k": 6,
+          "levels": [
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 118.7,
+              "expected_eps_pg_bits": 88.0,
+              "expected_eps_query_bits": 100.2,
+              "fold_grinding_bits": 12,
+              "grinding_bits": 0,
+              "k_recursive": 6,
+              "log_inv_rate": 1,
+              "log_msg_cols": 12,
+              "log_num_interleaved": 6,
+              "ood_samples": 0,
+              "proximity_loss": null,
+              "queries": 218,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 114.1,
+              "expected_eps_pg_bits": 93.8,
+              "expected_eps_query_bits": 100.0,
+              "fold_grinding_bits": 7,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 2,
+              "log_msg_cols": 9,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 106,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 113.5,
+              "expected_eps_pg_bits": 96.8,
+              "expected_eps_query_bits": 100.9,
+              "fold_grinding_bits": 4,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 3,
+              "log_msg_cols": 6,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 71,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 113.1,
+              "expected_eps_pg_bits": 99.1,
+              "expected_eps_query_bits": 100.1,
+              "fold_grinding_bits": 1,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 4,
+              "log_msg_cols": 3,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 53,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            }
+          ],
+          "log_n": 18,
+          "m": 25,
+          "target_security_bits": 100
+        },
+        "used_columns": 95,
+        "variables": 18
+      },
+      "times": {
+        "commit_ms": {
+          "n": 80,
+          "median": 2.558229,
+          "mean": 2.5813813,
+          "min": 2.376125,
+          "max": 3.046541,
+          "p95": 2.7876747
+        },
+        "lincheck_ms": {
+          "n": 80,
+          "median": 0.114,
+          "mean": 0.1190447875,
+          "min": 0.085584,
+          "max": 0.22875,
+          "p95": 0.16518575
+        },
+        "open_ms": {
+          "n": 80,
+          "median": 4.9725835,
+          "mean": 5.0005432,
+          "min": 4.424334,
+          "max": 6.536875,
+          "p95": 5.643583
+        },
+        "piop_ms": {
+          "n": 80,
+          "median": 3.253875,
+          "mean": 3.2905938,
+          "min": 2.9950419999999998,
+          "max": 4.140124999999999,
+          "p95": 3.7174621500000002
+        },
+        "total_ms": {
+          "n": 80,
+          "median": 11.5949795,
+          "mean": 11.7014166875,
+          "min": 10.814417,
+          "max": 14.245667,
+          "p95": 13.1833872
+        },
+        "witness_ms": {
+          "n": 80,
+          "median": 0.8089170000000001,
+          "mean": 0.8280265625000001,
+          "min": 0.7215,
+          "max": 1.0354999999999999,
+          "p95": 0.9614042
+        },
+        "zerocheck_ms": {
+          "n": 80,
+          "median": 2.9367295,
+          "mean": 2.9590010375,
+          "min": 2.698791,
+          "max": 3.6284590000000003,
+          "p95": 3.2665871999999996
+        }
+      },
+      "pcs_total_ms": {
+        "n": 80,
+        "median": 7.5198540000000005,
+        "mean": 7.5819245,
+        "min": 6.955957999999999,
+        "max": 9.306541,
+        "p95": 8.346299949999999
+      },
+      "verify_ms": {
+        "n": 80,
+        "median": 0.4884165,
+        "mean": 0.4912360125,
+        "min": 0.46383399999999997,
+        "max": 0.589917,
+        "p95": 0.52695865
+      },
+      "proof_bytes": {
+        "n": 80,
+        "median": 310524.0,
+        "mean": 310534.4,
+        "min": 309180,
+        "max": 311772,
+        "p95": 311420.0
+      },
+      "piop_bytes": {
+        "n": 80,
+        "median": 3620.0,
+        "mean": 3620,
+        "min": 3620,
+        "max": 3620,
+        "p95": 3620.0
+      },
+      "pcs_bytes": {
+        "n": 80,
+        "median": 306864.0,
+        "mean": 306874.4,
+        "min": 305520,
+        "max": 308112,
+        "p95": 307760.0
+      },
+      "runs": {
+        "run-1": {
+          "n": 40,
+          "median": 11.638521,
+          "mean": 11.784729200000001,
+          "min": 10.814417,
+          "max": 14.245667,
+          "p95": 13.3973747
+        },
+        "run-2": {
+          "n": 40,
+          "median": 11.5226875,
+          "mean": 11.618104175,
+          "min": 10.928375,
+          "max": 13.413667,
+          "p95": 13.146303849999999
+        }
+      }
+    },
+    "flock_native_r1cs": {
+      "shape": {
+        "field_elements": 1048576,
+        "gates": 360,
+        "gkr_layers": null,
+        "matrix_nonzero_entries": 7449,
+        "name": "flock_native_r1cs",
+        "params": {
+          "log_batch_size": 6,
+          "log_inv_rate": 1,
+          "m": 27,
+          "merkle_hash": "sha256",
+          "profile": "fast"
+        },
+        "polynomials": 1,
+        "raw_bytes": 16777216,
+        "security": {
+          "analysis_version": "johnson_ood_row_union_over_bchks25_thm_4_6",
+          "field": "f128",
+          "final_block": {
+            "yr_log_n": 5
+          },
+          "grinding_step": "post_commit_pre_queries",
+          "hash": "sha256",
+          "initial_k": 6,
+          "levels": [
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 118.5,
+              "expected_eps_pg_bits": 86.0,
+              "expected_eps_query_bits": 100.2,
+              "fold_grinding_bits": 14,
+              "grinding_bits": 0,
+              "k_recursive": 6,
+              "log_inv_rate": 1,
+              "log_msg_cols": 14,
+              "log_num_interleaved": 6,
+              "ood_samples": 0,
+              "proximity_loss": null,
+              "queries": 218,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 113.9,
+              "expected_eps_pg_bits": 91.8,
+              "expected_eps_query_bits": 100.0,
+              "fold_grinding_bits": 9,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 2,
+              "log_msg_cols": 11,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 106,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 113.3,
+              "expected_eps_pg_bits": 94.8,
+              "expected_eps_query_bits": 100.9,
+              "fold_grinding_bits": 6,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 3,
+              "log_msg_cols": 8,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 71,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            },
+            {
+              "eta": 0.02,
+              "expected_eps_ood_bits": 112.7,
+              "expected_eps_pg_bits": 97.1,
+              "expected_eps_query_bits": 100.1,
+              "fold_grinding_bits": 3,
+              "grinding_bits": 0,
+              "k_recursive": 3,
+              "log_inv_rate": 4,
+              "log_msg_cols": 5,
+              "log_num_interleaved": 3,
+              "ood_samples": 1,
+              "proximity_loss": null,
+              "queries": 53,
+              "regime": "johnson_ood",
+              "target_security_bits": 100
+            }
+          ],
+          "log_n": 20,
+          "m": 27,
+          "target_security_bits": 100
+        },
+        "used_columns": 365,
+        "variables": 20
+      },
+      "times": {
+        "commit_ms": {
+          "n": 80,
+          "median": 9.738020500000001,
+          "mean": 10.066297412499999,
+          "min": 9.339625,
+          "max": 14.385291,
+          "p95": 12.260204799999999
+        },
+        "lincheck_ms": {
+          "n": 80,
+          "median": 0.422833,
+          "mean": 0.432634325,
+          "min": 0.39775,
+          "max": 0.709459,
+          "p95": 0.4752853999999999
+        },
+        "open_ms": {
+          "n": 80,
+          "median": 18.2911875,
+          "mean": 18.65505935,
+          "min": 17.114333,
+          "max": 27.7275,
+          "p95": 21.1387271
+        },
+        "piop_ms": {
+          "n": 80,
+          "median": 10.327583,
+          "mean": 11.081278625,
+          "min": 9.523416999999998,
+          "max": 25.073625,
+          "p95": 16.859912799999996
+        },
+        "total_ms": {
+          "n": 80,
+          "median": 41.8102495,
+          "mean": 43.012803687499996,
+          "min": 39.528958,
+          "max": 61.275957999999996,
+          "p95": 51.39772145
+        },
+        "witness_ms": {
+          "n": 80,
+          "median": 3.223958,
+          "mean": 3.2087885375,
+          "min": 2.695208,
+          "max": 4.148958,
+          "p95": 3.7787708499999995
+        },
+        "zerocheck_ms": {
+          "n": 80,
+          "median": 9.404895999999999,
+          "mean": 10.2176249625,
+          "min": 8.788499999999999,
+          "max": 24.254791,
+          "p95": 15.96673925
+        }
+      },
+      "pcs_total_ms": {
+        "n": 80,
+        "median": 27.9446875,
+        "mean": 28.7213567625,
+        "min": 26.960458,
+        "max": 39.285042,
+        "p95": 33.22945865
+      },
+      "verify_ms": {
+        "n": 80,
+        "median": 0.8434375000000001,
+        "mean": 0.8431776,
+        "min": 0.813042,
+        "max": 0.8921250000000001,
+        "p95": 0.8741583499999999
+      },
+      "proof_bytes": {
+        "n": 80,
+        "median": 337004.0,
+        "mean": 336976,
+        "min": 335772,
+        "max": 338332,
+        "p95": 338168.8
+      },
+      "piop_bytes": {
+        "n": 80,
+        "median": 2516.0,
+        "mean": 2516,
+        "min": 2516,
+        "max": 2516,
+        "p95": 2516.0
+      },
+      "pcs_bytes": {
+        "n": 80,
+        "median": 334448.0,
+        "mean": 334420,
+        "min": 333216,
+        "max": 335776,
+        "p95": 335612.8
+      },
+      "runs": {
+        "run-1": {
+          "n": 40,
+          "median": 42.259396,
+          "mean": 44.26390415,
+          "min": 39.528958,
+          "max": 61.275957999999996,
+          "p95": 53.6152646
+        },
+        "run-2": {
+          "n": 40,
+          "median": 41.3225,
+          "mean": 41.761703225,
+          "min": 40.144292,
+          "max": 47.296625,
+          "p95": 46.676325000000006
+        }
+      }
+    }
+  },
+  "paired_x7_over_gkr7": {
+    "n": 80,
+    "median": 1.0961236712438656,
+    "mean": 1.0946197799461659,
+    "min": 0.8840027029240011,
+    "max": 1.3907765324453607,
+    "p95": 1.2003872825375292
+  }
+}

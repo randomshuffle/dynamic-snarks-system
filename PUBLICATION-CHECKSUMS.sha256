@@ -1,0 +1,12 @@
+5a2266643db9108ac9916b0d117814af5ff55615f05fc5476ef46afa1f0d1ce9  archive/results/2026-09-20-dynamic-ligerito-n19/summary.json
+fa6f755ac5bf21e880d60aac0dd85cd08fca65bc77363564794859bc5535719a  archive/results/2026-09-21-direct-tail-400/summary.json
+14701466f65f23e268ffec42d9ffc84336b758377724c49ea2eb452fb726de38  archive/results/2026-09-21-direct-tail-matrix/summary.json
+2977621a54c10970f9510f91b2fe23e6516cb01b673451e97f041942c1ccaaf3  archive/results/2026-09-21-plaintext-budget/summary.json
+a543c2637fecfcb4bf62e92007a7c3e59cd3805a4783ce8c0a49d798b9428fbc  archive/results/2026-09-21-split-oracles/summary.json
+a606c4bea0d6a3be09b4cdfd46af61d5e0d488d50123376e1521376f47fc2c87  archive/results/2026-09-22-64-gate-amortization/partial-summary.json
+5fc4af9329ca37b0f1de7c1ae3c889fb0b465342bb3a9684ef6243ce7a31bed6  archive/results/2026-09-22-baseline-comparison/summary.json
+24e1b8ceafb3bcf6d695734931522d8553a51fd17078ba0d0731527bfaf713f1  archive/results/2026-09-22-gkr-protocol-ablations/summary.json
+bda575d68a59f74381b056cbce45a418f30092f32cfed7d4134fca6645cb671d  archive/results/2026-09-22-one-gate-amortization/summary.json
+154b8670a404b2f5cf055545b7f5818cabd36e82b1c4e9bc58bc934d68fcdef3  archive/results/2026-09-23-hierarchy-growth/base4/summary.json
+7515b40beafcf9f5319334b2a2083d46d00993d314d5500b9c061853a5df3e0c  archive/results/2026-09-23-hierarchy-growth/base8/summary.json
+44e4a5286692e873dc80bf036f363fd4bb21775c3c50c0c5ac69a49892d22e96  results/paper/environment/kernel.txt

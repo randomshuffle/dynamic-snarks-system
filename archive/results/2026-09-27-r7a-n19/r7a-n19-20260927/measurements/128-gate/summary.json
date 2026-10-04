@@ -1,0 +1,427 @@
+{
+  "updates": 1000,
+  "initial_s": 19.755712363,
+  "baseline_mean_s": 0.40413992016831685,
+  "baseline_samples": 101,
+  "baseline_revisions": [
+    1,
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100,
+    110,
+    120,
+    130,
+    140,
+    150,
+    160,
+    170,
+    180,
+    190,
+    200,
+    210,
+    220,
+    230,
+    240,
+    250,
+    260,
+    270,
+    280,
+    290,
+    300,
+    310,
+    320,
+    330,
+    340,
+    350,
+    360,
+    370,
+    380,
+    390,
+    400,
+    410,
+    420,
+    430,
+    440,
+    450,
+    460,
+    470,
+    480,
+    490,
+    500,
+    510,
+    520,
+    530,
+    540,
+    550,
+    560,
+    570,
+    580,
+    590,
+    600,
+    610,
+    620,
+    630,
+    640,
+    650,
+    660,
+    670,
+    680,
+    690,
+    700,
+    710,
+    720,
+    730,
+    740,
+    750,
+    760,
+    770,
+    780,
+    790,
+    800,
+    810,
+    820,
+    830,
+    840,
+    850,
+    860,
+    870,
+    880,
+    890,
+    900,
+    910,
+    920,
+    930,
+    940,
+    950,
+    960,
+    970,
+    980,
+    990,
+    1000
+  ],
+  "baseline_stdev_s": 0.057148602184301144,
+  "baseline_total_method": "update count times sampled baseline mean",
+  "formula": "n * mean(sampled baseline) / (initial + sum(update[1:n]))",
+  "first_break_even_update": 68,
+  "sustained_break_even_update": 68,
+  "maximum": {
+    "updates": 429,
+    "update_prove_s": 0.024477602,
+    "mode": "direct",
+    "cumulative_update_s": 77.329147486,
+    "initial_s": 19.755712363,
+    "dynamic_total_s": 97.084859849,
+    "baseline_total_s": 173.37602575220794,
+    "amortized_initial_s": 0.04605061156876457,
+    "average_update_s": 0.18025442304428904,
+    "amortized_dynamic_s": 0.2263050346130536,
+    "speedup": 1.7858193957519912,
+    "dynamic_total_with_setup_s": 97.82103516299999,
+    "baseline_total_with_setup_s": 173.57547839120792,
+    "speedup_with_setup": 1.7744187444139974
+  },
+  "final": {
+    "updates": 1000,
+    "update_prove_s": 0.006757364,
+    "mode": "direct",
+    "cumulative_update_s": 239.72350560500016,
+    "initial_s": 19.755712363,
+    "dynamic_total_s": 259.47921796800017,
+    "baseline_total_s": 404.13992016831685,
+    "amortized_initial_s": 0.019755712363,
+    "average_update_s": 0.23972350560500016,
+    "amortized_dynamic_s": 0.25947921796800016,
+    "speedup": 1.5575040010262275,
+    "dynamic_total_with_setup_s": 260.21539328200015,
+    "baseline_total_with_setup_s": 404.33937280731686,
+    "speedup_with_setup": 1.5538641573334093
+  },
+  "promotions": [
+    {
+      "revision": 25,
+      "prove_s": 2.429952875,
+      "polynomial_gates": 3188
+    },
+    {
+      "revision": 52,
+      "prove_s": 4.594358773,
+      "polynomial_gates": 6612
+    },
+    {
+      "revision": 79,
+      "prove_s": 2.460819065,
+      "polynomial_gates": 3443
+    },
+    {
+      "revision": 106,
+      "prove_s": 8.815296221,
+      "polynomial_gates": 13381
+    },
+    {
+      "revision": 133,
+      "prove_s": 2.327760936,
+      "polynomial_gates": 3443
+    },
+    {
+      "revision": 160,
+      "prove_s": 4.514133666,
+      "polynomial_gates": 6861
+    },
+    {
+      "revision": 187,
+      "prove_s": 2.277897648,
+      "polynomial_gates": 3445
+    },
+    {
+      "revision": 214,
+      "prove_s": 18.221354426,
+      "polynomial_gates": 26667
+    },
+    {
+      "revision": 241,
+      "prove_s": 2.260873558,
+      "polynomial_gates": 3444
+    },
+    {
+      "revision": 268,
+      "prove_s": 4.464795766,
+      "polynomial_gates": 6870
+    },
+    {
+      "revision": 295,
+      "prove_s": 2.329522048,
+      "polynomial_gates": 3450
+    },
+    {
+      "revision": 322,
+      "prove_s": 8.435363429,
+      "polynomial_gates": 13660
+    },
+    {
+      "revision": 349,
+      "prove_s": 2.327827755,
+      "polynomial_gates": 3443
+    },
+    {
+      "revision": 376,
+      "prove_s": 4.6396593809999995,
+      "polynomial_gates": 6873
+    },
+    {
+      "revision": 403,
+      "prove_s": 2.324620993,
+      "polynomial_gates": 3450
+    },
+    {
+      "revision": 430,
+      "prove_s": 22.046261162,
+      "polynomial_gates": 52202
+    },
+    {
+      "revision": 457,
+      "prove_s": 2.2596069979999998,
+      "polynomial_gates": 3444
+    },
+    {
+      "revision": 484,
+      "prove_s": 4.578035063,
+      "polynomial_gates": 6864
+    },
+    {
+      "revision": 511,
+      "prove_s": 2.283998992,
+      "polynomial_gates": 3446
+    },
+    {
+      "revision": 538,
+      "prove_s": 8.461650206,
+      "polynomial_gates": 13634
+    },
+    {
+      "revision": 565,
+      "prove_s": 2.343136823,
+      "polynomial_gates": 3440
+    },
+    {
+      "revision": 592,
+      "prove_s": 4.312266484,
+      "polynomial_gates": 6862
+    },
+    {
+      "revision": 619,
+      "prove_s": 2.341884487,
+      "polynomial_gates": 3439
+    },
+    {
+      "revision": 646,
+      "prove_s": 18.567468984,
+      "polynomial_gates": 26901
+    },
+    {
+      "revision": 673,
+      "prove_s": 2.314842428,
+      "polynomial_gates": 3443
+    },
+    {
+      "revision": 700,
+      "prove_s": 4.4819661140000004,
+      "polynomial_gates": 6863
+    },
+    {
+      "revision": 727,
+      "prove_s": 2.30044284,
+      "polynomial_gates": 3441
+    },
+    {
+      "revision": 754,
+      "prove_s": 8.591434202,
+      "polynomial_gates": 13637
+    },
+    {
+      "revision": 781,
+      "prove_s": 2.36871202,
+      "polynomial_gates": 3444
+    },
+    {
+      "revision": 808,
+      "prove_s": 4.5479129270000005,
+      "polynomial_gates": 6865
+    },
+    {
+      "revision": 835,
+      "prove_s": 2.359474922,
+      "polynomial_gates": 3448
+    },
+    {
+      "revision": 862,
+      "prove_s": 41.314204851,
+      "polynomial_gates": 99512
+    },
+    {
+      "revision": 889,
+      "prove_s": 2.094726779,
+      "polynomial_gates": 3448
+    },
+    {
+      "revision": 916,
+      "prove_s": 4.449215413,
+      "polynomial_gates": 6865
+    },
+    {
+      "revision": 943,
+      "prove_s": 2.067816991,
+      "polynomial_gates": 3443
+    },
+    {
+      "revision": 970,
+      "prove_s": 8.340001754,
+      "polynomial_gates": 13638
+    },
+    {
+      "revision": 997,
+      "prove_s": 2.09383537,
+      "polynomial_gates": 3442
+    }
+  ],
+  "maximum_with_setup": {
+    "updates": 429,
+    "update_prove_s": 0.024477602,
+    "mode": "direct",
+    "cumulative_update_s": 77.329147486,
+    "initial_s": 19.755712363,
+    "dynamic_total_s": 97.084859849,
+    "baseline_total_s": 173.37602575220794,
+    "amortized_initial_s": 0.04605061156876457,
+    "average_update_s": 0.18025442304428904,
+    "amortized_dynamic_s": 0.2263050346130536,
+    "speedup": 1.7858193957519912,
+    "dynamic_total_with_setup_s": 97.82103516299999,
+    "baseline_total_with_setup_s": 173.57547839120792,
+    "speedup_with_setup": 1.7744187444139974
+  },
+  "first_break_even_with_setup": 69,
+  "gates": 524288,
+  "update_gates": 128,
+  "hierarchy_base": 2,
+  "tables_per_level": 1,
+  "trace_log": 19,
+  "threads": 32,
+  "plaintext_cap_kib": 2048,
+  "run_metadata": {
+    "command": [
+      "/home/ubuntu/bench-results/r7a-n19-20260927/measurements/whole-system",
+      "19",
+      "/home/ubuntu/bench-results/r7a-n19-20260927/measurements/128-gate/run-a",
+      "1000",
+      "7",
+      "1"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 441.45763837999993,
+    "user_seconds": 2596.810041,
+    "system_seconds": 227.598613,
+    "maximum_rss_bytes": 29516746752,
+    "memory_monitor": {
+      "rss_limit_bytes": 231928233984,
+      "sampling_interval_seconds": 0.1,
+      "samples": 4399,
+      "peak_sampled_rss_bytes": 29521915904,
+      "peak_sampled_phys_footprint_bytes": null,
+      "limit_exceeded": false,
+      "error": null
+    },
+    "binary_sha256": "d45675391706555b49937b05b54133af9a2f58c8670f04fb416cd8e1cf5db693",
+    "threads": 32,
+    "rustflags": "-C target-cpu=native",
+    "sequence_length": 1000,
+    "trace_log": 19,
+    "platform": "linux",
+    "detected_memory_bytes": 264576409600,
+    "footprint_limit_bytes": null,
+    "security_profile": "Ligerito Fast (100 bits per round, JohnsonOod, rate 1/2)",
+    "hash_input_bytes": 64,
+    "digest_bytes": 32,
+    "gkr_segments": 2,
+    "gkr_depth": 33,
+    "load_average_start": [
+      2.041015625,
+      2.19580078125,
+      2.36376953125
+    ],
+    "load_average_end": [
+      5.98388671875,
+      5.27978515625,
+      3.7548828125
+    ],
+    "hash_checkpoints": 1,
+    "initial_hash_checkpoints": 1,
+    "hash_kernel": "factored",
+    "update_logs": "7",
+    "small_oracle": "hybrid",
+    "plaintext_cap_kib": 2048,
+    "baseline_every": 10,
+    "baseline_first": false,
+    "hierarchy_base": 2,
+    "tables_per_level": 1,
+    "interrupted_by_signals": []
+  },
+  "verified_samples": 1102,
+  "setup": {
+    "baseline_every": 10,
+    "baseline_first": false,
+    "baseline_s": 0.199452639,
+    "dynamic_s": 0.736175314,
+    "hierarchy_base": 2,
+    "hierarchy_levels": 21,
+    "hierarchy_slots": 21,
+    "plaintext_cap_bytes": 2097152,
+    "tables_per_level": 1
+  }
+}

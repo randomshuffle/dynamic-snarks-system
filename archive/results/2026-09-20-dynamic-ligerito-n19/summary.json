@@ -1,0 +1,530 @@
+{
+  "gates": 524288,
+  "sweeps": 2,
+  "phases": {
+    "initial": {
+      "prove_ms": {
+        "count": 2,
+        "mean": 16536.725062,
+        "median": 16536.725062,
+        "min": 16372.467208,
+        "max": 16700.982916,
+        "samples": [
+          16372.467208,
+          16700.982916
+        ]
+      },
+      "verify_ms": {
+        "count": 2,
+        "mean": 7.640708500000001,
+        "median": 7.640708500000001,
+        "min": 7.510875,
+        "max": 7.770542,
+        "samples": [
+          7.510875,
+          7.770542
+        ]
+      },
+      "serialized_bytes": {
+        "count": 2,
+        "mean": 1986726,
+        "median": 1986726.0,
+        "min": 1986726,
+        "max": 1986726,
+        "samples": [
+          1986726,
+          1986726
+        ]
+      },
+      "logical_commitment_arities": [
+        [
+          20,
+          21,
+          21,
+          23,
+          24
+        ]
+      ]
+    },
+    "baseline": {
+      "prove_ms": {
+        "count": 24,
+        "mean": 448.18236633333333,
+        "median": 443.3574165,
+        "min": 425.149375,
+        "max": 520.075667,
+        "samples": [
+          490.438125,
+          436.73554199999995,
+          438.276916,
+          440.08324999999996,
+          432.511041,
+          439.041917,
+          425.149375,
+          437.544625,
+          433.179375,
+          438.971667,
+          446.55325,
+          435.81350000000003,
+          520.075667,
+          459.718792,
+          450.803125,
+          448.891834,
+          434.955,
+          454.177958,
+          440.161583,
+          448.618042,
+          453.900833,
+          451.633917,
+          450.72833299999996,
+          448.41312500000004
+        ]
+      },
+      "verify_ms": {
+        "count": 24,
+        "mean": 2.1317933333333334,
+        "median": 2.12075,
+        "min": 2.087042,
+        "max": 2.274875,
+        "samples": [
+          2.115333,
+          2.129208,
+          2.125625,
+          2.108292,
+          2.129917,
+          2.101416,
+          2.10775,
+          2.133,
+          2.122833,
+          2.112,
+          2.087042,
+          2.108292,
+          2.274875,
+          2.1231660000000003,
+          2.1085420000000004,
+          2.1,
+          2.1177919999999997,
+          2.217166,
+          2.1212079999999998,
+          2.123541,
+          2.1275,
+          2.249,
+          2.09925,
+          2.120292
+        ]
+      },
+      "serialized_bytes": {
+        "count": 24,
+        "mean": 1053402.6666666667,
+        "median": 1053320.0,
+        "min": 1051560,
+        "max": 1055624,
+        "samples": [
+          1052936,
+          1055624,
+          1054184,
+          1054536,
+          1053128,
+          1052488,
+          1054344,
+          1052232,
+          1053960,
+          1053512,
+          1052328,
+          1051560,
+          1052936,
+          1055624,
+          1054184,
+          1054536,
+          1053128,
+          1052488,
+          1054344,
+          1052232,
+          1053960,
+          1053512,
+          1052328,
+          1051560
+        ]
+      },
+      "logical_commitment_arities": [
+        [
+          20,
+          21,
+          21
+        ]
+      ]
+    },
+    "update": {
+      "prove_ms": {
+        "count": 24,
+        "mean": 13.541692458333333,
+        "median": 12.9781665,
+        "min": 8.634166,
+        "max": 29.318375,
+        "samples": [
+          10.655583,
+          9.723917,
+          9.372125,
+          15.618458,
+          8.68875,
+          12.852208000000001,
+          8.679791,
+          25.702208000000002,
+          8.743583,
+          9.838833,
+          8.634166,
+          15.285290999999999,
+          13.170665999999999,
+          13.770833,
+          10.131875,
+          19.928250000000002,
+          13.802416,
+          14.854958,
+          11.283209000000001,
+          29.318375,
+          13.747208,
+          13.104125,
+          10.359125,
+          17.734666
+        ]
+      },
+      "verify_ms": {
+        "count": 24,
+        "mean": 11.637835083333334,
+        "median": 11.7856245,
+        "min": 9.436333999999999,
+        "max": 15.052,
+        "samples": [
+          9.461333,
+          9.436333999999999,
+          11.55225,
+          10.207083,
+          11.970375,
+          12.258292,
+          14.004916,
+          9.771500000000001,
+          11.693709,
+          11.705958,
+          13.789834,
+          12.102042,
+          9.466667,
+          9.83575,
+          12.593417,
+          9.877708,
+          13.244957999999999,
+          12.313208000000001,
+          15.052,
+          9.636917,
+          11.865291,
+          11.696708000000001,
+          13.711917,
+          12.059875
+        ]
+      },
+      "serialized_bytes": {
+        "count": 24,
+        "mean": 3872238,
+        "median": 4023058.0,
+        "min": 2993166,
+        "max": 5079262,
+        "samples": [
+          2993302,
+          2993166,
+          3999486,
+          3017078,
+          4023142,
+          4022974,
+          5028846,
+          3066598,
+          4072790,
+          4072910,
+          5079262,
+          4097302,
+          2993302,
+          2993166,
+          3999486,
+          3017078,
+          4023142,
+          4022974,
+          5028846,
+          3066598,
+          4072790,
+          4072910,
+          5079262,
+          4097302
+        ]
+      },
+      "logical_commitment_arities": [
+        [
+          8,
+          11,
+          13,
+          13
+        ],
+        [
+          9,
+          11,
+          13,
+          13
+        ],
+        [
+          10,
+          12,
+          14,
+          14
+        ],
+        [
+          11,
+          13,
+          15,
+          16
+        ]
+      ]
+    }
+  },
+  "runs": {
+    "run-a": {
+      "verified_measurements": 25,
+      "metadata": {
+        "command": [
+          "/path/to/Desktop/Research/research-git/dynamic-snarks-system/experiments/dynamic-ligerito/target/release/whole_system",
+          "19",
+          "/path/to/Desktop/Research/research-git/dynamic-snarks-system/benchmark-results/2026-09-20-dynamic-ligerito-n19/run-a",
+          "12",
+          "0",
+          "1"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 23.959550792118534,
+        "user_seconds": 117.799197,
+        "system_seconds": 11.870537,
+        "maximum_rss_bytes": 4493574144,
+        "memory_monitor": {
+          "rss_limit_bytes": 8589934592,
+          "sampling_interval_seconds": 0.1,
+          "samples": 229,
+          "peak_sampled_rss_bytes": 4493574144,
+          "peak_sampled_phys_footprint_bytes": 9144338816,
+          "limit_exceeded": false,
+          "error": null
+        },
+        "binary_sha256": "1ae7d54e42eb0be2423d81652ceaba4064cb80df1fede242f30183684cb1dc81",
+        "threads": 8,
+        "rustflags": "-C target-cpu=native",
+        "sequence_length": 12,
+        "security_profile": "Ligerito Fast (100 bits per round, JohnsonOod, rate 1/2)",
+        "hash_input_bytes": 64,
+        "digest_bytes": 32,
+        "gkr_segments": 2,
+        "gkr_depth": 33,
+        "load_average_start": [
+          1.8681640625,
+          1.90087890625,
+          2.1201171875
+        ],
+        "load_average_end": [
+          4.28515625,
+          2.48193359375,
+          2.3232421875
+        ],
+        "hash_checkpoints": 1,
+        "initial_hash_checkpoints": 1,
+        "hash_kernel": "factored"
+      },
+      "setup": {
+        "baseline_s": 0.098538,
+        "dynamic_s": 1.6982711670000001
+      },
+      "proof_sha256": {
+        "baseline-final.bin": "711940a10e57a0c6f95bba4612bfdda5ce09f231960aa5a840f61455c2e1ab4b",
+        "initial.bin": "b18a808664cbf4f48a54a5b90f9902148557acce27fde121cc40e6b9990c53c9",
+        "update-1-final.bin": "3e57648332c472e5676949bddc46f5b35112a8dbe7d5172b2291ebfeabf5b8b5"
+      },
+      "system_wide_vm_counter_delta_pages": {
+        "Swapins": 5271,
+        "Swapouts": 335084,
+        "Compressions": 1129917,
+        "Decompressions": 794244
+      },
+      "vm_page_size_bytes": 16384,
+      "phases": {
+        "initial": {
+          "count": 1,
+          "mean": 16372.467208,
+          "median": 16372.467208,
+          "min": 16372.467208,
+          "max": 16372.467208,
+          "samples": [
+            16372.467208
+          ]
+        },
+        "baseline": {
+          "count": 12,
+          "mean": 441.1915485833333,
+          "median": 437.9107705,
+          "min": 425.149375,
+          "max": 490.438125,
+          "samples": [
+            490.438125,
+            436.73554199999995,
+            438.276916,
+            440.08324999999996,
+            432.511041,
+            439.041917,
+            425.149375,
+            437.544625,
+            433.179375,
+            438.971667,
+            446.55325,
+            435.81350000000003
+          ]
+        },
+        "update": {
+          "count": 12,
+          "mean": 11.982909416666667,
+          "median": 9.781375,
+          "min": 8.634166,
+          "max": 25.702208000000002,
+          "samples": [
+            10.655583,
+            9.723917,
+            9.372125,
+            15.618458,
+            8.68875,
+            12.852208000000001,
+            8.679791,
+            25.702208000000002,
+            8.743583,
+            9.838833,
+            8.634166,
+            15.285290999999999
+          ]
+        }
+      }
+    },
+    "run-b": {
+      "verified_measurements": 25,
+      "metadata": {
+        "command": [
+          "/path/to/Desktop/Research/research-git/dynamic-snarks-system/experiments/dynamic-ligerito/target/release/whole_system",
+          "19",
+          "/path/to/Desktop/Research/research-git/dynamic-snarks-system/benchmark-results/2026-09-20-dynamic-ligerito-n19/run-b",
+          "12",
+          "0",
+          "1"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 24.449773666914552,
+        "user_seconds": 116.636993,
+        "system_seconds": 11.473281,
+        "maximum_rss_bytes": 5530042368,
+        "memory_monitor": {
+          "rss_limit_bytes": 8589934592,
+          "sampling_interval_seconds": 0.1,
+          "samples": 234,
+          "peak_sampled_rss_bytes": 5409488896,
+          "peak_sampled_phys_footprint_bytes": 9136310656,
+          "limit_exceeded": false,
+          "error": null
+        },
+        "binary_sha256": "1ae7d54e42eb0be2423d81652ceaba4064cb80df1fede242f30183684cb1dc81",
+        "threads": 8,
+        "rustflags": "-C target-cpu=native",
+        "sequence_length": 12,
+        "security_profile": "Ligerito Fast (100 bits per round, JohnsonOod, rate 1/2)",
+        "hash_input_bytes": 64,
+        "digest_bytes": 32,
+        "gkr_segments": 2,
+        "gkr_depth": 33,
+        "load_average_start": [
+          2.5,
+          2.2724609375,
+          2.2509765625
+        ],
+        "load_average_end": [
+          3.91357421875,
+          2.623046875,
+          2.376953125
+        ],
+        "hash_checkpoints": 1,
+        "initial_hash_checkpoints": 1,
+        "hash_kernel": "factored"
+      },
+      "setup": {
+        "baseline_s": 0.072895917,
+        "dynamic_s": 1.669011125
+      },
+      "proof_sha256": {
+        "baseline-final.bin": "711940a10e57a0c6f95bba4612bfdda5ce09f231960aa5a840f61455c2e1ab4b",
+        "initial.bin": "b18a808664cbf4f48a54a5b90f9902148557acce27fde121cc40e6b9990c53c9",
+        "update-1-final.bin": "3e57648332c472e5676949bddc46f5b35112a8dbe7d5172b2291ebfeabf5b8b5"
+      },
+      "system_wide_vm_counter_delta_pages": {
+        "Swapins": 35277,
+        "Swapouts": 110884,
+        "Compressions": 1239772,
+        "Decompressions": 667546
+      },
+      "vm_page_size_bytes": 16384,
+      "phases": {
+        "initial": {
+          "count": 1,
+          "mean": 16700.982916,
+          "median": 16700.982916,
+          "min": 16700.982916,
+          "max": 16700.982916,
+          "samples": [
+            16700.982916
+          ]
+        },
+        "baseline": {
+          "count": 12,
+          "mean": 455.17318408333335,
+          "median": 450.76572899999996,
+          "min": 434.955,
+          "max": 520.075667,
+          "samples": [
+            520.075667,
+            459.718792,
+            450.803125,
+            448.891834,
+            434.955,
+            454.177958,
+            440.161583,
+            448.618042,
+            453.900833,
+            451.633917,
+            450.72833299999996,
+            448.41312500000004
+          ]
+        },
+        "update": {
+          "count": 12,
+          "mean": 15.1004755,
+          "median": 13.7590205,
+          "min": 10.131875,
+          "max": 29.318375,
+          "samples": [
+            13.170665999999999,
+            13.770833,
+            10.131875,
+            19.928250000000002,
+            13.802416,
+            14.854958,
+            11.283209000000001,
+            29.318375,
+            13.747208,
+            13.104125,
+            10.359125,
+            17.734666
+          ]
+        }
+      }
+    }
+  },
+  "verified_measurements": 50,
+  "saved_proofs_identical_across_sweeps": true,
+  "baseline_over_update_mean_ratio": 33.09648093931784,
+  "peak_physical_footprint_gib": 8.516329169273376,
+  "peak_rss_gib": 5.1502532958984375
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "experiment": "Three paper experiments: update-size sweep, one-gate amortization, 128-gate amortization",
+  "source_tree_sha256": "a92422f12b6b8bb3c379897a6b7f726de6aa5effeefd85666bff12b283253bed",
+  "binary_sha256": "d45675391706555b49937b05b54133af9a2f58c8670f04fb416cd8e1cf5db693",
+  "host": {
+    "instance": "r7a.8xlarge",
+    "cpu": "AMD EPYC 9R14",
+    "physical_cores": 32,
+    "vcpus": 32,
+    "memory_gib": 256,
+    "os": "Ubuntu 24.04 x86-64"
+  },
+  "compiler": "Rust 1.92.0",
+  "rustflags": "-C target-cpu=native",
+  "data_policy": "Timing and proof-statistics values are copied unchanged. Each samples.jsonl.gz is a lossless deterministic gzip copy of the original JSONL. Public metadata may redact machine-specific paths. Duplicate logs, proof checkpoints, native binaries, backup bundles and rehearsal copies were removed; reproducing the Rust suite recreates proof artifacts.",
+  "source_manifest_note": "source-manifest.json describes the exact benchmark source snapshot. Publication cleanup changes file paths and documentation, so a newly generated source manifest is expected to have a different tree digest.",
+  "original_results_directory": "benchmark-results/2026-09-27-r7a-n23-retry1/r7a-n23-20260927-retry1/measurements"
+}

@@ -1,4 +1,0 @@
-phase,update_gates,revision,prove_seconds,verify_seconds,verified,cumulative_distinct_gates,proof_field_elements,proof_blake3_hashes,proof_poseidon_hashes,proof_payload_bytes,proof_serialized_bytes,proof_overhead_bytes,proof_file
-initial,0,0,0.256793666,0.024676792,true,0,24940,1827,525,856544,985648,129104,proofs/initial-g0-r0.cbor
-update,1,1,0.049404708,0.034773958,true,1,46306,3886,525,1606144,1851917,245773,proofs/update-g1-r1.cbor
-baseline,1,1,0.009684834,0.001892000,true,1,10558,930,0,367616,422794,55178,proofs/baseline-g1-r1.cbor

@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-20",
+  "change": "Default GKR message kernel: coefficients -> factored",
+  "unit_tests_passed": 12,
+  "integration_tests_passed": 3,
+  "verified_full_system_measurements": 25,
+  "circuit_gates": 131072,
+  "sequence_length": 12,
+  "update_gates": 1,
+  "proof_reference": "benchmark-results/2026-09-20-sumcheck-kernels/control-a-n17-c1-coefficients",
+  "byte_identical_proof_sha256": {
+    "baseline-final.bin": "06fa060750a0bc45329ff3f0fe9700714331aad7ab6eced2372ce7bb75838b28",
+    "initial.bin": "6c73dc64574be60b931eea7dfa008dc31a921c35660dda50301707f52c58e15e",
+    "update-1-final.bin": "6c46c1b7f5be15ad3bec767d2ae078df97e41d5fc5e5e25d439812dd970bdaa5"
+  },
+  "binary_sha256": "1ae7d54e42eb0be2423d81652ceaba4064cb80df1fede242f30183684cb1dc81",
+  "source_sha256": {
+    "experiments/dynamic-ligerito/src/hash_gkr/message.rs": "679ad3790e814eaeb639da31ef72ae7fe4446bfb0ecf34d731a1164190a992ca",
+    "experiments/dynamic-ligerito/src/bin/whole_system.rs": "27de3ec2ade84e7650749068284e8bbd8e1cd09d3e40ba2e0fd5b793737091fe",
+    "experiments/dynamic-ligerito/scripts/run.py": "2d34c9876e220cf234da94a8b8852368651709d48be286c6684f8fe4452c1c13",
+    "experiments/dynamic-ligerito/README.md": "6a75d3f4734d4b0d969dd4db2eb8eb273e4a697be3a260204eb53eff7dbcf0b4"
+  }
+}

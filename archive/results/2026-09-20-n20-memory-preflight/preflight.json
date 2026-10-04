@@ -1,0 +1,66 @@
+{
+  "date": "2026-09-20",
+  "decision": "Did not launch 2^20 full-system benchmark; current initialization is expected to exceed physical RAM and the existing 12 GiB footprint cutoff",
+  "machine_ram_bytes": 17179869184,
+  "requested_gates": 1048576,
+  "settings": {
+    "hash_rounds": 66,
+    "hash_input_bytes": 64,
+    "digest_bytes": 32,
+    "gkr_middle_commitments": 1,
+    "gkr_depth": 33,
+    "kernel": "factored",
+    "threads": 8,
+    "pcs": "Ligerito Fast, 100 bits per PCS round"
+  },
+  "prior_memory_measurements": [
+    {
+      "path": "benchmark-results/2026-09-20-sumcheck-kernels/control-a-n17-c1-factored/run.json",
+      "gates": 131072,
+      "peak_physical_footprint_bytes": 2134758784
+    },
+    {
+      "path": "benchmark-results/2026-09-20-sumcheck-kernels/control-a-n18-c1-factored/run.json",
+      "gates": 262144,
+      "peak_physical_footprint_bytes": 4550256512
+    },
+    {
+      "path": "benchmark-results/2026-09-20-sumcheck-kernels/control-b-n18-c1-factored/run.json",
+      "gates": 262144,
+      "peak_physical_footprint_bytes": 4573259712
+    }
+  ],
+  "extrapolated_n20_peak_footprint_bytes": [
+    18201026048,
+    18293038848
+  ],
+  "initialization_hash_rows": 8388608,
+  "retained_rounds": [
+    0,
+    8,
+    16,
+    24,
+    32,
+    33,
+    41,
+    49,
+    57,
+    65
+  ],
+  "maximum_live_gkr_round_states_in_trace_and_current_layer": 22,
+  "peak_gkr_depth_zero_based": 1,
+  "bytes_per_full_round_state": 536870912,
+  "gkr_round_states_alone_bytes": 11811160064,
+  "exclusions_from_round_state_count": [
+    "GKR witness endpoint columns",
+    "digest vectors",
+    "committed polynomial tables and codewords",
+    "Merkle trees",
+    "arithmetic proof state",
+    "allocator overhead"
+  ],
+  "existing_runner_rss_cutoff_bytes": 8589934592,
+  "existing_runner_footprint_cutoff_bytes": 12884901888,
+  "binary_sha256": "1ae7d54e42eb0be2423d81652ceaba4064cb80df1fede242f30183684cb1dc81",
+  "benchmark_started": false
+}

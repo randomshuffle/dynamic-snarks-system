@@ -1,0 +1,117 @@
+{
+  "date": "2026-09-20",
+  "scope": "Parameter arithmetic and selected published attack models; no end-to-end soundness theorem or proof of absence of attacks",
+  "source_hash_sha256": "527384efd0a127151db3dd63238f5eae4cd9b136dfa66811802b685af61d4348",
+  "field_modulus": "x^128+x^7+x^2+x+1",
+  "external_square_minors_invertible": 69,
+  "internal_krylov_ranks": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "nonlinear_trail_balancing_scalar_hex": "0x16c0000000000000000000000000015a",
+  "nonlinear_trail_length": 4,
+  "parameters": [
+    {
+      "target_classical_collision_work_bits": 128,
+      "field_bits": 128,
+      "width": 4,
+      "input_bytes": 64,
+      "digest_bytes": 32,
+      "sbox_exponent": 7,
+      "partial_rounds_before_margin": 44,
+      "full_rounds": 8,
+      "partial_rounds": 58,
+      "total_rounds": 66,
+      "sbox_count": 90,
+      "gkr_depth_by_middle_commitments": {
+        "1": 33,
+        "3": 17,
+        "7": 9
+      },
+      "generic_birthday_work_bits": 128,
+      "conservative_cico1_degree_log2_with_only_four_full_rounds_counted": 171.24865024551386,
+      "compression_round_skip": {
+        "full": 1,
+        "partial": 0,
+        "variable_degrees": [
+          1,
+          7
+        ]
+      },
+      "compression_ideal_degree_upper_bound_log7": 73,
+      "compression_equation_degree_upper_bound_log7": 66,
+      "skipping_class_omega2_log2_work_projection": 409.8738186204102,
+      "new_bivariate_omega2_transferred_log2_work_projection": 297.579621738106,
+      "nonlinear_subspace": {
+        "linear_substitution": {
+          "log2_work_projection": 1090.0601338861145,
+          "tau": 28
+        },
+        "nonlinear_substitution": {
+          "log2_work_projection": 1403.2090253153356,
+          "tau": 27
+        },
+        "linear_without_substitution": {
+          "log2_work_projection": 1022.8300749985577
+        },
+        "nonlinear_without_substitution": {
+          "log2_work_projection": 1022.8300749985577
+        },
+        "status": "Transferred semi-regular Macaulay cost models; not lower bounds or validated GF128 attack costs"
+      },
+      "status": "published 128-bit target"
+    },
+    {
+      "target_classical_collision_work_bits": 100,
+      "field_bits": 128,
+      "width": 4,
+      "input_bytes": 64,
+      "digest_bytes": 32,
+      "sbox_exponent": 7,
+      "partial_rounds_before_margin": 34,
+      "full_rounds": 8,
+      "partial_rounds": 45,
+      "total_rounds": 53,
+      "sbox_count": 77,
+      "gkr_depth_by_middle_commitments": {
+        "1": 27,
+        "3": 14,
+        "7": 7
+      },
+      "generic_birthday_work_bits": 128,
+      "conservative_cico1_degree_log2_with_only_four_full_rounds_counted": 134.753036258765,
+      "compression_round_skip": {
+        "full": 1,
+        "partial": 0,
+        "variable_degrees": [
+          1,
+          7
+        ]
+      },
+      "compression_ideal_degree_upper_bound_log7": 60,
+      "compression_equation_degree_upper_bound_log7": 53,
+      "skipping_class_omega2_log2_work_projection": 336.8825906469125,
+      "new_bivariate_omega2_transferred_log2_work_projection": 242.83620075798277,
+      "nonlinear_subspace": {
+        "linear_substitution": {
+          "log2_work_projection": 873.2618704419297,
+          "tau": 21
+        },
+        "nonlinear_substitution": {
+          "log2_work_projection": 1114.1446740564224,
+          "tau": 20
+        },
+        "linear_without_substitution": {
+          "log2_work_projection": 1022.8300749985577
+        },
+        "nonlinear_without_substitution": {
+          "log2_work_projection": 1022.8300749985577
+        },
+        "status": "Transferred semi-regular Macaulay cost models; not lower bounds or validated GF128 attack costs"
+      },
+      "status": "custom heuristic extrapolation, not a published or proved 100-bit preset"
+    }
+  ]
+}
