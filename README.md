@@ -1,7 +1,8 @@
 # Dynamic SNARK system
 
-Rust implementation of the amortized dynamic SNARK compiler evaluated in the
-accompanying paper. The system proves an initial computation, then maintains a
+Rust implementation accompanying **A Black-Box Compiler from Static to Dynamic
+SNARKs**. This repository contains the evaluated amortized construction. The
+system proves an initial computation, then maintains a
 proof as gate assignments change. We compare dynamic updates with recomputing
 an ordinary HyperPlonk proof from scratch in three experiments: an update-size
 sweep, 10,000 one-gate updates, and 1,000 128-gate updates.
@@ -15,6 +16,8 @@ carry-less multiplication, and **Ligerito** for multilinear polynomial commitmen
 The dynamic system and HyperPlonk baseline share the same field and PCS backend.
 The baseline proves circuit constraints and public inputs; dynamic initialization
 also proves consistency with the assignment Merkle tree.
+The paper uses TensorSwitch for its asymptotic instantiation and Ligerito for
+the evaluated implementation in this repository.
 
 - **Ligerito parameters:** Fast profile, rate-1/2 encodings, and a 100-bit
   per-round target in the Johnson-bound regime with out-of-domain sampling.
@@ -29,6 +32,9 @@ also proves consistency with the assignment Merkle tree.
 - **Update hierarchy:** base 2, with a **2 MiB direct-tail cap** in the paper
   experiments. Rayon parallelism is used throughout.
 
+The 100-bit target applies to each PCS round; it is not an aggregate security
+claim for the complete dynamic proof.
+
 Small updates accumulate in a single direct tail containing updated indices,
 old/new values, wiring information, and shared Merkle openings. The verifier
 checks this tail directly. When its serialized size exceeds the cap, the prover
@@ -38,7 +44,8 @@ resets, and superseded hierarchy proofs are removed after composition.
 
 The library entry points are `dynamic::index`, `dynamic::initialize`,
 `dynamic::update`, and `dynamic::verify`; `index_with_plaintext_cap` configures
-the direct-tail budget. Updates use sorted logical assignment indices and the
+the direct-tail budget. The library defaults to 64 KiB; the paper suite explicitly
+selects 2 MiB. Updates use sorted logical assignment indices and the
 complete three-wire tuple for each selected gate. The evaluated implementation
 does not implement the paper's zero-knowledge compiler modifications; the direct
 tail exposes its indices and values.
@@ -151,6 +158,13 @@ side. Both curves exclude verification and I/O.
 | Final speedup including initialization and indexing | 144× | 11.5× |
 | First and sustained break-even revision | 39 | 41 |
 | SNARK promotions | 4 | 52 |
+| Final dynamic proof size (MiB) | 4.63 | 9.35 |
+| Final baseline proof size (MiB) | 1.22 | 1.21 |
+| Final dynamic verifier time (ms) | 84.9 | 211 |
+| Final baseline verifier time (ms) | 4.84 | 5.19 |
+
+Proof sizes and verifier times in this table are measurements at the final
+revision, rather than means over the sequence.
 
 The final speedup is also the maximum observed in each measured sequence.
 These are single-run observations over the stated windows. The one-gate run
@@ -259,3 +273,5 @@ python3 results/paper/verify.py
 See [publication notes](PUBLICATION.md) for generating a clean public snapshot,
 licenses, and the distinction between recorded execution provenance and the
 reorganized source tree.
+The existing development history retains historical metadata and result archives;
+publish the generated snapshot with fresh Git history as described there.
